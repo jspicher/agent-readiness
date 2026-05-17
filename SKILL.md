@@ -362,9 +362,9 @@ bash "$SKILL_DIR/scripts/render_html.sh" \
 ```
 
 Replace `$SKILL_DIR` with the directory where this skill was installed
-(e.g., `~/.claude/skills/agent-readiness-report/` for global Claude Code
-installs, `.claude/skills/agent-readiness-report/` for project-scoped
-installs, `.cursor/skills/agent-readiness-report/` for Cursor, etc.).
+(e.g., `~/.claude/skills/agent-readiness/` for global Claude Code
+installs, `.claude/skills/agent-readiness/` for project-scoped
+installs, `.cursor/skills/agent-readiness/` for Cursor, etc.).
 
 The script embeds the JSON into `assets/report-template.html` and writes a
 self-contained HTML report sibling to the Markdown. Open it in a browser
