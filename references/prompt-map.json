@@ -22,7 +22,7 @@
       "prompt_path": "string -- path to prompt file (relative to this skill's directory)",
       "prompt_status": "enum -- HAS_PROMPT | NEEDS_PROMPT",
       "proposed_filename": "string|null -- if NEEDS_PROMPT, the filename to create",
-      "level_mismatch_note": "string|null -- if Factory's prompt filename level differs from criteria.md's L tag"
+      "level_mismatch_note": "string|null -- if the prompt filename's level prefix differs from criteria.md's L tag (legacy taxonomy drift)"
     }
   },
   "features": [
@@ -376,7 +376,7 @@
       "prompt_path": "prompts/2-testing-unit-tests-runnable.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
-      "level_mismatch_note": "Factory's 'unit-tests-runnable' covers test-run documentation"
+      "level_mismatch_note": "Prompt filename 'unit-tests-runnable' covers test-run documentation"
     },
     {
       "feature_num": 33,
@@ -1113,7 +1113,7 @@
       "prompt_path": "prompts/2-devenv-tool-version-pinning.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
-      "level_mismatch_note": "Adversarial review 2026-05-16: was loosely mapped to 2-build-vcs-cli-tools.md, but Factory's VCS-CLI-tools is narrower (gh/glab CLI install) than #99 (runtime version pinning via .tool-versions, mise, .node-version). Reassigned to needs-prompt."
+      "level_mismatch_note": "Adversarial review 2026-05-16: was loosely mapped to 2-build-vcs-cli-tools.md, but VCS-CLI-tools is narrower (gh/glab CLI install) than #99 (runtime version pinning via .tool-versions, mise, .node-version). Reassigned to needs-prompt."
     },
     {
       "feature_num": 100,

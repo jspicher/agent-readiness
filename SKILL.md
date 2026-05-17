@@ -39,8 +39,7 @@ Each feature is tagged with a maturity level:
 - **L4** Power-user — full automation and observability
 - **L5** Self-improving — closed feedback loops
 
-When reporting, compute three numbers (the first two are ours, the third is
-ported from Factory.ai's `/readiness-report` for cross-comparison):
+When reporting, compute three numbers:
 
 1. **Flat coverage** — % of applicable features passing.
 2. **Max tier reached (hierarchical)** — the highest level L such that EVERY level from L1 through L has ≥80% of its applicable features passing. This is the authoritative metric and is deterministic. Computed by the following algorithm:
@@ -48,10 +47,11 @@ ported from Factory.ai's `/readiness-report` for cross-comparison):
    - For L in [1, 2, 3, 4, 5]: if ≥80% of applicable features at level L pass, set the result to L; else STOP and return the current result.
    - If L1 itself fails the 80% threshold, the result is **L0** (no level reached).
    - This guarantees you cannot claim L3 without first passing L1 AND L2; "skip-level" passes are not honored.
-3. **Flat-bucket level (Factory-style)** — flat coverage % bucketed
-   `0-20%→L1, 20-40%→L2, 40-60%→L3, 60-80%→L4, 80-100%→L5`.  Useful for
-   benchmarking against Factory's report; can over-state readiness when
-   high-tier features pass on a weak foundation. Reported as a comparison number, not the headline.
+3. **Flat-bucket level** — flat coverage % bucketed
+   `0-20%→L1, 20-40%→L2, 40-60%→L3, 60-80%→L4, 80-100%→L5`. A simple
+   gut-check number; can over-state readiness when high-tier features
+   pass on a weak foundation. Reported as a comparison number, not the
+   headline.
 
 ## Behavioral Guidelines
 
@@ -373,8 +373,7 @@ to verify it loads without console errors before closing the audit.
 ### Step 6: Quality boundary on remediation prompts
 
 If the user asks for help fixing failing features, follow these rules in any
-generated remediation prompt or PR (ported from Factory.ai's `/readiness-report`
-remediation template):
+generated remediation prompt or PR:
 
 > Your fix must **genuinely improve the codebase**.  Do NOT use workarounds:
 >
@@ -471,12 +470,11 @@ pillars 6-7 are "autonomous-agent-ready."
 ## Lineage and limitations
 
 - Pillars 1-5 originated from cluster analysis of 123 repositories.
-- 2026 expansion borrowed selected criteria from Factory.ai's `/readiness-report`
-  (see `docs/factory-ai-readiness/`) and added Pillar 7 (Agent-OS Readiness)
-  drawn from industry research on autonomous-agent operating-system patterns
+- 2026 expansion added Pillar 7 (Agent-OS Readiness) drawn from industry
+  research on autonomous-agent operating-system patterns
   (`_research-external.md`).
-- Both source frameworks are opinionated curations rather than empirically
-  validated benchmarks.  Treat the level tags as a reasoned opinion, not a
+- The criteria set is an opinionated curation rather than an empirically
+  validated benchmark.  Treat the level tags as a reasoned opinion, not a
   mathematical truth.
 - Some features (Backlog Health, Privacy Compliance specifics, Cost telemetry)
   have high false-positive risk for filesystem scanners and require human

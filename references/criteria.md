@@ -1,14 +1,12 @@
 # Agent Readiness Criteria
 
 Features that make a codebase ready for AI-assisted development, organized into
-seven pillars.  Each feature is tagged with a maturity level (1-5) following
-Factory.ai's Autonomy Maturity Model so coverage can be summarized as both a
-flat percentage and a tier.
+seven pillars.  Each feature is tagged with a maturity level (1-5) so coverage
+can be summarized as both a flat percentage and a tier.
 
 Lineage: pillars 1-5 originated from cluster analysis of 123 repositories; the
-2026 expansion borrowed selected criteria from Factory.ai's `/readiness-report`
-(82 criteria) and added an Agent-OS Readiness pillar derived from industry
-research synthesis (`docs/factory-ai-readiness/_research-external.md`).
+2026 expansion added an Agent-OS Readiness pillar derived from industry
+research synthesis on autonomous-agent operating-system patterns.
 
 Every feature answers one question: *if this is missing, what goes wrong for
 the agent?*  Features marked **conditional** apply only when the codebase has
@@ -187,10 +185,9 @@ and speed matter — an agent that can't build can't do anything.
 ## Pillar 6 · Observability *(NEW)*
 
 Production runtime observability that an agent uses to verify its changes,
-debug regressions, and reason about real behavior.  Pillar borrowed from
-Factory.ai's Debugging category, filtered for agent-relevance per the
-adversarial review (industry research downgraded operator-only criteria like
-profiling and circuit breakers to "moderate hygiene").
+debug regressions, and reason about real behavior.  Filtered for agent-relevance
+per the adversarial review (industry research downgraded operator-only criteria
+like profiling and circuit breakers to "moderate hygiene").
 
 | # | L | Feature | What to look for | Evidence |
 |---|---|---------|------------------|----------|

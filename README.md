@@ -37,7 +37,7 @@ The skill writes three sibling artifacts under `docs/agent-readiness/`:
 - **Profiles the repo first** -- infers `repo_kind` (app / library / cli / monorepo / ...), `visibility`, `accepts_external_contributors`, and `team_scale` from observable evidence. The profile drives applicability gates so a solo private repo isn't punished for missing CODEOWNERS, and a public library isn't punished for missing user-facing observability.
 - **Scans 7 pillars** -- Agent Instructions, Feedback Loops, Workflows & Automation, Policy & Governance, Build & Dev Environment, Observability, Agent-OS Readiness.
 - **132 signals** -- each tagged with a maturity level (L1-L5) and explicit evidence patterns. See `references/criteria.md`.
-- **Three scores** -- flat coverage %, max-tier-reached (the authoritative hierarchical number), and a Factory-style flat-bucket level for cross-comparison.
+- **Three scores** -- flat coverage %, max-tier-reached (the authoritative hierarchical number), and a flat-bucket level for cross-comparison.
 - **Dual readiness tracks** -- separates AI-Assisted readiness (pillars 1-5) from Autonomous-Agent readiness (pillars 1-7).
 - **Deterministic** -- identical repo state must produce identical output. Ambiguous evidence fails the item; "unknown" profile dimensions default to strict.
 
@@ -115,7 +115,7 @@ The skill is **agent-agnostic** (Claude Code, Cursor, Codex, Factory, OpenCode, 
 - **Deterministic auditing** -- two runs against the same HEAD produce the same report. Heuristic guesses are not allowed.
 - **Existence is not enough** -- a feature checked for "README has run command" isn't satisfied by the README existing. The auditor must read it and confirm the command.
 - **Hierarchical scoring is the headline** -- the max-tier number requires >=80% pass at every level from L1 through L. You cannot claim L3 without first earning L1 AND L2. Skip-level passes are not honored.
-- **Flat-bucket is comparison, not headline** -- ported from Factory.ai's `/readiness-report` so users can sanity-check against a familiar number, but it can over-state readiness when high-tier features pass on a weak foundation.
+- **Flat-bucket is comparison, not headline** -- a simple `0-20% / 20-40% / 40-60% / 60-80% / 80-100%` bucketing of flat coverage, kept around for quick gut-check against the hierarchical number. It can over-state readiness when high-tier features pass on a weak foundation.
 
 ## License
 

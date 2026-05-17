@@ -992,7 +992,7 @@ function renderHero(rootEl, summary, pillars, repoProfile) {
   addRow('Flat coverage',
     valWithSmall(summary.flat_coverage.passed + ' / ' + summary.flat_coverage.applicable, Math.round(summary.flat_coverage.percent) + '%'), true);
   addRow('Max tier (hierarchical)', 'L' + summary.max_tier_hierarchical, false);
-  addRow('Factory bucket',          'L' + summary.flat_bucket_level, true);
+  addRow('Flat-bucket level',       'L' + summary.flat_bucket_level, true);
   addRow('Strongest pillar', valWithSmall(summary.strongest_pillar.name, Math.round(summary.strongest_pillar.percent) + '%'), false);
   addRow('Weakest pillar',   valWithSmall(summary.weakest_pillar.name,   Math.round(summary.weakest_pillar.percent) + '%'),   false);
 
