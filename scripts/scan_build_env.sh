@@ -3,6 +3,7 @@
 # Helps the agent find relevant files — not a substitute for judgment.
 
 REPO="${1:-.}"
+. "$(dirname "$0")/_lib.sh"
 cd "$REPO" 2>/dev/null || { echo "Cannot access $REPO"; exit 1; }
 
 echo "=== Pillar 5: Build & Dev Environment ==="
@@ -108,7 +109,7 @@ if [ -f package.json ]; then
   [ "$rimraf" -gt 0 ] 2>/dev/null && echo "    rimraf: $rimraf references in package.json (portable rm -rf)"
 fi
 # Non-portable patterns in package.json scripts and shell scripts (informational).
-np_scripts=$(grep -RIn --include='package.json' -E '"[a-z:]+":[[:space:]]*"[^"]*(/dev/null|\bsource[[:space:]]\+\.|\bexport[[:space:]]\+[A-Z_]+=|`[^`]+`|&&[[:space:]]*\[)' . 2>/dev/null | grep -v node_modules | head -5)
+np_scripts=$(grep -RIn "${EXCLUDE_GREP_ARGS[@]}" --include='package.json' -E '"[a-z:]+":[[:space:]]*"[^"]*(/dev/null|\bsource[[:space:]]\+\.|\bexport[[:space:]]\+[A-Z_]+=|`[^`]+`|&&[[:space:]]*\[)' . 2>/dev/null | head -5)
 [ -n "$np_scripts" ] && echo "    non-portable patterns in package.json scripts (manual review):" && echo "$np_scripts" | sed 's/^/      /'
 sh_bang_only=$(grep -RIl --include='*.sh' '^#!/bin/sh\b' scripts/ bin/ tools/ 2>/dev/null | head -3)
 [ -n "$sh_bang_only" ] && echo "    /bin/sh shebangs (manual review for cmd.exe compat):" && echo "$sh_bang_only" | sed 's/^/      /'
@@ -135,13 +136,13 @@ done
 
 echo ""
 echo "-- Heavy dependency / bundle analysis --"
-grep -RIl --include='package.json' \
+grep -RIl "${EXCLUDE_GREP_ARGS[@]}" --include='package.json' \
   -E '@next/bundle-analyzer|webpack-bundle-analyzer|source-map-explorer|rollup-plugin-visualizer' . 2>/dev/null | head -5
-grep -RIn --include='package.json' '"analyze"' . 2>/dev/null | grep -v node_modules | head -3
+grep -RIn "${EXCLUDE_GREP_ARGS[@]}" --include='package.json' '"analyze"' . 2>/dev/null | head -3
 
 echo ""
 echo "-- Unused dependencies detection --"
-grep -RIl --include='package.json' --include='requirements*.txt' --include='pyproject.toml' \
+grep -RIl "${EXCLUDE_GREP_ARGS[@]}" --include='package.json' --include='requirements*.txt' --include='pyproject.toml' \
   -E 'depcheck|knip|npm-check|deptry|cargo-machete' . 2>/dev/null | head -5
 
 echo ""
@@ -153,7 +154,7 @@ echo "-- Database schema (conditional) --"
 for d in migrations migration db/migrate prisma supabase/migrations alembic/versions; do
   [ -d "$d" ] && echo "./$d/ ($(find "$d" -type f | wc -l | tr -d ' ') files)"
 done
-find . -maxdepth 3 -name 'schema.prisma' -o -name 'schema.sql' 2>/dev/null | head -5
+find_prune . -maxdepth 3 \( -name 'schema.prisma' -o -name 'schema.sql' \) -print 2>/dev/null | head -5
 
 echo ""
 echo "-- Devcontainer runnable / CI'd --"

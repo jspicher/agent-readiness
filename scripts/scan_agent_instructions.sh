@@ -3,6 +3,7 @@
 # Helps the agent find relevant files — not a substitute for judgment.
 
 REPO="${1:-.}"
+. "$(dirname "$0")/_lib.sh"
 cd "$REPO" 2>/dev/null || { echo "Cannot access $REPO"; exit 1; }
 
 echo "=== Pillar 1: Agent Instructions ==="
@@ -82,8 +83,11 @@ done
 
 echo ""
 echo "-- Module-level READMEs --"
-find . -mindepth 2 -maxdepth 3 -name 'README.md' 2>/dev/null | head -10
-readme_count=$(find . -mindepth 2 -maxdepth 3 -name 'README.md' 2>/dev/null | wc -l | tr -d ' ')
+# NOTE: -mindepth is a GLOBAL find option and disables -prune (find still
+# descends past the prune marker), so we filter out the root README.md
+# in awk instead.
+find_prune . -maxdepth 3 -name 'README.md' -print 2>/dev/null | awk '$0 != "./README.md"' | head -10
+readme_count=$(find_prune . -maxdepth 3 -name 'README.md' -print 2>/dev/null | awk '$0 != "./README.md"' | wc -l | tr -d ' ')
 [ "$readme_count" -gt 10 ] && echo "  ... and $((readme_count - 10)) more"
 echo "  Total: $readme_count module READMEs"
 
@@ -98,11 +102,11 @@ done
 
 echo ""
 echo "-- AGENTS.md freshness validation (CI hook) --"
-grep -RIl --include='*.yml' --include='*.yaml' 'validate.agents.md\|agents-md-check\|validate-agents' .github/workflows/ 2>/dev/null | head -3
-find . -maxdepth 3 -name 'validate-agents*' 2>/dev/null | head -3
+grep -RIl "${EXCLUDE_GREP_ARGS[@]}" --include='*.yml' --include='*.yaml' 'validate.agents.md\|agents-md-check\|validate-agents' .github/workflows/ 2>/dev/null | head -3
+find_prune . -maxdepth 3 -name 'validate-agents*' -print 2>/dev/null | head -3
 
 echo ""
 echo "-- Automated documentation generation --"
-grep -RIl --include='package.json' --include='requirements*.txt' --include='pyproject.toml' \
+grep -RIl "${EXCLUDE_GREP_ARGS[@]}" --include='package.json' --include='requirements*.txt' --include='pyproject.toml' \
   -E 'typedoc|jsdoc|sphinx|mkdocs|swagger-jsdoc|redocly' . 2>/dev/null | head -5
-grep -RIl --include='*.yml' --include='*.yaml' 'gen.docs\|generate.docs\|build.docs' .github/workflows/ 2>/dev/null | head -3
+grep -RIl "${EXCLUDE_GREP_ARGS[@]}" --include='*.yml' --include='*.yaml' 'gen.docs\|generate.docs\|build.docs' .github/workflows/ 2>/dev/null | head -3

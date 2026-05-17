@@ -102,9 +102,11 @@ The skill is authored for Claude Code but installs cleanly into any agent the sk
 **Requirements (anywhere it runs):**
 - `bash` (the 8 helper scripts use POSIX shell). On Windows-native agents, install Git Bash or WSL.
 - `gh` CLI (optional; used only for the `visibility` profile dimension -- degrades to `unknown` if absent).
-- `python` 3.8+ (optional; only required if you want to validate `prompt-map.json` programmatically).
+- `python` 3.8+ (recommended) **or** `jq` -- `render_html.sh` uses one of them to validate the `top_actions` schema before rendering. Without either, the validation step is skipped with a soft warning.
 
 **No agent-specific lock-in:** SKILL.md tool references are limited to Read/Write/Edit/Grep/Glob/Bash (the universal set). The render script self-locates its template via `dirname "$0"`, so it works from any install location.
+
+**Scanner hygiene:** the seven `scripts/scan_*.sh` helpers share a `scripts/_lib.sh` exclude list (`node_modules`, `dist`, `build`, `.next`, `.turbo`, `.venv`, `coverage`, `target`, `vendor`, `.git`, etc.) mirrored from SKILL.md's Behavioral Guidelines. Recursive `find` and `grep -R` calls skip those directories, so the scanners stay fast on Node, Python, Go, and Rust projects with installed dependencies.
 
 ## Design Principles
 

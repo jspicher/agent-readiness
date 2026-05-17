@@ -3,6 +3,7 @@
 # Helps the agent find relevant files — not a substitute for judgment.
 
 REPO="${1:-.}"
+. "$(dirname "$0")/_lib.sh"
 cd "$REPO" 2>/dev/null || { echo "Cannot access $REPO"; exit 1; }
 
 echo "=== Pillar 2: Feedback Loops ==="
@@ -67,12 +68,12 @@ done
 
 echo ""
 echo "-- Test file count --"
-test_files=$(find . -maxdepth 5 \( \
+test_files=$(find_prune . -maxdepth 5 \( \
   -name '*_test.go' -o -name '*_test.py' -o -name 'test_*.py' \
   -o -name '*.spec.ts' -o -name '*.test.ts' -o -name '*.spec.js' -o -name '*.test.js' \
   -o -name '*_test.rb' -o -name '*_spec.rb' \
   -o -name '*_test.rs' \
-  \) 2>/dev/null | wc -l | tr -d ' ')
+  \) -print 2>/dev/null | wc -l | tr -d ' ')
 echo "  $test_files test files found"
 
 echo ""
@@ -111,8 +112,8 @@ fi
 
 echo ""
 echo "-- Snapshot tests --"
-snap_count=$(find . -maxdepth 5 -name '__snapshots__' -o -name '*.snap' 2>/dev/null | wc -l | tr -d ' ')
-golden_count=$(find . -maxdepth 4 -name 'testdata' -type d 2>/dev/null | wc -l | tr -d ' ')
+snap_count=$(find_prune . -maxdepth 5 \( -name '__snapshots__' -o -name '*.snap' \) -print 2>/dev/null | wc -l | tr -d ' ')
+golden_count=$(find_prune . -maxdepth 4 -name 'testdata' -type d -print 2>/dev/null | wc -l | tr -d ' ')
 echo "  $snap_count snapshot dirs/files, $golden_count testdata dirs"
 
 echo ""
@@ -120,7 +121,7 @@ echo "-- Benchmark suite --"
 for d in bench benchmarks benchmark; do
   [ -d "$d" ] && echo "./$d/ ($(find "$d" -type f | wc -l | tr -d ' ') files)"
 done
-bench_files=$(find . -maxdepth 4 -name '*_bench_test.go' -o -name '*benchmark*' -type f 2>/dev/null | wc -l | tr -d ' ')
+bench_files=$(find_prune . -maxdepth 4 \( -name '*_bench_test.go' -o -name '*benchmark*' \) -type f -print 2>/dev/null | wc -l | tr -d ' ')
 echo "  $bench_files benchmark files found"
 
 echo ""
@@ -134,18 +135,18 @@ fi
 
 echo ""
 echo "-- Test isolation / parallel --"
-grep -RIl --include='vitest.config.*' --include='jest.config.*' --include='pyproject.toml' \
-  -E 'pool|workers|parallel|isolate' . 2>/dev/null | grep -v node_modules | head -5
+grep -RIl "${EXCLUDE_GREP_ARGS[@]}" --include='vitest.config.*' --include='jest.config.*' --include='pyproject.toml' \
+  -E 'pool|workers|parallel|isolate' . 2>/dev/null | head -5
 
 echo ""
 echo "-- Flaky test detection --"
-grep -RIl --include='package.json' --include='requirements*.txt' --include='pyproject.toml' \
+grep -RIl "${EXCLUDE_GREP_ARGS[@]}" --include='package.json' --include='requirements*.txt' --include='pyproject.toml' \
   -E 'jest-retry|pytest-rerunfailures|buildpulse|jest.retry' . 2>/dev/null | head -5
-grep -RIn --include='*.yml' --include='*.yaml' 'continue-on-error\|retries' .github/workflows/ 2>/dev/null | head -5
+grep -RIn "${EXCLUDE_GREP_ARGS[@]}" --include='*.yml' --include='*.yaml' 'continue-on-error\|retries' .github/workflows/ 2>/dev/null | head -5
 
 echo ""
 echo "-- Test performance tracking --"
-grep -RIn --include='*.yml' --include='*.yaml' -E 'reporter.*verbose|test.duration|--slowTestThreshold|--reporter=junit' .github/workflows/ 2>/dev/null | head -5
+grep -RIn "${EXCLUDE_GREP_ARGS[@]}" --include='*.yml' --include='*.yaml' -E 'reporter.*verbose|test.duration|--slowTestThreshold|--reporter=junit' .github/workflows/ 2>/dev/null | head -5
 
 echo ""
 echo "-- Strict typing enforcement --"
@@ -154,12 +155,12 @@ grep -l 'strict\s*=\s*true' pyproject.toml mypy.ini 2>/dev/null | head -5
 
 echo ""
 echo "-- Dead code detection --"
-grep -RIl --include='package.json' --include='requirements*.txt' --include='pyproject.toml' --include='go.mod' \
+grep -RIl "${EXCLUDE_GREP_ARGS[@]}" --include='package.json' --include='requirements*.txt' --include='pyproject.toml' --include='go.mod' \
   -E 'knip|ts-prune|vulture|unimport|deadcode' . 2>/dev/null | head -5
 
 echo ""
 echo "-- Duplicate code detection --"
-grep -RIl --include='package.json' --include='requirements*.txt' \
+grep -RIl "${EXCLUDE_GREP_ARGS[@]}" --include='package.json' --include='requirements*.txt' \
   -E 'jscpd|simian' . 2>/dev/null | head -5
 find . -maxdepth 2 -name 'sonar-project.properties' -o -name '.codeclimate.yml' 2>/dev/null | head -3
 
@@ -167,19 +168,19 @@ echo ""
 echo "-- Large file detection --"
 find . -maxdepth 2 -name '.gitattributes' 2>/dev/null | head -3
 [ -f .gitattributes ] && grep -l 'filter=lfs' .gitattributes 2>/dev/null
-grep -RIl --include='*.json' --include='*.cjs' --include='*.mjs' 'max-lines\|max-len' . 2>/dev/null | grep -v node_modules | head -5
+grep -RIl "${EXCLUDE_GREP_ARGS[@]}" --include='*.json' --include='*.cjs' --include='*.mjs' 'max-lines\|max-len' . 2>/dev/null | head -5
 
 echo ""
 echo "-- Code modularization enforcement --"
-grep -RIl --include='package.json' --include='pyproject.toml' \
+grep -RIl "${EXCLUDE_GREP_ARGS[@]}" --include='package.json' --include='pyproject.toml' \
   -E 'eslint-plugin-boundaries|dependency-cruiser|import-linter|ts-arch|deptree' . 2>/dev/null | head -5
 
 echo ""
 echo "-- Tech debt markers --"
-grep -RIn --include='*.yml' --include='*.yaml' 'todo\|fixme' .github/workflows/ 2>/dev/null | head -5
-grep -RIl --include='*.cjs' --include='*.mjs' --include='*.json' 'no-warning-comments' . 2>/dev/null | grep -v node_modules | head -3
+grep -RIn "${EXCLUDE_GREP_ARGS[@]}" --include='*.yml' --include='*.yaml' 'todo\|fixme' .github/workflows/ 2>/dev/null | head -5
+grep -RIl "${EXCLUDE_GREP_ARGS[@]}" --include='*.cjs' --include='*.mjs' --include='*.json' 'no-warning-comments' . 2>/dev/null | head -3
 
 echo ""
 echo "-- Cyclomatic complexity --"
-grep -RIl --include='*.cjs' --include='*.mjs' --include='*.json' '"complexity"' . 2>/dev/null | grep -v node_modules | head -5
+grep -RIl "${EXCLUDE_GREP_ARGS[@]}" --include='*.cjs' --include='*.mjs' --include='*.json' '"complexity"' . 2>/dev/null | head -5
 find . -maxdepth 2 -name 'sonar-project.properties' -o -name '.radon.cfg' 2>/dev/null | head -3

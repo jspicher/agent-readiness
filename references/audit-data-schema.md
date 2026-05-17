@@ -146,14 +146,24 @@ Rules:
 
 ```json
 {
-  "title": string,
-  "body": string,
-  "feature_refs": [int] /* optional; feature_nums the action targets */
+  "title": string,    /* required, non-empty -- shown as the action heading */
+  "body": string,     /* required, non-empty -- 1-3 sentence description    */
+  "feature_refs": [int] /* optional; feature_nums the action targets        */
 }
 ```
 
 When `feature_refs` is provided, the HTML report renders each as a clickable
 pill that opens that feature's detail modal.
+
+**Required key names:** `title`, `body`, `feature_refs`. The HTML renderer
+(`assets/report-template.html` → `renderActions()`) reads exactly those keys.
+Using alternate names like `feature_name`, `note`, or `feature_num` will
+cause the report to render **three blank action rows with no warning** --
+the JS uses `textContent` against `undefined`, which silently coerces to an
+empty string. To prevent this, `scripts/render_html.sh` runs a Python (or
+jq) schema check on `top_actions` before substitution and exits with code
+**7** when a row is missing `title` or `body`, or when either is empty.
+See ERR-20260517-008 for the regression that drove this safety net.
 
 ## Worked example
 

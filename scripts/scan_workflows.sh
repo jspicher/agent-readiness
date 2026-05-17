@@ -3,6 +3,7 @@
 # Helps the agent find relevant files — not a substitute for judgment.
 
 REPO="${1:-.}"
+. "$(dirname "$0")/_lib.sh"
 cd "$REPO" 2>/dev/null || { echo "Cannot access $REPO"; exit 1; }
 
 echo "=== Pillar 3: Workflows & Automation ==="
@@ -128,29 +129,29 @@ fi
 
 echo ""
 echo "-- Automated PR review (LLM/static-tool) --"
-grep -RIl --include='*.yml' --include='*.yaml' \
+grep -RIl "${EXCLUDE_GREP_ARGS[@]}" --include='*.yml' --include='*.yaml' \
   'sonarcloud\|coderabbit\|greptile\|codiumate\|github/copilot.*review' .github/ 2>/dev/null | head -5
 
 echo ""
 echo "-- Automated security review --"
-grep -RIl --include='*.yml' --include='*.yaml' \
+grep -RIl "${EXCLUDE_GREP_ARGS[@]}" --include='*.yml' --include='*.yaml' \
   'gitleaks\|codeql\|snyk\|trivy\|semgrep' .github/workflows/ 2>/dev/null | head -5
 
 echo ""
 echo "-- Feature flag infrastructure --"
-grep -RIl --include='package.json' --include='requirements*.txt' --include='pyproject.toml' --include='go.mod' \
+grep -RIl "${EXCLUDE_GREP_ARGS[@]}" --include='package.json' --include='requirements*.txt' --include='pyproject.toml' --include='go.mod' \
   -E 'launchdarkly|@statsig/|unleash-client|@growthbook/|@flagsmith/|posthog' . 2>/dev/null | head -5
-find . -maxdepth 3 -name 'flags.ts' -o -name 'flags.js' -o -name 'feature-flags.*' 2>/dev/null | grep -v node_modules | head -5
+find_prune . -maxdepth 3 \( -name 'flags.ts' -o -name 'flags.js' -o -name 'feature-flags.*' \) -print 2>/dev/null | head -5
 
 echo ""
 echo "-- Dead feature flag detection --"
-grep -RIn --include='*.yml' --include='*.yaml' 'dead.flag\|stale.flag\|flag.audit' .github/workflows/ 2>/dev/null | head -3
+grep -RIn "${EXCLUDE_GREP_ARGS[@]}" --include='*.yml' --include='*.yaml' 'dead.flag\|stale.flag\|flag.audit' .github/workflows/ 2>/dev/null | head -3
 
 echo ""
 echo "-- Progressive rollout --"
-find . -maxdepth 3 -name 'rollout.yaml' -o -name 'rollout.yml' 2>/dev/null | head -5
-grep -RIl --include='*.yml' --include='*.yaml' 'argo-rollouts\|flagger\|canary' .github/workflows/ 2>/dev/null | head -5
+find_prune . -maxdepth 3 \( -name 'rollout.yaml' -o -name 'rollout.yml' \) -print 2>/dev/null | head -5
+grep -RIl "${EXCLUDE_GREP_ARGS[@]}" --include='*.yml' --include='*.yaml' 'argo-rollouts\|flagger\|canary' .github/workflows/ 2>/dev/null | head -5
 
 echo ""
 echo "-- Rollback automation --"
-grep -RIl --include='*.yml' --include='*.yaml' 'rollback\|revert.deploy' .github/workflows/ 2>/dev/null | head -5
+grep -RIl "${EXCLUDE_GREP_ARGS[@]}" --include='*.yml' --include='*.yaml' 'rollback\|revert.deploy' .github/workflows/ 2>/dev/null | head -5

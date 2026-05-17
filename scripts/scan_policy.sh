@@ -3,6 +3,7 @@
 # Helps the agent find relevant files — not a substitute for judgment.
 
 REPO="${1:-.}"
+. "$(dirname "$0")/_lib.sh"
 cd "$REPO" 2>/dev/null || { echo "Cannot access $REPO"; exit 1; }
 
 echo "=== Pillar 4: Policy & Governance ==="
@@ -114,13 +115,13 @@ done
 
 echo ""
 echo "-- Secret scanning (continuous) --"
-find . -maxdepth 3 -name '.gitleaks.toml' -o -name 'gitleaks.toml' -o -name 'trufflehog*' 2>/dev/null | head -5
-grep -RIl --include='*.yml' --include='*.yaml' 'gitleaks\|trufflehog\|detect-secrets' .github/workflows/ 2>/dev/null | head -5
+find_prune . -maxdepth 3 \( -name '.gitleaks.toml' -o -name 'gitleaks.toml' -o -name 'trufflehog*' \) -print 2>/dev/null | head -5
+grep -RIl "${EXCLUDE_GREP_ARGS[@]}" --include='*.yml' --include='*.yaml' 'gitleaks\|trufflehog\|detect-secrets' .github/workflows/ 2>/dev/null | head -5
 
 echo ""
 echo "-- Sensitive data log scrubbing --"
-grep -RIn --include='*.ts' --include='*.js' --include='*.py' --include='*.go' \
-  -E 'redact|scrub|sanitize|mask|filter.*pii' . 2>/dev/null | grep -v node_modules | grep -i 'log\|logger' | head -5
+grep -RIn "${EXCLUDE_GREP_ARGS[@]}" --include='*.ts' --include='*.js' --include='*.py' --include='*.go' \
+  -E 'redact|scrub|sanitize|mask|filter.*pii' . 2>/dev/null | grep -i 'log\|logger' | head -5
 
 echo ""
 echo "-- Minimum dependency release age --"
@@ -129,12 +130,12 @@ echo "-- Minimum dependency release age --"
 
 echo ""
 echo "-- DAST scanning --"
-grep -RIl --include='*.yml' --include='*.yaml' 'zaproxy\|owasp.zap\|nuclei\|burp' .github/workflows/ 2>/dev/null | head -3
+grep -RIl "${EXCLUDE_GREP_ARGS[@]}" --include='*.yml' --include='*.yaml' 'zaproxy\|owasp.zap\|nuclei\|burp' .github/workflows/ 2>/dev/null | head -3
 
 echo ""
 echo "-- Privacy compliance / cookie consent --"
-grep -RIn --include='*.tsx' --include='*.ts' --include='*.jsx' --include='*.js' \
-  -E 'CookieConsent|CookieBanner|cookieconsent|gdpr|ccpa' . 2>/dev/null | grep -v node_modules | head -5
+grep -RIn "${EXCLUDE_GREP_ARGS[@]}" --include='*.tsx' --include='*.ts' --include='*.jsx' --include='*.js' \
+  -E 'CookieConsent|CookieBanner|cookieconsent|gdpr|ccpa' . 2>/dev/null | head -5
 
 echo ""
 echo "-- AI usage policy --"
