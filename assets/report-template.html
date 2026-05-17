@@ -1,0 +1,1384 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent Readiness Report</title>
+<style>
+/* ===== Tokens ============================================================ */
+:root {
+  /* Dark theme (default). Slightly warm near-blacks; editorial-brutalist palette. */
+  --surface-0: #0d0c0b;        /* page bg, warm near-black */
+  --surface-1: #16140f;        /* card bg */
+  --surface-2: #1f1c16;        /* nested card */
+  --surface-3: #2a261d;        /* tile bg (pass) */
+  --border-1: #2c281e;
+  --border-2: #4a4334;
+  --text-1: #f1ece0;           /* warm off-white */
+  --text-2: #b8b09f;
+  --text-muted: #6e6856;
+
+  --accent-pass: #6d9a6a;      /* sage */
+  --accent-pass-bg: #1d281c;
+  --accent-fail-low: #d99548;  /* amber for L1-L3 fails */
+  --accent-fail-low-bg: #3a2510;
+  --accent-fail-low-text: #fff;
+  --accent-fail-high: #b04545; /* oxblood for L4-L5 fails */
+  --accent-fail-high-bg: #341212;
+  --accent-fail-high-text: #fff;
+  --accent-info: #6c8eb2;      /* slate blue */
+  --accent-info-strong: #4a78a8;
+
+  --tier-basic: #c9a644;
+  --tier-intermediate: #d99548;
+  --tier-advanced: #b04545;
+
+  --font-serif: 'Iowan Old Style', 'Apple Garamond', 'Baskerville Old Face', 'Baskerville', 'Hoefler Text', 'Garamond', 'Times New Roman', serif;
+  --font-sans:  -apple-system, BlinkMacSystemFont, 'Segoe UI Variable Display', 'Segoe UI', system-ui, sans-serif;
+  --font-mono:  ui-monospace, 'SF Mono', 'Cascadia Code', 'JetBrains Mono', 'Menlo', 'Consolas', monospace;
+}
+/* User overrides OS preference via the topbar toggle. Light palette is a
+   crisp editorial white + slate-blue. Warm amber/red preserved on failing
+   tiles so the warning semantics stay legible. */
+:root[data-theme="light"] {
+  --surface-0: #ffffff;
+  --surface-1: #ffffff;
+  --surface-2: #eef2f8;
+  --surface-3: #e2e9f3;
+  --border-1: #d4dce8;
+  --border-2: #9aa6bd;
+  --text-1: #0b1124;
+  --text-2: #3d475e;
+  --text-muted: #7a86a0;
+
+  --accent-pass: #1d6fad;
+  --accent-pass-bg: #d6e7f4;
+  --accent-fail-low: #c2741e;
+  --accent-fail-low-bg: #fce6cd;
+  --accent-fail-low-text: #2a1c0a;
+  --accent-fail-high: #b03333;
+  --accent-fail-high-bg: #fbd5d5;
+  --accent-fail-high-text: #2a0a0a;
+  --accent-info: #2562c4;
+  --accent-info-strong: #16459e;
+
+  --tier-basic: #d1a01f;
+  --tier-intermediate: #c2741e;
+  --tier-advanced: #b03333;
+}
+:root[data-theme="dark"] {
+  --surface-0: #0d0c0b;
+  --surface-1: #16140f;
+  --surface-2: #1f1c16;
+  --surface-3: #26221b;
+  --border-1: #2c281e;
+  --border-2: #4a4334;
+  --text-1: #f1ece0;
+  --text-2: #b8b09f;
+  --text-muted: #6e6856;
+  --accent-pass: #6d9a6a;
+  --accent-pass-bg: #1d281c;
+  --accent-fail-low: #d99548;
+  --accent-fail-low-bg: #3a2510;
+  --accent-fail-low-text: #fff;
+  --accent-fail-high: #b04545;
+  --accent-fail-high-bg: #341212;
+  --accent-fail-high-text: #fff;
+  --accent-info: #6c8eb2;
+  --accent-info-strong: #4a78a8;
+  --tier-basic: #c9a644;
+  --tier-intermediate: #d99548;
+  --tier-advanced: #b04545;
+}
+/* OS preference only takes effect when the user hasn't picked manually. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --surface-0: #ffffff;
+    --surface-1: #ffffff;
+    --surface-2: #eef2f8;
+    --surface-3: #e2e9f3;
+    --border-1: #d4dce8;
+    --border-2: #9aa6bd;
+    --text-1: #0b1124;
+    --text-2: #3d475e;
+    --text-muted: #7a86a0;
+
+    --accent-pass: #1d6fad;
+    --accent-pass-bg: #d6e7f4;
+    --accent-fail-low: #c2741e;
+    --accent-fail-low-bg: #fce6cd;
+    --accent-fail-low-text: #2a1c0a;
+    --accent-fail-high: #b03333;
+    --accent-fail-high-bg: #fbd5d5;
+    --accent-fail-high-text: #2a0a0a;
+    --accent-info: #2562c4;
+    --accent-info-strong: #16459e;
+
+    --tier-basic: #d1a01f;
+    --tier-intermediate: #c2741e;
+    --tier-advanced: #b03333;
+  }
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }  /* hidden attr must win over display: flex on .modal */
+html, body {
+  margin: 0; padding: 0;
+  background: var(--surface-0);
+  color: var(--text-1);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.numeric, .mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+.smallcaps {
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-muted); font-weight: 600;
+}
+.app { max-width: 1280px; margin: 0 auto; padding: 32px 24px 64px; }
+
+/* ===== Top bar =========================================================== */
+.topbar {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  padding: 0 0 18px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--border-2);
+}
+.topbar-left { display: flex; flex-direction: column; gap: 4px; }
+.topbar .doctype { font-family: var(--font-serif); font-style: italic; color: var(--text-muted); font-size: 13px; letter-spacing: 0.02em; }
+.topbar .repo-name { font-family: var(--font-serif); font-size: 32px; font-weight: 400; line-height: 1.1; }
+.topbar .meta { color: var(--text-muted); font-size: 12px; margin-top: 2px; }
+.topbar-right {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+}
+.theme-toggle {
+  background: transparent; border: 1px solid var(--border-1);
+  color: var(--text-muted); cursor: pointer;
+  padding: 3px 9px;
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: border-color 0.12s, color 0.12s;
+  align-self: flex-end;
+}
+.theme-toggle:hover { color: var(--text-1); border-color: var(--border-2); }
+.theme-toggle .glyph { font-size: 12px; line-height: 1; }
+.theme-toggle:focus { outline: 2px solid var(--accent-info-strong); outline-offset: 2px; }
+.topbar-right .pct {
+  font-family: var(--font-mono); font-variant-numeric: tabular-nums;
+  font-size: 36px; font-weight: 600; line-height: 1;
+  color: var(--text-1);
+}
+.topbar-right .pct sup { font-size: 16px; color: var(--text-muted); margin-left: 2px; vertical-align: super; }
+.topbar-right .tier-line { color: var(--text-2); font-size: 12px; margin-top: 4px; }
+
+/* ===== Section wrapper =================================================== */
+.section {
+  background: var(--surface-1);
+  border: 1px solid var(--border-1);
+  padding: 20px 22px;
+  margin-bottom: 16px;
+}
+.section-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.section-header .smallcaps { color: var(--text-muted); }
+
+/* ===== Level meter ======================================================= */
+.meter-wrap { padding: 6px 2px 2px; }
+.meter-pct-label {
+  position: relative; height: 18px; font-size: 11px;
+  color: var(--text-2); margin-bottom: 4px;
+  font-family: var(--font-mono);
+}
+.meter-pct-label span {
+  position: absolute; transform: translateX(-50%); white-space: nowrap;
+}
+.meter-bar { display: flex; gap: 2px; height: 18px; }
+.meter-seg {
+  flex: 1 1 0; height: 100%;
+  background: var(--surface-2);
+}
+.meter-seg.tier-basic        { background: var(--tier-basic); }
+.meter-seg.tier-intermediate { background: var(--tier-intermediate); }
+.meter-seg.tier-advanced     { background: var(--tier-advanced); }
+.meter-seg.cursor {
+  box-shadow: 0 0 0 1px var(--text-1) inset, 0 0 0 2px var(--surface-0);
+}
+.meter-labels {
+  display: flex; margin-top: 8px;
+  font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);
+}
+.meter-labels span { flex: 1 1 0; text-align: center; letter-spacing: 0.04em; }
+.meter-labels span.achieved { color: var(--text-1); font-weight: 600; }
+
+/* ===== Hero row ========================================================== */
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(320px, 420px) 1fr;
+  gap: 16px;
+}
+@media (max-width: 840px) { .hero-grid { grid-template-columns: 1fr; } }
+.hero-radar {
+  background: var(--surface-2);
+  border: 1px solid var(--border-1);
+  padding: 18px;
+  min-height: 380px;
+  display: flex; align-items: center; justify-content: center;
+}
+.hero-summary {
+  background: var(--surface-2);
+  border: 1px solid var(--border-1);
+  padding: 22px 24px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px 24px;
+  align-content: start;
+}
+.hero-summary .lbl {
+  font-family: var(--font-serif); font-style: italic; font-size: 14px;
+  color: var(--text-2); align-self: center;
+}
+.hero-summary .val {
+  font-family: var(--font-mono); font-variant-numeric: tabular-nums;
+  font-size: 22px; font-weight: 500; text-align: right; align-self: center;
+}
+.hero-summary .val small { color: var(--text-muted); font-weight: normal; font-size: 12px; margin-left: 4px; }
+.hero-summary .row-divider { grid-column: 1 / -1; border-top: 1px solid var(--border-1); height: 0; margin: 2px 0; }
+
+/* ===== Radar SVG ========================================================= */
+.radar-svg { width: 100%; max-width: 380px; height: auto; overflow: visible; }
+.radar-ring  { fill: none; stroke: var(--border-2); stroke-width: 1; stroke-dasharray: 2 2; }
+.radar-ring.outer { stroke-dasharray: none; stroke: var(--border-2); }
+.radar-axis  { stroke: var(--border-2); stroke-width: 1; }
+.radar-poly  {
+  fill: var(--accent-info); fill-opacity: 0.22;
+  stroke: var(--accent-info-strong); stroke-width: 1.5;
+}
+.radar-point { fill: var(--accent-info-strong); transition: r 0.12s; }
+.radar-label {
+  fill: var(--text-2); font-family: var(--font-mono); font-size: 10px;
+  text-anchor: middle; dominant-baseline: middle;
+  letter-spacing: 0.04em;
+  cursor: help;
+}
+.radar-hit {  /* invisible larger hit-area for each axis vertex */
+  fill: transparent; cursor: help;
+}
+.radar-hit:hover + .radar-point,
+.radar-hit:focus + .radar-point {
+  r: 6;
+}
+.radar-axis-group:hover .radar-label,
+.radar-axis-group:focus-within .radar-label {
+  fill: var(--text-1);
+}
+
+/* Custom tooltip rendered as HTML for better styling than SVG <title> */
+.radar-tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: var(--surface-1);
+  color: var(--text-1);
+  border: 1px solid var(--border-2);
+  padding: 6px 10px;
+  font-family: var(--font-sans); font-size: 12px;
+  white-space: nowrap;
+  opacity: 0; transition: opacity 0.1s;
+  z-index: 50;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+}
+.radar-tooltip.visible { opacity: 1; }
+.radar-tooltip .full { font-family: var(--font-serif); font-style: italic; }
+.radar-tooltip .pct  { font-family: var(--font-mono); font-variant-numeric: tabular-nums; color: var(--text-muted); margin-left: 6px; }
+.hero-radar { position: relative; }
+
+/* ===== Top actions ======================================================= */
+.actions-list { display: grid; gap: 10px; }
+.action-row {
+  display: grid; grid-template-columns: 36px 1fr; gap: 14px;
+  padding: 14px 16px; background: var(--surface-2); border: 1px solid var(--border-1);
+}
+.action-row .num {
+  font-family: var(--font-serif); font-weight: 400; font-size: 26px;
+  color: var(--text-muted); line-height: 1;
+}
+.action-row .title {
+  font-family: var(--font-serif); font-weight: 500;
+  font-size: 17px; line-height: 1.3; margin-bottom: 4px;
+}
+.action-row .body  { color: var(--text-2); font-size: 13px; }
+.action-row .refs  { margin-top: 8px; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.action-row .refs::before { content: "open:"; letter-spacing: 0.08em; }
+.action-row .refs button {
+  font-family: var(--font-mono); font-size: 10px;
+  background: var(--surface-3); color: var(--text-1);
+  border: 1px solid var(--border-2); padding: 3px 10px;
+  cursor: pointer; letter-spacing: 0.04em;
+}
+.action-row .refs button:hover {
+  background: var(--accent-info-strong); color: white; border-color: var(--accent-info-strong);
+}
+
+/* ===== Pillar sections =================================================== */
+.pillar {
+  background: var(--surface-1);
+  border: 1px solid var(--border-1);
+  padding: 20px 22px;
+  margin-bottom: 14px;
+}
+.pillar-details { margin: 0; padding: 0; }
+.pillar-details > summary {
+  list-style: none; cursor: pointer;
+  user-select: none;
+}
+.pillar-details > summary::-webkit-details-marker { display: none; }
+.pillar-details > summary::marker { content: ''; }
+.pillar-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-1);
+}
+.pillar-head .name-wrap { display: flex; align-items: baseline; gap: 8px; flex: 1; min-width: 0; }
+.pillar-caret {
+  font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);
+  transition: transform 0.15s; display: inline-block;
+  margin-left: 4px; user-select: none;
+}
+.pillar-details[open] > summary .pillar-caret { transform: rotate(180deg); }
+.pillar-details > summary:hover .pillar-caret,
+.pillar-details > summary:focus-visible .pillar-caret { color: var(--text-1); }
+.pillar-details > summary:focus-visible { outline: 2px solid var(--accent-info-strong); outline-offset: 2px; }
+.pillar-summary {
+  font-family: var(--font-serif); font-style: italic;
+  color: var(--text-2); font-size: 14px; line-height: 1.55;
+  margin: 0 0 16px;
+  padding: 12px 16px;
+  background: var(--surface-2); border-left: 3px solid var(--accent-info-strong);
+}
+.pillar-summary .covers {
+  display: block; margin-top: 6px;
+  font-family: var(--font-sans); font-style: normal;
+  font-size: 12px; color: var(--text-muted);
+}
+.pillar-summary .covers .label {
+  text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600;
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--text-muted); margin-right: 6px;
+}
+.pillar-name {
+  font-family: var(--font-serif);
+  font-size: 22px; font-weight: 400; line-height: 1.1;
+}
+.pillar-name .id { color: var(--text-muted); font-style: italic; font-size: 16px; margin-right: 6px; }
+.pillar-stats {
+  font-family: var(--font-mono); font-variant-numeric: tabular-nums;
+  font-size: 13px; color: var(--text-2);
+}
+.pillar-stats .sep { color: var(--border-2); margin: 0 6px; }
+.tile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+  gap: 6px;
+}
+.tile {
+  position: relative;
+  background: var(--surface-3);
+  border: 1px solid var(--border-1);
+  padding: 9px 11px 22px;
+  min-height: 84px;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1.32;
+  display: flex; flex-direction: column; gap: 4px;
+  color: var(--text-2);
+  transition: transform 0.08s, border-color 0.08s;
+}
+.tile:hover { transform: translateY(-1px); border-color: var(--border-2); }
+.tile .num { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); letter-spacing: 0.04em; }
+.tile .nm  {
+  color: var(--text-1); font-weight: 500;
+  overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3;
+}
+.tile .lv  {
+  position: absolute; bottom: 5px; right: 9px;
+  font-family: var(--font-mono); font-size: 9px;
+  color: var(--text-muted); letter-spacing: 0.04em;
+}
+.tile.pass { background: var(--surface-2); opacity: 0.6; }
+.tile.fail-low {
+  background: var(--accent-fail-low-bg); border-color: var(--accent-fail-low);
+  color: var(--accent-fail-low-text); opacity: 1;
+}
+.tile.fail-low .nm  { color: var(--accent-fail-low-text); }
+.tile.fail-low .num, .tile.fail-low .lv { color: rgba(255,255,255,0.7); }
+.tile.fail-high {
+  background: var(--accent-fail-high-bg); border-color: var(--accent-fail-high);
+  color: var(--accent-fail-high-text); opacity: 1;
+}
+.tile.fail-high .nm { color: var(--accent-fail-high-text); }
+.tile.fail-high .num, .tile.fail-high .lv { color: rgba(255,255,255,0.7); }
+.tile.na { background: transparent; border-style: dashed; opacity: 0.45; }
+.tile .kind-badge {
+  position: absolute; top: 4px; right: 4px;
+  font-family: var(--font-mono); font-size: 9px; line-height: 1;
+  padding: 2px 4px; border-radius: 2px;
+  background: var(--accent-info-soft, #d9e2ef); color: var(--accent-info-strong, #2c4a73);
+  letter-spacing: 0.04em; text-transform: uppercase;
+  opacity: 0.85; pointer-events: none;
+}
+.tile.broadened .kind-badge { background: #f4ecd6; color: #6b5520; }
+.tile { position: relative; }
+@media (prefers-color-scheme: light) {
+  .tile.fail-low .nm, .tile.fail-high .nm,
+  .tile.fail-low .num, .tile.fail-high .num,
+  .tile.fail-low .lv, .tile.fail-high .lv {
+    color: var(--text-1);
+  }
+  .tile.fail-low .num, .tile.fail-low .lv,
+  .tile.fail-high .num, .tile.fail-high .lv { color: var(--text-2); }
+}
+
+/* ===== Modal ============================================================= */
+.modal-backdrop {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+  z-index: 100;
+}
+@media (prefers-color-scheme: light) { .modal-backdrop { background: rgba(20,16,8,0.42); } }
+.modal {
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  z-index: 110;
+  background: var(--surface-1); border: 1px solid var(--border-2);
+  width: min(640px, 92vw); max-height: 86vh;
+  display: flex; flex-direction: column;
+}
+.modal-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border-1);
+}
+.modal-close {
+  background: transparent; border: 0; color: var(--text-2);
+  font-size: 22px; cursor: pointer; line-height: 1; padding: 0 4px;
+  font-family: var(--font-sans);
+}
+.modal-close:hover { color: var(--text-1); }
+.modal-body { padding: 22px 24px; overflow-y: auto; flex: 1; }
+.modal-foot {
+  padding: 14px 20px; border-top: 1px solid var(--border-1);
+  display: flex; justify-content: flex-end; gap: 10px;
+}
+.modal-title {
+  font-family: var(--font-serif); font-weight: 400;
+  margin: 0 0 6px; font-size: 26px; line-height: 1.15;
+}
+.modal-desc  {
+  font-family: var(--font-serif); font-style: italic;
+  margin: 0 0 18px; color: var(--text-2); font-size: 15px; line-height: 1.45;
+}
+.modal-score { margin: 8px 0 18px; font-size: 13px; color: var(--text-2); }
+.modal-score .lbl {
+  font-family: var(--font-mono); font-size: 10px;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--text-muted); margin-right: 8px;
+}
+.modal-score .val { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.modal-score .val.pass { color: var(--accent-pass); font-weight: 600; }
+.modal-score .val.fail { color: var(--accent-fail-high); font-weight: 600; }
+.modal-why-label {
+  font-family: var(--font-mono); font-size: 10px;
+  text-transform: uppercase; letter-spacing: 0.14em;
+  color: var(--text-muted); margin: 0 0 6px; font-weight: 600;
+}
+.modal-rationale { margin: 0; color: var(--text-1); white-space: pre-wrap; line-height: 1.6; }
+
+.dm-tier {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono); font-size: 10px;
+  text-transform: uppercase; letter-spacing: 0.14em;
+  color: var(--text-2); font-weight: 600;
+}
+.tier-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.tier-dot.basic        { background: var(--tier-basic); }
+.tier-dot.intermediate { background: var(--tier-intermediate); }
+.tier-dot.advanced     { background: var(--tier-advanced); }
+
+.btn-primary {
+  background: var(--accent-info-strong); color: white; border: 0;
+  padding: 9px 22px; font-weight: 600; font-size: 11px;
+  letter-spacing: 0.12em; cursor: pointer;
+  text-transform: uppercase;
+  font-family: var(--font-sans);
+}
+.btn-primary:hover { filter: brightness(1.15); }
+.btn-secondary {
+  background: transparent; color: var(--text-1);
+  border: 1px solid var(--border-2);
+  padding: 9px 22px; font-weight: 600; font-size: 11px;
+  letter-spacing: 0.12em; cursor: pointer;
+  text-transform: uppercase;
+  font-family: var(--font-sans);
+}
+.btn-secondary:hover { background: var(--surface-2); }
+
+/* ===== Remediate dialog ================================================== */
+#remediate-modal { z-index: 120; width: min(760px, 94vw); }
+.rm-tabs {
+  display: flex; gap: 0; margin-bottom: 14px;
+  border-bottom: 1px solid var(--border-1);
+}
+.rm-tab {
+  background: transparent; border: 0; padding: 8px 16px;
+  color: var(--text-muted); cursor: pointer; font-weight: 600;
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em;
+  border-bottom: 2px solid transparent;
+  font-family: var(--font-sans);
+}
+.rm-tab.active { color: var(--text-1); border-bottom-color: var(--accent-info-strong); }
+.rm-instructions {
+  margin: 0 0 14px; color: var(--text-2); font-size: 13px;
+  font-family: var(--font-serif); font-style: italic;
+}
+.rm-instructions strong { font-family: var(--font-mono); font-style: normal; color: var(--text-1); font-weight: 500; }
+.rm-prompt-pre {
+  background: var(--surface-0); border: 1px solid var(--border-1);
+  padding: 14px 16px; max-height: 50vh; overflow: auto;
+  font-family: var(--font-mono); font-size: 11.5px; line-height: 1.5;
+  white-space: pre-wrap; word-break: break-word;
+  margin: 0; color: var(--text-1);
+}
+
+/* ===== Focus + a11y ====================================================== */
+.tile:focus, .rm-tab:focus, .modal-close:focus, .btn-primary:focus, .btn-secondary:focus, .action-row .refs button:focus {
+  outline: 2px solid var(--accent-info-strong); outline-offset: 2px;
+}
+.tile:focus { outline-offset: 1px; }
+
+/* ===== Footer ============================================================ */
+.foot-strip {
+  margin-top: 32px; padding-top: 18px;
+  border-top: 1px solid var(--border-1);
+  text-align: center; color: var(--text-muted); font-size: 11px;
+  font-family: var(--font-serif); font-style: italic;
+}
+.foot-strip code { font-family: var(--font-mono); font-style: normal; font-size: 10px; }
+
+/* ===== Print ============================================================= */
+@media print {
+  html, body { background: white; color: black; }
+  .modal, .modal-backdrop { display: none !important; }
+  .tile { break-inside: avoid; border-color: #888 !important; }
+  .pillar, .section { break-inside: avoid-page; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="doctype">Agent Readiness Report</div>
+      <div class="repo-name" id="repo-name">--</div>
+      <div class="meta" id="generated-at">--</div>
+    </div>
+    <div class="topbar-right">
+      <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Cycle theme" title="Cycle theme: Auto -> Light -> Dark">
+        <span class="glyph" id="theme-glyph" aria-hidden="true">A</span><span id="theme-label">Auto</span>
+      </button>
+      <div class="pct"><span id="overall-pct">--</span><sup>%</sup></div>
+      <div class="tier-line">max tier <span class="mono" id="max-tier">--</span> / 5</div>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="section-header"><span class="smallcaps">Maturity tier achievement</span></div>
+    <div id="level-meter"></div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><span class="smallcaps">At-a-glance</span></div>
+    <div class="hero-grid" id="hero-grid"></div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><span class="smallcaps">Top 3 next actions</span></div>
+    <div id="top-actions"></div>
+  </section>
+
+  <div id="pillars"></div>
+
+  <div class="foot-strip">
+    Generated by the <code>agent-readiness-report</code> skill &middot; single-file static export
+  </div>
+</div>
+
+<!-- Modals -->
+<div class="modal-backdrop" id="modal-backdrop" aria-hidden="true" hidden></div>
+
+<div class="modal" id="detail-modal" role="dialog" aria-modal="true" aria-labelledby="dm-title" hidden>
+  <div class="modal-head">
+    <div class="dm-tier"><span class="tier-dot" id="dm-tier-dot"></span><span id="dm-tier-label">--</span><span style="color:var(--text-muted);margin:0 8px">/</span><span id="dm-feature-id" style="color:var(--text-muted)">#--</span></div>
+    <button class="modal-close" id="dm-close" aria-label="Close">&times;</button>
+  </div>
+  <div class="modal-body">
+    <h2 id="dm-title" class="modal-title">--</h2>
+    <p id="dm-desc" class="modal-desc">--</p>
+    <div class="modal-score"><span class="lbl">Score</span><span id="dm-score" class="val">--</span></div>
+    <h3 id="dm-why-label" class="modal-why-label">--</h3>
+    <p id="dm-rationale" class="modal-rationale">--</p>
+  </div>
+  <div class="modal-foot">
+    <button class="btn-primary" id="dm-remediate" hidden>Remediate</button>
+  </div>
+</div>
+
+<div class="modal" id="remediate-modal" role="dialog" aria-modal="true" aria-labelledby="rm-title-display" hidden>
+  <div class="modal-head">
+    <div id="rm-title-display" class="dm-tier">Fix readiness signal</div>
+    <button class="modal-close" id="rm-close" aria-label="Close">&times;</button>
+  </div>
+  <div class="modal-body">
+    <div class="rm-tabs" role="presentation">
+      <span class="rm-tab active" aria-current="true">Local</span>
+    </div>
+    <p class="rm-instructions">Copy the prompt below and paste it into a fresh Claude Code session in a local clone of <strong id="rm-repo">--</strong>.</p>
+    <pre id="rm-prompt" class="rm-prompt-pre"></pre>
+  </div>
+  <div class="modal-foot">
+    <button class="btn-secondary" id="rm-back">Back</button>
+    <button class="btn-primary" id="rm-copy">Copy</button>
+  </div>
+</div>
+
+<!-- IMPORTANT: keep the placeholder on its own line so render_html.sh's sed r/d works. -->
+<script id="audit-data" type="application/json">
+<!--AUDIT_DATA_JSON-->
+</script>
+
+<script>
+'use strict';
+
+/* ====================================================== pillar summary data */
+
+// Static framework metadata -- constant across every audit. Sourced from
+// criteria.md's pillar intros plus a short "covers" tail. Keep wording terse.
+const PILLAR_SUMMARIES = {
+  1: {
+    intro: "How the repo tells AI agents what to do, what to avoid, and how the codebase works. The highest-signal pillar -- the difference between an agent that understands the project and one that's guessing.",
+    covers: "AGENTS.md / CLAUDE.md, AI IDE configuration (Cursor / Copilot / Claude Code), agent skills, tool server config, README, architecture docs, API docs, examples, changelog, decision records, doc freshness."
+  },
+  2: {
+    intro: "How quickly and clearly the agent learns whether its changes are correct. Fast, clear feedback is the difference between an agent that converges and one that spirals.",
+    covers: "Linter, formatter, type checking, pre-commit hooks, unit/integration/e2e tests, CI pipeline + speed, coverage, snapshots, benchmarks, warnings-as-errors, dead-code / duplicate / complexity detection."
+  },
+  3: {
+    intro: "The processes that support agent-driven development -- how work is structured, tracked, and shipped.",
+    covers: "Issue + PR templates, dependency-update bots (Dependabot / Renovate), release automation, branch protection, task runners (Make/Just/npm scripts), conventional commits, multi-platform CI matrices, deployment automation, automated code review bots."
+  },
+  4: {
+    intro: "What the agent is allowed to do, and the rules of the road. Sets the boundaries that keep autonomous work safe and accountable.",
+    covers: "LICENSE, comprehensive .gitignore, security policy (SECURITY.md), code of conduct, AI usage policy, secrets management, vulnerability scanning, DCO / CLA, governance, signed commits, dependency provenance + SBOM."
+  },
+  5: {
+    intro: "Whether the agent can reliably build, install, and run the project end-to-end on a fresh machine -- and reproduce the result deterministically.",
+    covers: "Package manifest, pinned lockfile, .env templates, dev containers, local-service bootstrap (docker-compose / make dev), build / test command documentation, monorepo tooling, reproducible build hygiene."
+  },
+  6: {
+    intro: "Whether the agent can verify production behavior of its changes -- not just whether tests pass, but whether the deployed system stays healthy.",
+    covers: "Structured logging, error tracking (Sentry / Honeybadger), metrics, distributed tracing, runbooks, alerting, profiling instrumentation, log / event documentation."
+  },
+  7: {
+    intro: "Whether the agent can act safely with bounded authority and recoverable failure modes. The pillar that separates 'AI-assisted-ready' from 'autonomous-agent-ready'.",
+    covers: "Tool allowlist / permission policy, kill switches, escalation-to-human paths, agent policy files (.factory/settings.json, .claude/settings.json), skill packaging, MCP server configuration, sandboxing, audit logs, cost telemetry."
+  }
+};
+
+/* ===================================================================== theme */
+
+const THEME_KEY = 'agentReadinessTheme';      // localStorage key
+const THEME_CYCLE = ['auto', 'light', 'dark']; // toggle order
+const THEME_GLYPH = { auto: 'A', light: '☀', dark: '☽' }; // A / sun / crescent
+const THEME_LABEL = { auto: 'Auto', light: 'Light', dark: 'Dark' };
+
+function readTheme() {
+  try {
+    const v = localStorage.getItem(THEME_KEY);
+    return THEME_CYCLE.includes(v) ? v : 'auto';
+  } catch (e) { return 'auto'; }
+}
+function applyTheme(theme) {
+  const root = document.documentElement;
+  if (theme === 'auto') root.removeAttribute('data-theme');
+  else root.setAttribute('data-theme', theme);
+  const glyph = document.getElementById('theme-glyph');
+  const label = document.getElementById('theme-label');
+  if (glyph) glyph.textContent = THEME_GLYPH[theme];
+  if (label) label.textContent = THEME_LABEL[theme];
+  try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
+}
+function cycleTheme() {
+  const current = readTheme();
+  const next = THEME_CYCLE[(THEME_CYCLE.indexOf(current) + 1) % THEME_CYCLE.length];
+  applyTheme(next);
+}
+// Apply theme BEFORE the rest of the page wires up, to avoid FOUC.
+applyTheme(readTheme());
+
+/* ============================================================== module state */
+
+let featureIndex = new Map();   // feature_num -> { feature, pillar }
+let modalStack   = [];          // ['detail'] or ['detail', 'remediate']
+let repoNameForDialog = 'this repo';
+let lastFocusedTrigger = null;  // tile OR action-row pill; restore focus on modal close
+let copyTimerId = null;         // for cancelling stacked COPY-button restore timers
+
+/* ============================================================== pure helpers */
+
+function tierForSegment(idx, total) {
+  const t = Math.floor(idx / total * 5) + 1;
+  return t > 5 ? 5 : t;
+}
+
+function tierColorClass(level) {
+  if (level <= 1) return 'tier-basic';
+  if (level <= 3) return 'tier-intermediate';
+  return 'tier-advanced';
+}
+
+function tierLabelForLevel(level) {
+  if (level <= 1) return { label: 'Basic',        cls: 'basic' };
+  if (level <= 3) return { label: 'Intermediate', cls: 'intermediate' };
+  return                  { label: 'Advanced',    cls: 'advanced' };
+}
+
+function whyLabelForStatus(status) {
+  if (status === 'pass') return 'Why this passed';
+  if (status === 'fail') return 'Why this failed';
+  if (status === 'na')   return 'Why this was skipped';
+  return 'Analysis';
+}
+
+function tileClassForStatus(status, level) {
+  if (status === 'na')   return 'tile na';
+  if (status === 'pass') return 'tile pass';
+  return level >= 4 ? 'tile fail-high' : 'tile fail-low';
+}
+
+function buildRadarAxes(summary, pillars) {
+  const axes = pillars.slice().sort((a, b) => a.id - b.id).map(p => ({
+    label: 'P' + p.id,
+    full: p.name,
+    value: p.percent
+  }));
+  axes.push({ label: 'Overall', full: 'Overall flat coverage', value: summary.flat_coverage.percent });
+  axes.push({ label: 'Tier',    full: 'Max tier (hierarchical, % of 5)', value: (summary.max_tier_hierarchical / 5) * 100 });
+  return axes;
+}
+
+function radarPoint(cx, cy, radius, angle, valuePct) {
+  const r = radius * (valuePct / 100);
+  return [cx + r * Math.cos(angle), cy + r * Math.sin(angle)];
+}
+
+/* =================================================================== render */
+
+function renderLevelMeter(rootEl, percent, maxTier) {
+  const TOTAL = 50;
+  const k = Math.round(percent / 100 * TOTAL);
+  const wrap = document.createElement('div');
+  wrap.className = 'meter-wrap';
+
+  const pctLabel = document.createElement('div');
+  pctLabel.className = 'meter-pct-label';
+  const pctSpan = document.createElement('span');
+  pctSpan.textContent = Math.round(percent) + '% total criteria pass';
+  const left = Math.max(8, Math.min(92, percent));
+  pctSpan.style.left = left + '%';
+  pctLabel.appendChild(pctSpan);
+  wrap.appendChild(pctLabel);
+
+  const bar = document.createElement('div');
+  bar.className = 'meter-bar';
+  for (let i = 0; i < TOTAL; i++) {
+    const seg = document.createElement('div');
+    seg.className = 'meter-seg';
+    if (i < k) {
+      seg.classList.add(tierColorClass(tierForSegment(i, TOTAL)));
+      if (i === k - 1) seg.classList.add('cursor');
+    }
+    bar.appendChild(seg);
+  }
+  wrap.appendChild(bar);
+
+  const labels = document.createElement('div');
+  labels.className = 'meter-labels';
+  for (let lv = 1; lv <= 5; lv++) {
+    const lbl = document.createElement('span');
+    lbl.textContent = 'L' + lv;
+    if (lv <= maxTier) lbl.classList.add('achieved');
+    labels.appendChild(lbl);
+  }
+  wrap.appendChild(labels);
+
+  rootEl.innerHTML = '';
+  rootEl.appendChild(wrap);
+}
+
+function computeReadinessTracks(pillars) {
+  // Two-track scoring: AI-Assisted = P1-5 only; Autonomous-Agent = P1-7 (full).
+  // Both surfaced in the headline so a strong assisted-dev repo isn't tanked
+  // by Pillar 7 being aspirational, and the autonomy gap stays visible.
+  let aPassed = 0, aAppl = 0, fPassed = 0, fAppl = 0;
+  pillars.forEach(p => {
+    const pid = p.id;
+    if (typeof pid !== 'number') return;
+    const passed = (p.passed != null) ? p.passed : p.features.filter(f => f.status === 'pass').length;
+    const appl   = (p.applicable != null) ? p.applicable : p.features.filter(f => f.status !== 'na').length;
+    if (pid >= 1 && pid <= 5) { aPassed += passed; aAppl += appl; }
+    if (pid >= 1 && pid <= 7) { fPassed += passed; fAppl += appl; }
+  });
+  return {
+    assisted:   { passed: aPassed, applicable: aAppl, percent: aAppl ? (aPassed / aAppl) * 100 : 0 },
+    autonomous: { passed: fPassed, applicable: fAppl, percent: fAppl ? (fPassed / fAppl) * 100 : 0 },
+  };
+}
+
+function renderHero(rootEl, summary, pillars, repoProfile) {
+  rootEl.innerHTML = '';
+
+  const radar = document.createElement('div');
+  radar.className = 'hero-radar';
+  radar.id = 'radar-host';
+  rootEl.appendChild(radar);
+
+  const sumBox = document.createElement('div');
+  sumBox.className = 'hero-summary';
+
+  function addRow(lbl, valNode, divider) {
+    const l = document.createElement('div'); l.className = 'lbl'; l.textContent = lbl;
+    const v = document.createElement('div'); v.className = 'val';
+    if (valNode instanceof Node) v.appendChild(valNode);
+    else v.textContent = String(valNode);
+    sumBox.appendChild(l); sumBox.appendChild(v);
+    if (divider) {
+      const d = document.createElement('div'); d.className = 'row-divider'; sumBox.appendChild(d);
+    }
+  }
+  function valWithSmall(main, parens) {
+    const frag = document.createDocumentFragment();
+    frag.appendChild(document.createTextNode(main));
+    if (parens !== undefined && parens !== null) {
+      const small = document.createElement('small');
+      small.textContent = '(' + parens + ')';
+      frag.appendChild(document.createTextNode(' '));
+      frag.appendChild(small);
+    }
+    return frag;
+  }
+
+  // Repo profile summary (Phase 2.y.1): optional. Renders only when repo_profile exists.
+  // Older audits (pre-Phase 2.y) omit it; renderer falls back gracefully.
+  if (repoProfile && typeof repoProfile === 'object') {
+    const fmt = (k) => {
+      const v = repoProfile[k];
+      if (v === null || v === undefined) return 'unknown';
+      if (v === true) return 'true';
+      if (v === false) return 'false';
+      return String(v);
+    };
+    const profStr =
+      'kind=' + fmt('repo_kind') +
+      '  visibility=' + fmt('visibility') +
+      '  external=' + fmt('accepts_external_contributors') +
+      '  team=' + fmt('team_scale');
+    const small = document.createElement('small');
+    small.textContent = profStr;
+    small.style.fontFamily = 'var(--font-mono)';
+    small.style.fontSize = '11px';
+    addRow('Repo profile', small, true);
+  }
+
+  // Dual-headline readiness tracks (W6): show both ALWAYS; never collapse to one.
+  // Prefer values pre-computed by auditor (data.summary.readiness_tracks) when present;
+  // otherwise compute from pillars at render time.
+  const tracks = (summary.readiness_tracks)
+    ? summary.readiness_tracks
+    : (Array.isArray(pillars) ? computeReadinessTracks(pillars) : null);
+  if (tracks) {
+    addRow('AI-Assisted readiness',
+      valWithSmall(tracks.assisted.passed + ' / ' + tracks.assisted.applicable + ' (P1–5)',
+                   Math.round(tracks.assisted.percent) + '%'), false);
+    addRow('Autonomous-Agent readiness',
+      valWithSmall(tracks.autonomous.passed + ' / ' + tracks.autonomous.applicable + ' (P1–7)',
+                   Math.round(tracks.autonomous.percent) + '%'), true);
+  }
+
+  addRow('Flat coverage',
+    valWithSmall(summary.flat_coverage.passed + ' / ' + summary.flat_coverage.applicable, Math.round(summary.flat_coverage.percent) + '%'), true);
+  addRow('Max tier (hierarchical)', 'L' + summary.max_tier_hierarchical, false);
+  addRow('Factory bucket',          'L' + summary.flat_bucket_level, true);
+  addRow('Strongest pillar', valWithSmall(summary.strongest_pillar.name, Math.round(summary.strongest_pillar.percent) + '%'), false);
+  addRow('Weakest pillar',   valWithSmall(summary.weakest_pillar.name,   Math.round(summary.weakest_pillar.percent) + '%'),   false);
+
+  rootEl.appendChild(sumBox);
+}
+
+function renderRadar(rootEl, axes) {
+  const SIZE = 380;
+  const cx = SIZE / 2, cy = SIZE / 2;
+  const OUTER = 132;
+  const RINGS = [{ scale: 1.0, cls: 'outer' }, { scale: 0.75 }, { scale: 0.45 }];
+  const N = axes.length;
+  const angleStep = (2 * Math.PI) / N;
+  const startAngle = -Math.PI / 2;
+
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('viewBox', '0 0 ' + SIZE + ' ' + SIZE);
+  svg.classList.add('radar-svg');
+
+  RINGS.forEach(ring => {
+    const pts = [];
+    for (let i = 0; i < N; i++) {
+      const a = startAngle + i * angleStep;
+      pts.push((cx + OUTER * ring.scale * Math.cos(a)) + ',' + (cy + OUTER * ring.scale * Math.sin(a)));
+    }
+    const poly = document.createElementNS(svgNS, 'polygon');
+    poly.setAttribute('points', pts.join(' '));
+    poly.setAttribute('class', 'radar-ring' + (ring.cls ? ' ' + ring.cls : ''));
+    svg.appendChild(poly);
+  });
+
+  for (let i = 0; i < N; i++) {
+    const a = startAngle + i * angleStep;
+    const line = document.createElementNS(svgNS, 'line');
+    line.setAttribute('x1', cx); line.setAttribute('y1', cy);
+    line.setAttribute('x2', cx + OUTER * Math.cos(a));
+    line.setAttribute('y2', cy + OUTER * Math.sin(a));
+    line.setAttribute('class', 'radar-axis');
+    svg.appendChild(line);
+
+    const lblR = OUTER + 18;
+    const lx = cx + lblR * Math.cos(a);
+    const ly = cy + lblR * Math.sin(a);
+    const lbl = document.createElementNS(svgNS, 'text');
+    lbl.setAttribute('x', lx); lbl.setAttribute('y', ly);
+    lbl.setAttribute('class', 'radar-label');
+    lbl.textContent = axes[i].label;
+    // Native browser tooltip (also serves keyboard / no-mouse users).
+    const tip = document.createElementNS(svgNS, 'title');
+    tip.textContent = axes[i].full + ': ' + Math.round(axes[i].value) + '%';
+    lbl.appendChild(tip);
+    lbl.dataset.axisIdx = String(i);
+    svg.appendChild(lbl);
+  }
+
+  const dataPts = [];
+  for (let i = 0; i < N; i++) {
+    const a = startAngle + i * angleStep;
+    const [x, y] = radarPoint(cx, cy, OUTER, a, axes[i].value);
+    dataPts.push(x + ',' + y);
+  }
+  const poly = document.createElementNS(svgNS, 'polygon');
+  poly.setAttribute('points', dataPts.join(' '));
+  poly.setAttribute('class', 'radar-poly');
+  svg.appendChild(poly);
+
+  for (let i = 0; i < N; i++) {
+    const a = startAngle + i * angleStep;
+    const [x, y] = radarPoint(cx, cy, OUTER, a, axes[i].value);
+    // Invisible larger hit area for hover discoverability.
+    const hit = document.createElementNS(svgNS, 'circle');
+    hit.setAttribute('cx', x); hit.setAttribute('cy', y); hit.setAttribute('r', 14);
+    hit.setAttribute('class', 'radar-hit');
+    hit.dataset.axisIdx = String(i);
+    svg.appendChild(hit);
+
+    const c = document.createElementNS(svgNS, 'circle');
+    c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', 3);
+    c.setAttribute('class', 'radar-point');
+    c.dataset.axisIdx = String(i);
+    svg.appendChild(c);
+  }
+
+  // Custom HTML tooltip (richer styling than SVG <title>)
+  const tooltip = document.createElement('div');
+  tooltip.className = 'radar-tooltip';
+  tooltip.setAttribute('role', 'tooltip');
+  rootEl.innerHTML = '';
+  rootEl.appendChild(svg);
+  rootEl.appendChild(tooltip);
+
+  function showTooltip(idx, evt) {
+    const ax = axes[idx];
+    tooltip.innerHTML = '';
+    const full = document.createElement('span'); full.className = 'full';
+    full.textContent = ax.full;
+    const pct = document.createElement('span'); pct.className = 'pct';
+    pct.textContent = Math.round(ax.value) + '%';
+    tooltip.appendChild(full); tooltip.appendChild(pct);
+    tooltip.classList.add('visible');
+    const rect = rootEl.getBoundingClientRect();
+    const x = evt.clientX - rect.left;
+    const y = evt.clientY - rect.top;
+    tooltip.style.left = (x + 12) + 'px';
+    tooltip.style.top  = (y + 12) + 'px';
+  }
+  function hideTooltip() { tooltip.classList.remove('visible'); }
+
+  svg.addEventListener('mousemove', (e) => {
+    const el = e.target.closest('[data-axis-idx]');
+    if (el) showTooltip(parseInt(el.dataset.axisIdx, 10), e);
+    else hideTooltip();
+  });
+  svg.addEventListener('mouseleave', hideTooltip);
+}
+
+function renderActions(rootEl, actions) {
+  rootEl.innerHTML = '';
+  if (!actions || actions.length === 0) {
+    rootEl.textContent = 'No top actions surfaced.';
+    return;
+  }
+  const list = document.createElement('div');
+  list.className = 'actions-list';
+  actions.slice(0, 3).forEach((act, i) => {
+    const row = document.createElement('div');
+    row.className = 'action-row';
+    const num = document.createElement('div');
+    num.className = 'num'; num.textContent = (i + 1) + '.';
+    row.appendChild(num);
+    const body = document.createElement('div');
+    const t = document.createElement('div'); t.className = 'title'; t.textContent = act.title;
+    const b = document.createElement('div'); b.className = 'body';  b.textContent = act.body;
+    body.appendChild(t); body.appendChild(b);
+    if (act.feature_refs && act.feature_refs.length) {
+      const refs = document.createElement('div'); refs.className = 'refs';
+      act.feature_refs.forEach(n => {
+        const btn = document.createElement('button');
+        btn.textContent = '#' + n;
+        btn.dataset.featureNum = String(n);
+        btn.addEventListener('click', () => { lastFocusedTrigger = btn; openDetailModalByNum(n); });
+        refs.appendChild(btn);
+      });
+      body.appendChild(refs);
+    }
+    row.appendChild(body);
+    list.appendChild(row);
+  });
+  rootEl.appendChild(list);
+}
+
+function renderPillars(rootEl, pillars) {
+  rootEl.innerHTML = '';
+  pillars.slice().sort((a, b) => a.id - b.id).forEach(p => {
+    const sec = document.createElement('div'); sec.className = 'pillar';
+
+    const details = document.createElement('details');
+    details.className = 'pillar-details';
+    const summary = document.createElement('summary');
+    summary.setAttribute('aria-label', 'Toggle description of Pillar ' + p.id + ': ' + p.name);
+
+    const head = document.createElement('div'); head.className = 'pillar-head';
+    const nameWrap = document.createElement('div'); nameWrap.className = 'name-wrap';
+    const name = document.createElement('div'); name.className = 'pillar-name';
+    const idSpan = document.createElement('span'); idSpan.className = 'id'; idSpan.textContent = 'P' + p.id + '.';
+    name.appendChild(idSpan); name.appendChild(document.createTextNode(p.name));
+    const caret = document.createElement('span'); caret.className = 'pillar-caret'; caret.textContent = '▾';
+    nameWrap.appendChild(name); nameWrap.appendChild(caret);
+
+    const stats = document.createElement('div'); stats.className = 'pillar-stats';
+    const statsLeft = document.createTextNode(p.passed + ' / ' + p.applicable + ' applicable');
+    const sep = document.createElement('span'); sep.className = 'sep'; sep.textContent = '·'; // middle dot
+    const statsRight = document.createTextNode(Math.round(p.percent) + '%');
+    stats.appendChild(statsLeft); stats.appendChild(sep); stats.appendChild(statsRight);
+
+    head.appendChild(nameWrap); head.appendChild(stats);
+    summary.appendChild(head);
+    details.appendChild(summary);
+
+    // Summary paragraph inside <details> -- shown when expanded
+    const meta = PILLAR_SUMMARIES[p.id];
+    if (meta) {
+      const summaryBody = document.createElement('p');
+      summaryBody.className = 'pillar-summary';
+      summaryBody.appendChild(document.createTextNode(meta.intro));
+      const covers = document.createElement('span'); covers.className = 'covers';
+      const lbl = document.createElement('span'); lbl.className = 'label'; lbl.textContent = 'Covers';
+      covers.appendChild(lbl);
+      covers.appendChild(document.createTextNode(meta.covers));
+      summaryBody.appendChild(covers);
+      details.appendChild(summaryBody);
+    }
+
+    sec.appendChild(details);
+
+    const grid = document.createElement('div'); grid.className = 'tile-grid';
+    p.features.forEach(f => {
+      const tile = document.createElement('div');
+      let tileCls = tileClassForStatus(f.status, f.level);
+      if (f.rationale_kind === 'broadened_evidence') tileCls += ' broadened';
+      tile.className = tileCls;
+      tile.dataset.featureNum = String(f.num);
+      tile.tabIndex = 0;
+      tile.setAttribute('role', 'button');
+      tile.setAttribute('aria-label', '#' + f.num + ' ' + f.name + ' -- ' + f.status);
+
+      const n = document.createElement('div'); n.className = 'num'; n.textContent = '#' + f.num;
+      const nm = document.createElement('div'); nm.className = 'nm'; nm.textContent = f.name;
+      const lv = document.createElement('div'); lv.className = 'lv'; lv.textContent = 'L' + f.level;
+      tile.appendChild(n); tile.appendChild(nm); tile.appendChild(lv);
+
+      // rationale_kind visual cue (Phase 2.y.1): small badge for profile-gated N/A and broadened-evidence passes.
+      if (f.rationale_kind === 'profile_gate') {
+        const b = document.createElement('div'); b.className = 'kind-badge';
+        b.textContent = 'PROFILE'; b.title = 'N/A driven by repo profile (see Step 0)';
+        tile.appendChild(b);
+      } else if (f.rationale_kind === 'broadened_evidence') {
+        const b = document.createElement('div'); b.className = 'kind-badge';
+        b.textContent = 'BROAD'; b.title = 'Passed via Phase 2.y broadened evidence path';
+        tile.appendChild(b);
+      }
+
+      tile.addEventListener('click', () => { lastFocusedTrigger = tile; openDetailModalByNum(f.num); });
+      tile.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); lastFocusedTrigger = tile; openDetailModalByNum(f.num); }
+      });
+      grid.appendChild(tile);
+    });
+    sec.appendChild(grid);
+    rootEl.appendChild(sec);
+  });
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+  }[c]));
+}
+
+/* =================================================================== modals */
+
+function showBackdrop() { document.getElementById('modal-backdrop').hidden = false; document.body.style.overflow = 'hidden'; }
+function hideBackdrop() { document.getElementById('modal-backdrop').hidden = true;  document.body.style.overflow = ''; }
+
+function openDetailModalByNum(n) {
+  // Refuse to switch feature while remediate is open -- close remediate first.
+  if (modalStack[modalStack.length - 1] === 'remediate') return;
+
+  const entry = featureIndex.get(n);
+  if (!entry) { console.warn('No feature #' + n); return; }
+  const f = entry.feature;
+
+  const tier = tierLabelForLevel(f.level);
+  document.getElementById('dm-tier-label').textContent = tier.label;
+  const dot = document.getElementById('dm-tier-dot');
+  dot.className = 'tier-dot ' + tier.cls;
+  document.getElementById('dm-feature-id').textContent = '#' + f.num;
+  document.getElementById('dm-title').textContent = f.name;
+  document.getElementById('dm-desc').textContent  = f.description || '';
+
+  const scoreEl = document.getElementById('dm-score');
+  let scoreText, scoreCls;
+  if (f.status === 'pass')      { scoreText = '1 / 1'; scoreCls = 'pass'; }
+  else if (f.status === 'fail') { scoreText = '0 / 1'; scoreCls = 'fail'; }
+  else                          { scoreText = 'n/a';   scoreCls = ''; }
+  scoreEl.textContent = scoreText;
+  scoreEl.className = 'val ' + scoreCls;
+
+  document.getElementById('dm-why-label').textContent = whyLabelForStatus(f.status);
+  document.getElementById('dm-rationale').textContent  = f.rationale || '(no rationale captured)';
+
+  const remediateBtn = document.getElementById('dm-remediate');
+  if (f.status === 'fail' && f.remediation_prompt) {
+    remediateBtn.hidden = false;
+    remediateBtn.onclick = () => openRemediateDialog(f);
+  } else {
+    remediateBtn.hidden = true;
+    remediateBtn.onclick = null;
+  }
+
+  document.getElementById('detail-modal').hidden = false;
+  showBackdrop();
+  if (!modalStack.includes('detail')) modalStack.push('detail');
+  document.getElementById('dm-close').focus();
+}
+
+function closeDetailModal() {
+  document.getElementById('detail-modal').hidden = true;
+  modalStack = modalStack.filter(m => m !== 'detail');
+  if (modalStack.length === 0) {
+    hideBackdrop();
+    if (lastFocusedTrigger && document.body.contains(lastFocusedTrigger)) {
+      try { lastFocusedTrigger.focus(); } catch (e) {}
+    }
+  }
+}
+
+function openRemediateDialog(feature) {
+  document.getElementById('rm-repo').textContent = repoNameForDialog;
+  document.getElementById('rm-prompt').textContent = feature.remediation_prompt || '(no prompt)';
+  document.getElementById('remediate-modal').hidden = false;
+  showBackdrop();
+  if (!modalStack.includes('remediate')) modalStack.push('remediate');
+  document.getElementById('rm-back').focus();
+}
+
+function closeRemediateDialog() {
+  document.getElementById('remediate-modal').hidden = true;
+  modalStack = modalStack.filter(m => m !== 'remediate');
+  if (modalStack.length === 0) {
+    hideBackdrop();
+  } else if (modalStack[modalStack.length - 1] === 'detail') {
+    // Return focus into the detail modal so keyboard users can continue.
+    const remediate = document.getElementById('dm-remediate');
+    const target = (remediate && !remediate.hidden) ? remediate : document.getElementById('dm-close');
+    try { target.focus(); } catch (e) {}
+  }
+}
+
+const COPY_BTN_LABEL = 'Copy';
+function copyPromptToClipboard() {
+  const text = document.getElementById('rm-prompt').textContent;
+  const btn = document.getElementById('rm-copy');
+  function flash(msg, ok) {
+    if (copyTimerId !== null) { clearTimeout(copyTimerId); copyTimerId = null; }
+    btn.textContent = msg;
+    btn.style.background = ok ? 'var(--accent-pass)' : 'var(--accent-fail-high)';
+    copyTimerId = setTimeout(() => {
+      btn.textContent = COPY_BTN_LABEL;
+      btn.style.background = '';
+      copyTimerId = null;
+    }, 1500);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => flash('Copied!', true)).catch(err => {
+      console.error('clipboard write failed', err); flash('Copy failed', false);
+    });
+  } else {
+    // Fallback: select the pre block so user can ctrl+c manually
+    const range = document.createRange();
+    range.selectNodeContents(document.getElementById('rm-prompt'));
+    const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+    flash('Select + Ctrl+C', false);
+  }
+}
+
+/* ===================================================================== boot */
+
+function selfTests() {
+  console.group('agent-readiness-report self-tests');
+  console.assert(tierForSegment(0, 50) === 1, 'seg 0 of 50 should be L1');
+  console.assert(tierForSegment(9, 50) === 1, 'seg 9 of 50 should be L1');
+  console.assert(tierForSegment(10, 50) === 2, 'seg 10 of 50 should be L2');
+  console.assert(tierForSegment(49, 50) === 5, 'seg 49 of 50 should be L5');
+  console.assert(tierColorClass(1) === 'tier-basic', 'L1 -> basic');
+  console.assert(tierColorClass(3) === 'tier-intermediate', 'L3 -> intermediate');
+  console.assert(tierColorClass(5) === 'tier-advanced', 'L5 -> advanced');
+
+  const axes = buildRadarAxes(
+    { flat_coverage: { percent: 50 }, max_tier_hierarchical: 3 },
+    Array.from({length: 7}, (_, i) => ({ id: i + 1, name: 'P' + (i + 1), percent: (i + 1) * 10 }))
+  );
+  console.assert(axes.length === 9, 'expected 9 axes, got ' + axes.length);
+  console.assert(axes[7].label === 'Overall' && Math.round(axes[7].value) === 50, 'overall axis');
+  console.assert(axes[8].label === 'Tier'   && Math.round(axes[8].value) === 60, 'tier axis = 3/5 = 60%');
+
+  const [px, py] = radarPoint(100, 100, 80, -Math.PI / 2, 100);
+  console.assert(Math.abs(px - 100) < 0.001 && Math.abs(py - 20) < 0.001, 'top axis at 100% = (cx, cy - r)');
+
+  console.assert(tileClassForStatus('pass', 1) === 'tile pass', '');
+  console.assert(tileClassForStatus('fail', 2) === 'tile fail-low', '');
+  console.assert(tileClassForStatus('fail', 4) === 'tile fail-high', '');
+  console.assert(tileClassForStatus('na', 3)   === 'tile na', '');
+
+  console.log('Self-tests complete.');
+  console.groupEnd();
+}
+
+(function main() {
+  const dataEl = document.getElementById('audit-data');
+  if (!dataEl || !dataEl.textContent.trim() || dataEl.textContent.includes('AUDIT_DATA_JSON')) {
+    document.body.innerHTML = '<div style="padding:32px;font-family:var(--font-sans);color:#b04545">No audit data embedded. Run <code>scripts/render_html.sh</code> to populate this template.</div>';
+    return;
+  }
+  let data;
+  try { data = JSON.parse(dataEl.textContent); }
+  catch (err) {
+    document.body.innerHTML = '<div style="padding:32px;font-family:var(--font-sans);color:#b04545">Failed to parse embedded audit data: ' + escapeHtml(err.message) + '</div>';
+    return;
+  }
+
+  if (location.search.includes('debug=1')) selfTests();
+
+  // Build feature index for fast lookup from action-ref buttons
+  data.pillars.forEach(p => p.features.forEach(f => featureIndex.set(f.num, { feature: f, pillar: p })));
+  const repoNameClean = (data.repo_name || '').trim();
+  repoNameForDialog = repoNameClean || 'this repo';
+
+  // Top bar
+  document.getElementById('repo-name').textContent = repoNameClean || '(unknown repo)';
+  document.getElementById('generated-at').textContent =
+    (data.generated_at || '').replace('T', ' ').replace('Z', ' UTC');
+  document.getElementById('overall-pct').textContent = Math.round(data.summary.flat_coverage.percent);
+  document.getElementById('max-tier').textContent = 'L' + data.summary.max_tier_hierarchical;
+
+  // Sections
+  renderLevelMeter(document.getElementById('level-meter'), data.summary.flat_coverage.percent, data.summary.max_tier_hierarchical);
+  renderHero(document.getElementById('hero-grid'), data.summary, data.pillars, data.repo_profile);
+  const axes = buildRadarAxes(data.summary, data.pillars);
+  renderRadar(document.getElementById('radar-host'), axes);
+  renderActions(document.getElementById('top-actions'), data.top_actions);
+  renderPillars(document.getElementById('pillars'), data.pillars);
+
+  // Theme toggle
+  document.getElementById('theme-toggle').addEventListener('click', cycleTheme);
+
+  // Modal wiring
+  document.getElementById('dm-close').addEventListener('click', closeDetailModal);
+  document.getElementById('rm-close').addEventListener('click', closeRemediateDialog);
+  document.getElementById('rm-back').addEventListener('click', closeRemediateDialog);
+  document.getElementById('rm-copy').addEventListener('click', copyPromptToClipboard);
+
+  document.getElementById('modal-backdrop').addEventListener('click', () => {
+    const top = modalStack[modalStack.length - 1];
+    if (top === 'remediate') closeRemediateDialog();
+    else if (top === 'detail') closeDetailModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (modalStack.length === 0) return;
+    if (e.key === 'Escape') {
+      const top = modalStack[modalStack.length - 1];
+      if (top === 'remediate') closeRemediateDialog();
+      else if (top === 'detail') closeDetailModal();
+      return;
+    }
+    if (e.key === 'Tab') {
+      // Trap focus within the topmost open modal.
+      const top = modalStack[modalStack.length - 1];
+      const modal = document.getElementById(top === 'remediate' ? 'remediate-modal' : 'detail-modal');
+      if (!modal) return;
+      const focusables = modal.querySelectorAll(
+        'button:not([hidden]):not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusables.length === 0) { e.preventDefault(); return; }
+      const first = focusables[0];
+      const last  = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault(); last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault(); first.focus();
+      } else if (!modal.contains(document.activeElement)) {
+        e.preventDefault(); first.focus();
+      }
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "repo_name": "test-repo",
+  "generated_at": "2026-05-16T17:00:00Z",
+  "applications": [
+    {"path": ".", "description": "A small test repo for renderer iteration."}
+  ],
+  "summary": {
+    "flat_coverage": {"passed": 5, "applicable": 9, "percent": 56},
+    "max_tier_hierarchical": 2,
+    "flat_bucket_level": 3,
+    "strongest_pillar": {"id": 1, "name": "Agent Instructions", "percent": 100},
+    "weakest_pillar": {"id": 3, "name": "Workflows", "percent": 0}
+  },
+  "tiers": [
+    {"level": 1, "label": "Basic",          "applicable": 4, "passed": 4, "percent": 100},
+    {"level": 2, "label": "Intermediate",   "applicable": 3, "passed": 1, "percent": 33},
+    {"level": 3, "label": "Advanced",       "applicable": 2, "passed": 0, "percent": 0},
+    {"level": 4, "label": "Power-user",     "applicable": 0, "passed": 0, "percent": 0},
+    {"level": 5, "label": "Self-improving", "applicable": 0, "passed": 0, "percent": 0}
+  ],
+  "pillars": [
+    {"id": 1, "name": "Agent Instructions", "applicable": 2, "passed": 2, "percent": 100,
+     "features": [
+       {"num": 1, "name": "Agent instruction file", "level": 1, "description": "A dedicated file telling agents how to work in this repo.",
+        "status": "pass", "rationale": "AGENTS.md found at root, 150 lines.", "remediation_prompt": null},
+       {"num": 2, "name": "AI IDE configuration", "level": 2, "description": "Settings or rules for AI-powered editors/IDEs.",
+        "status": "pass", "rationale": ".cursor/rules/ with 3 rule files.", "remediation_prompt": null}
+     ]
+    },
+    {"id": 2, "name": "Feedback Loops", "applicable": 2, "passed": 1, "percent": 50,
+     "features": [
+       {"num": 22, "name": "Linter", "level": 1, "description": "Static analysis catching bugs and style issues.",
+        "status": "pass", "rationale": ".eslintrc.json present, configured for typescript-eslint.", "remediation_prompt": null},
+       {"num": 30, "name": "CI pipeline", "level": 2, "description": "Automated checks on every push or PR.",
+        "status": "fail", "rationale": "No .github/workflows/ or .gitlab-ci.yml found. Fresh PRs run zero automated checks.",
+        "remediation_prompt": "[Readiness Fix] test-repo CI Pipeline\n\nFix the failing signal: CI Pipeline ([0/1])\n\nAdd a GitHub Actions workflow at .github/workflows/ci.yml that runs lint + tests on push and PR. The workflow should run on the same Node version used in package.json, install via the locked manifest, and fail on any lint or test error.\n\n## CRITICAL: Quality Standards\n\nYour fix must genuinely improve the codebase. NO disabling checks or skip markers to pass validation.\n"}
+     ]
+    },
+    {"id": 3, "name": "Workflows", "applicable": 1, "passed": 0, "percent": 0,
+     "features": [
+       {"num": 50, "name": "Issue templates", "level": 2, "description": "Structured templates for bug reports, feature requests.",
+        "status": "fail", "rationale": "No .github/ISSUE_TEMPLATE/ directory; issues are unstructured.",
+        "remediation_prompt": null}
+     ]
+    },
+    {"id": 4, "name": "Policy", "applicable": 1, "passed": 1, "percent": 100, "features": [
+      {"num": 70, "name": "LICENSE file", "level": 1, "description": "Repository has a LICENSE file at root.", "status": "pass", "rationale": "MIT LICENSE present.", "remediation_prompt": null}
+    ]},
+    {"id": 5, "name": "Build & Dev Env", "applicable": 1, "passed": 1, "percent": 100, "features": [
+      {"num": 95, "name": "package.json", "level": 1, "description": "Single dependency manifest at root.", "status": "pass", "rationale": "package.json present, pnpm-lock.yaml present.", "remediation_prompt": null}
+    ]},
+    {"id": 6, "name": "Observability", "applicable": 1, "passed": 0, "percent": 0, "features": [
+      {"num": 115, "name": "Error tracking", "level": 3, "description": "Errors captured and reported in production.", "status": "fail", "rationale": "No Sentry/Honeybadger/Bugsnag SDK in deps.", "remediation_prompt": "[Readiness Fix] test-repo Error Tracking\n\nFix the failing signal: Error Tracking ([0/1])\n\nIntegrate an error tracking service (Sentry recommended). Add the SDK to deps, initialize it in your app entrypoint, and route errors to a project you own. Configure source maps so stack traces resolve.\n\n## CRITICAL: Quality Standards\n\nNO empty placeholder integrations -- DSN must be real and errors must actually flow.\n"}
+    ]},
+    {"id": 7, "name": "Agent-OS Readiness", "applicable": 1, "passed": 0, "percent": 0, "features": [
+      {"num": 121, "name": "Tool allowlist", "level": 4, "description": "Repo-checked allowlist of which agent tools may run.", "status": "fail", "rationale": "No .factory/settings.json with commandAllowlist; .claude/settings.json missing the permissions block.", "remediation_prompt": "[Readiness Fix] test-repo Tool Allowlist\n\nFix the failing signal: Tool Allowlist ([0/1])\n\nCreate .claude/settings.json (committed) with a permissions block defining allow/ask/deny lists tuned to this repo's actual build commands.\n\n## CRITICAL: Quality Standards\n\nNO trivial {} files. The allowlist must reflect the real workflow.\n"}
+    ]}
+  ],
+  "top_actions": [
+    {"title": "Add a CI pipeline", "body": "Set up GitHub Actions to run lint and tests on every push. Closes feature #30 (L2) and reduces the risk of regressions landing on main.", "feature_refs": [30]},
+    {"title": "Wire up error tracking", "body": "Integrate Sentry (or equivalent) so production exceptions are captured. Closes feature #115 (L3).", "feature_refs": [115]},
+    {"title": "Define an agent tool allowlist", "body": "Add a permissions block to .claude/settings.json so agents have a clear contract for what they can run. Closes feature #121 (L4).", "feature_refs": [121]}
+  ]
+}

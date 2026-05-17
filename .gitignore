@@ -1,0 +1,17 @@
+# Generated reports (skill writes these into target repos, but ignore in case of local test runs)
+docs/agent-readiness/
+*-readiness-report*.md
+*-readiness-report*.html
+*-readiness-report*-data.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Backups
+*.bak
+*.pre-review-version-*
