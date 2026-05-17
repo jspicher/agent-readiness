@@ -15,3 +15,7 @@ Thumbs.db
 # Backups
 *.bak
 *.pre-review-version-*
+
+# Python
+__pycache__/
+*.pyc

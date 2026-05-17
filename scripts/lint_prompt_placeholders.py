@@ -3,9 +3,21 @@
 
 Walks top-level `prompts/*.md` (NOT `prompts/_graveyard/`) and reports any
 remaining uppercase placeholder tokens of the form `<WORD_WITH_UNDERSCORES>`
-that haven't been filtered through the allowlist. Tokens inside triple-backtick
-or triple-tilde fenced code blocks are skipped (those are usually deliberate
-examples, e.g., `<TODO>` in a sample script).
+that haven't been filtered through the allowlist.
+
+Two kinds of code context are skipped, matching the markdown-linter convention
+used by markdownlint / prettier / vale:
+
+  1. Triple-backtick (or triple-tilde) fenced code blocks. The whole block
+     is skipped between the opening and closing fence.
+  2. Single-backtick inline code spans within a non-fenced line. Tokens
+     wrapped in `...` are deliberate documentation of values the reader
+     fills in by hand (e.g., `ghcr.io/<OWNER>/<IMAGE>` in a command
+     example). These are not audit-pipeline substitution failures.
+
+Anything OUTSIDE both contexts that matches the placeholder regex is flagged.
+That catches the case the lint actually cares about: a prose sentence with a
+bare `<OWNER>` token the audit pipeline should have substituted.
 
 Allowlist:
     <REPO_NAME>           -- substituted by the audit at Step 7
@@ -31,6 +43,12 @@ from pathlib import Path
 PLACEHOLDER_RE = re.compile(r"<[A-Z][A-Z0-9_]*>")
 ALLOWED = {"<REPO_NAME>"}
 FENCE_RE = re.compile(r"^(```|~~~)")
+# Non-greedy inline-code span: a backtick, one-or-more non-backtick non-newline
+# chars, a closing backtick. We strip these out before scanning the remaining
+# prose for placeholder tokens. Double-backtick spans (`` ` ``) are rare in
+# this corpus and would require a more elaborate state machine; revisit only
+# if a real false-positive appears.
+INLINE_CODE_RE = re.compile(r"`[^`\n]+?`")
 
 
 def lint_file(path: Path) -> list[str]:
@@ -48,7 +66,10 @@ def lint_file(path: Path) -> list[str]:
             continue
         if in_fence:
             continue
-        for m in PLACEHOLDER_RE.finditer(line):
+        # Strip inline-code spans before scanning. A `<TOKEN>` inside backticks
+        # is documentation, not a substitution failure.
+        scannable = INLINE_CODE_RE.sub("", line)
+        for m in PLACEHOLDER_RE.finditer(scannable):
             tok = m.group(0)
             if tok in ALLOWED:
                 continue

@@ -23,4 +23,5 @@ jobs:
         run: |
           bash scripts/render_html.sh fixtures/test-data-minimal.json /tmp/out.html
           test "$(wc -c < /tmp/out.html)" -gt 50000
-      # TODO(PR-2): wire scripts/lint_prompt_placeholders.py after prompt-cleanup PR
+      - name: Lint prompt placeholders
+        run: python3 scripts/lint_prompt_placeholders.py
