@@ -33,6 +33,16 @@
   --tier-intermediate: #d99548;
   --tier-advanced: #b04545;
 
+  /* Level-meter palette (5-stop gradient, L1 red -> L5 green).
+     Used only by the top-of-page level meter via .meter-seg.level-N
+     classes. Tile / dot styling continues to use the 3-bucket
+     --tier-{basic,intermediate,advanced} tokens above. */
+  --level-1: #b04545;  /* red    -- L1 Basic */
+  --level-2: #d99548;  /* orange -- L2 Intermediate-low */
+  --level-3: #c9a644;  /* yellow -- L3 Intermediate-high */
+  --level-4: #6c8eb2;  /* blue   -- L4 Power-user */
+  --level-5: #6d9a6a;  /* green  -- L5 Self-improving (apex) */
+
   --font-serif: 'Iowan Old Style', 'Apple Garamond', 'Baskerville Old Face', 'Baskerville', 'Hoefler Text', 'Garamond', 'Times New Roman', serif;
   --font-sans:  -apple-system, BlinkMacSystemFont, 'Segoe UI Variable Display', 'Segoe UI', system-ui, sans-serif;
   --font-mono:  ui-monospace, 'SF Mono', 'Cascadia Code', 'JetBrains Mono', 'Menlo', 'Consolas', monospace;
@@ -65,6 +75,12 @@
   --tier-basic: #d1a01f;
   --tier-intermediate: #c2741e;
   --tier-advanced: #b03333;
+
+  --level-1: #b03333;
+  --level-2: #c2741e;
+  --level-3: #d1a01f;
+  --level-4: #2562c4;
+  --level-5: #2d8a4e;
 }
 :root[data-theme="dark"] {
   --surface-0: #0d0c0b;
@@ -89,6 +105,12 @@
   --tier-basic: #c9a644;
   --tier-intermediate: #d99548;
   --tier-advanced: #b04545;
+
+  --level-1: #b04545;
+  --level-2: #d99548;
+  --level-3: #c9a644;
+  --level-4: #6c8eb2;
+  --level-5: #6d9a6a;
 }
 /* OS preference only takes effect when the user hasn't picked manually. */
 @media (prefers-color-scheme: light) {
@@ -117,6 +139,12 @@
     --tier-basic: #d1a01f;
     --tier-intermediate: #c2741e;
     --tier-advanced: #b03333;
+
+    --level-1: #b03333;
+    --level-2: #c2741e;
+    --level-3: #d1a01f;
+    --level-4: #2562c4;
+    --level-5: #2d8a4e;
   }
 }
 
@@ -237,6 +265,11 @@ html, body {
 .meter-seg.tier-basic        { background: var(--tier-basic); }
 .meter-seg.tier-intermediate { background: var(--tier-intermediate); }
 .meter-seg.tier-advanced     { background: var(--tier-advanced); }
+.meter-seg.level-1 { background: var(--level-1); }
+.meter-seg.level-2 { background: var(--level-2); }
+.meter-seg.level-3 { background: var(--level-3); }
+.meter-seg.level-4 { background: var(--level-4); }
+.meter-seg.level-5 { background: var(--level-5); }
 .meter-seg.cursor {
   box-shadow: 0 0 0 1px var(--text-1) inset, 0 0 0 2px var(--surface-0);
 }
@@ -782,9 +815,10 @@ function tierForSegment(idx, total) {
 }
 
 function tierColorClass(level) {
-  if (level <= 1) return 'tier-basic';
-  if (level <= 3) return 'tier-intermediate';
-  return 'tier-advanced';
+  // 5-stop palette: L1 red, L2 orange, L3 yellow, L4 blue, L5 green.
+  // Apex is green to read as "ready / ideal" rather than a heat warning.
+  const lv = Math.max(1, Math.min(5, level | 0));
+  return 'level-' + lv;
 }
 
 function tierLabelForLevel(level) {
@@ -1314,9 +1348,11 @@ function selfTests() {
   console.assert(tierForSegment(9, 50) === 1, 'seg 9 of 50 should be L1');
   console.assert(tierForSegment(10, 50) === 2, 'seg 10 of 50 should be L2');
   console.assert(tierForSegment(49, 50) === 5, 'seg 49 of 50 should be L5');
-  console.assert(tierColorClass(1) === 'tier-basic', 'L1 -> basic');
-  console.assert(tierColorClass(3) === 'tier-intermediate', 'L3 -> intermediate');
-  console.assert(tierColorClass(5) === 'tier-advanced', 'L5 -> advanced');
+  console.assert(tierColorClass(1) === 'level-1', 'L1 -> level-1');
+  console.assert(tierColorClass(2) === 'level-2', 'L2 -> level-2');
+  console.assert(tierColorClass(3) === 'level-3', 'L3 -> level-3');
+  console.assert(tierColorClass(4) === 'level-4', 'L4 -> level-4');
+  console.assert(tierColorClass(5) === 'level-5', 'L5 -> level-5');
 
   const axes = buildRadarAxes(
     { flat_coverage: { percent: 50 }, max_tier_hierarchical: 3 },
