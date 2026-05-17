@@ -1,5 +1,7 @@
 # /agent-readiness
 
+[![skills.sh](https://skills.sh/b/jspicher/agent-readiness)](https://skills.sh/jspicher/agent-readiness)
+
 Agent readiness audit for Claude Code. Scores any repository across 7 pillars and 132 signals to show how well it supports AI-assisted and autonomous development. Outputs a markdown report, a JSON data sibling, and an interactive HTML view -- all deterministic, all written into the target repo.
 
 ## Install
