@@ -1,0 +1,1352 @@
+{
+  "schema_version": 2,
+  "repo_name": "test-repo-v2",
+  "generated_at": "2026-05-17T00:00:00Z",
+  "audit_context": {
+    "head_sha": "0000000000000000000000000000000000000000",
+    "branch": "main",
+    "worktree_dirty": false,
+    "dirty_files_count": 0,
+    "dirty_diff_sha256": null,
+    "captured_at": "2026-05-17T00:00:00Z"
+  },
+  "applications": [
+    {
+      "path": ".",
+      "description": "Synthetic minimal-v2 fixture covering all 132 criteria."
+    }
+  ],
+  "summary": {
+    "flat_coverage": {
+      "passed": 128,
+      "applicable": 131,
+      "percent": 98
+    },
+    "max_tier_hierarchical": 5,
+    "flat_bucket_level": 5,
+    "strongest_pillar": {
+      "id": 3,
+      "name": "Workflows & Automation",
+      "percent": 100
+    },
+    "weakest_pillar": {
+      "id": 2,
+      "name": "Feedback Loops",
+      "percent": 93
+    }
+  },
+  "tiers": [
+    {
+      "level": 1,
+      "label": "Basic",
+      "applicable": 13,
+      "passed": 11,
+      "percent": 50
+    },
+    {
+      "level": 2,
+      "label": "Intermediate",
+      "applicable": 27,
+      "passed": 26,
+      "percent": 96
+    },
+    {
+      "level": 3,
+      "label": "Advanced",
+      "applicable": 45,
+      "passed": 45,
+      "percent": 100
+    },
+    {
+      "level": 4,
+      "label": "Power-user",
+      "applicable": 40,
+      "passed": 40,
+      "percent": 100
+    },
+    {
+      "level": 5,
+      "label": "Self-improving",
+      "applicable": 6,
+      "passed": 6,
+      "percent": 100
+    }
+  ],
+  "pillars": [
+    {
+      "id": 1,
+      "name": "Agent Instructions",
+      "applicable": 21,
+      "passed": 20,
+      "percent": 95,
+      "features": [
+        {
+          "num": 1,
+          "name": "Agent instruction file",
+          "level": 2,
+          "description": "(description)",
+          "status": "fail",
+          "rationale": "Missing.",
+          "remediation_prompt": "(remediation prompt content)"
+        },
+        {
+          "num": 2,
+          "name": "AI IDE configuration",
+          "level": 2,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 3,
+          "name": "Multi-model support",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 4,
+          "name": "Agent skills or capabilities",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 5,
+          "name": "Agent tool integration manifest",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 6,
+          "name": "Agent prompt library",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 7,
+          "name": "Component-level agent guidance",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 8,
+          "name": "README with build/run/test",
+          "level": 1,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 9,
+          "name": "Contributing guide",
+          "level": 2,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 10,
+          "name": "Architecture documentation",
+          "level": 2,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 11,
+          "name": "API documentation",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 12,
+          "name": "Inline code documentation",
+          "level": 2,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 13,
+          "name": "Runnable examples",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 14,
+          "name": "Changelog",
+          "level": 2,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 15,
+          "name": "Environment variable documentation",
+          "level": 1,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 16,
+          "name": "Documentation site or directory",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 17,
+          "name": "Decision records",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 18,
+          "name": "Module-level READMEs",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 19,
+          "name": "Documentation freshness",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 20,
+          "name": "AGENTS.md freshness validation",
+          "level": 5,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 21,
+          "name": "Automated documentation generation",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Feedback Loops",
+      "applicable": 27,
+      "passed": 25,
+      "percent": 93,
+      "features": [
+        {
+          "num": 22,
+          "name": "Linter",
+          "level": 1,
+          "description": "(description)",
+          "status": "fail",
+          "rationale": "Missing.",
+          "remediation_prompt": "(remediation prompt content)"
+        },
+        {
+          "num": 23,
+          "name": "Formatter",
+          "level": 1,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 24,
+          "name": "Type checking",
+          "level": 1,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 25,
+          "name": "Pre-commit hooks",
+          "level": 2,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 26,
+          "name": "Unit tests",
+          "level": 1,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 27,
+          "name": "Integration tests",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 28,
+          "name": "End-to-end tests",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 29,
+          "name": "Test coverage measurement",
+          "level": 2,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 30,
+          "name": "CI pipeline",
+          "level": 1,
+          "description": "(description)",
+          "status": "fail",
+          "rationale": "Missing.",
+          "remediation_prompt": "(remediation prompt content)"
+        },
+        {
+          "num": 31,
+          "name": "Fast CI feedback",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 32,
+          "name": "Test run documentation",
+          "level": 1,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 33,
+          "name": "Config/schema validation",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 34,
+          "name": "Snapshot or golden-file tests",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 35,
+          "name": "Benchmark suite",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 36,
+          "name": "Warnings-as-errors",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 37,
+          "name": "Spell/typo checking",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 38,
+          "name": "Test isolation",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 39,
+          "name": "Flaky test detection",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 40,
+          "name": "Test performance tracking",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 41,
+          "name": "Test file naming conventions",
+          "level": 2,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 42,
+          "name": "Strict typing enforcement",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 43,
+          "name": "Dead code detection",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 44,
+          "name": "Duplicate code detection",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 45,
+          "name": "Large file detection",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 46,
+          "name": "Code modularization enforcement",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 47,
+          "name": "Technical debt markers tracking",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 48,
+          "name": "Cyclomatic complexity tracking",
+          "level": 5,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 49,
+          "name": "N+1 query detection",
+          "level": 4,
+          "description": "(description)",
+          "status": "na",
+          "rationale": "N/A: subsystem_absence. No DB found.",
+          "remediation_prompt": null,
+          "rationale_kind": "subsystem_absence"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Workflows & Automation",
+      "applicable": 22,
+      "passed": 22,
+      "percent": 100,
+      "features": [
+        {
+          "num": 50,
+          "name": "Issue templates",
+          "level": 2,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 51,
+          "name": "PR template",
+          "level": 2,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 52,
+          "name": "Dependency update automation",
+          "level": 2,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 53,
+          "name": "Release automation",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 54,
+          "name": "Branch protection",
+          "level": 2,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 55,
+          "name": "Merge automation",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 56,
+          "name": "Task runner",
+          "level": 1,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 57,
+          "name": "Structured change tracking",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 58,
+          "name": "CI concurrency control",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 59,
+          "name": "Automated release notes",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 60,
+          "name": "Stale issue/PR management",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 61,
+          "name": "Label automation",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 62,
+          "name": "Multi-platform CI",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 63,
+          "name": "Deployment automation",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 64,
+          "name": "Automated code review checks",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 65,
+          "name": "Automated PR review generation",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 66,
+          "name": "Automated security review generation",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 67,
+          "name": "Feature flag infrastructure",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 68,
+          "name": "Dead feature flag detection",
+          "level": 5,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 69,
+          "name": "Deployment frequency",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 70,
+          "name": "Progressive rollout",
+          "level": 5,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 71,
+          "name": "Rollback automation",
+          "level": 5,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Policy & Governance",
+      "applicable": 19,
+      "passed": 19,
+      "percent": 100,
+      "features": [
+        {
+          "num": 72,
+          "name": "Comprehensive .gitignore",
+          "level": 1,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 73,
+          "name": "License",
+          "level": 2,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 74,
+          "name": "Code ownership",
+          "level": 2,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 75,
+          "name": "Security policy",
+          "level": 2,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 76,
+          "name": "Code of conduct",
+          "level": 2,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 77,
+          "name": "AI usage policy",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 78,
+          "name": "Secrets management",
+          "level": 2,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 79,
+          "name": "Vulnerability scanning",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 80,
+          "name": "Secret scanning",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 81,
+          "name": "Sensitive data log scrubbing",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 82,
+          "name": "Minimum dependency release age",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 83,
+          "name": "Git attributes",
+          "level": 2,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 84,
+          "name": "Contributor agreement",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 85,
+          "name": "Governance model",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 86,
+          "name": "CI workflow validation",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 87,
+          "name": "Environment separation",
+          "level": 2,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 88,
+          "name": "DAST scanning",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 89,
+          "name": "PII handling",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 90,
+          "name": "Privacy compliance infrastructure",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Build & Dev Environment",
+      "applicable": 19,
+      "passed": 19,
+      "percent": 100,
+      "features": [
+        {
+          "num": 91,
+          "name": "Dependency lockfile",
+          "level": 1,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 92,
+          "name": "Single-command build",
+          "level": 1,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 93,
+          "name": "Single-command dev setup",
+          "level": 1,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 94,
+          "name": "Dev container",
+          "level": 2,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 95,
+          "name": "Devcontainer runnable",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 96,
+          "name": "Containerized services",
+          "level": 2,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 97,
+          "name": "Local services setup documented",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 98,
+          "name": "Reproducible environment",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 99,
+          "name": "Tool version pinning",
+          "level": 2,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 100,
+          "name": "Monorepo orchestration",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 101,
+          "name": "Version drift detection",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 102,
+          "name": "Build caching",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 103,
+          "name": "Build performance tracking",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 104,
+          "name": "Heavy dependency / bundle analysis",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 105,
+          "name": "Unused dependencies detection",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 106,
+          "name": "Cross-platform support",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 107,
+          "name": "Cloud dev environment",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 108,
+          "name": "Package manager determinism",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 109,
+          "name": "Database schema definition",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Observability",
+      "applicable": 11,
+      "passed": 11,
+      "percent": 100,
+      "features": [
+        {
+          "num": 110,
+          "name": "Structured logging",
+          "level": 2,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 111,
+          "name": "Error tracking with context",
+          "level": 2,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 112,
+          "name": "Health check endpoints",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 113,
+          "name": "Metrics collection",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 114,
+          "name": "Distributed tracing",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 115,
+          "name": "Alerting configured",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 116,
+          "name": "Runbooks documented",
+          "level": 2,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 117,
+          "name": "Code quality metrics dashboard",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 118,
+          "name": "Profiling instrumentation",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 119,
+          "name": "Circuit breakers",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 120,
+          "name": "Error → insight pipeline",
+          "level": 5,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Agent-OS Readiness",
+      "applicable": 12,
+      "passed": 12,
+      "percent": 100,
+      "features": [
+        {
+          "num": 121,
+          "name": "Tool allowlist / permission policy",
+          "level": 2,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 122,
+          "name": "Sandboxing / blast-radius bounds",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 123,
+          "name": "Hooks for context preservation",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 124,
+          "name": "SBOM presence",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 125,
+          "name": "Provenance attestations",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 126,
+          "name": "Agent audit trail with stable run IDs",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 127,
+          "name": "Replayable evaluation harness",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 128,
+          "name": "Kill-switch infrastructure",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 129,
+          "name": "Human escalation path",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 130,
+          "name": "Agent registry / ownership metadata",
+          "level": 4,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 131,
+          "name": "Per-repo policy visibility",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        },
+        {
+          "num": 132,
+          "name": "Cost telemetry for agent runs",
+          "level": 3,
+          "description": "(description)",
+          "status": "pass",
+          "rationale": "Evidence found.",
+          "remediation_prompt": null
+        }
+      ]
+    }
+  ],
+  "top_actions": [
+    {
+      "title": "Add an agent instruction file",
+      "body": "Create an AGENTS.md describing how agents should work in this repo.",
+      "feature_refs": [
+        1
+      ]
+    },
+    {
+      "title": "Configure a linter",
+      "body": "Add ESLint / ruff / golangci-lint to catch bugs early.",
+      "feature_refs": [
+        22
+      ]
+    },
+    {
+      "title": "Set up a CI pipeline",
+      "body": "Add a GitHub Actions workflow that runs tests on every PR.",
+      "feature_refs": [
+        30
+      ]
+    }
+  ]
+}

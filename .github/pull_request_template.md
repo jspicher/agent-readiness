@@ -54,7 +54,9 @@ part of a multi-PR effort, note the sequence number and the overall plan.
 
 <!--
 List the local quality gates you ran and any feature-specific verification.
-This repo has no build/lint/test tooling; verification is hand-run.
+CI runs `scripts/validate_audit_data.py` against fixtures and
+`scripts/ci_run_negative_fixtures.sh` against the negative-test suite. Local
+verification is still hand-run for `render_html.sh` smoke checks.
 -->
 
 - [ ] `bash scripts/scan_<changed>.sh .` runs without shell errors against this repo

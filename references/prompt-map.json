@@ -3,7 +3,16 @@
     "generated": "2026-05-16",
     "source_criteria": "references/criteria.md (132 features across 7 pillars)",
     "existing_prompts_dir": "prompts/",
-    "existing_prompts_count": 82,
+    "existing_prompts_count": 131,
+    "count_catchup_note": "Catch-up from stale 82 to 131; reflects 49 prior prompt authorings not previously reconciled here. Going forward this number tracks 1:1 with prompts/*.md (excluding _graveyard/).",
+    "deprecated_orphans": [
+      {"file": "2-build-vcs-cli-tools.md", "reason": "Factory legacy taxonomy; no matching criteria.md row. Moved to prompts/_graveyard/ on 2026-05-17."},
+      {"file": "3-build-agentic-development.md", "reason": "Factory legacy taxonomy; no matching criteria.md row. Moved to prompts/_graveyard/ on 2026-05-17."},
+      {"file": "3-product-product-analytics-instrumentation.md", "reason": "Factory legacy taxonomy; no matching criteria.md row. Moved to prompts/_graveyard/ on 2026-05-17."},
+      {"file": "3-style-naming-consistency.md", "reason": "Factory legacy taxonomy; no matching criteria.md row. Moved to prompts/_graveyard/ on 2026-05-17."},
+      {"file": "4-debugging-deployment-observability.md", "reason": "Factory legacy taxonomy; no matching criteria.md row. Moved to prompts/_graveyard/ on 2026-05-17."},
+      {"file": "4-taskdiscovery-backlog-health.md", "reason": "Factory legacy taxonomy; no matching criteria.md row. Moved to prompts/_graveyard/ on 2026-05-17."}
+    ],
     "schema": {
       "feature_num": "int -- feature number in criteria.md (1-132)",
       "pillar": "int -- 1-7",

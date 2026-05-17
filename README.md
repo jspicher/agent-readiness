@@ -76,7 +76,8 @@ references/
   criteria.md                     <- all 132 signals with evidence patterns
   audit-data-schema.md            <- JSON schema for the data sibling
   prompt-map.json                 <- maps failing signals to remediation prompts
-prompts/                          <- 132 pre-authored remediation prompts (~1.3MB)
+prompts/                          <- 131 pre-authored remediation prompts (~1.3MB; features #56 and #92 share one file)
+  _graveyard/                     <- 6 retired prompts; excluded from validate_audit_data.py V11 drift check
   1-build-ci-pipeline.md
   1-devenv-environment-template.md
   ...                             <- one .md per failing-signal fix
@@ -97,7 +98,7 @@ fixtures/
 
 ## Cross-Agent Compatibility
 
-The skill is authored for Claude Code but installs cleanly into any agent the skills.sh CLI supports (Cursor, Codex, OpenCode, Amp, Augment, Cline, etc.). The audit flow is agent-neutral; the inlined remediation prompts work in any tool that accepts pasted briefs.
+The skill is **agent-agnostic** (Claude Code, Cursor, Codex, Factory, OpenCode, Amp, Augment, Cline, etc.) but it is **not** OS-agnostic. The audit flow is agent-neutral and the inlined remediation prompts work in any tool that accepts pasted briefs; the helper scripts in `scripts/` are POSIX bash + Python 3.8+. On Windows, run the skill through Git Bash or WSL.
 
 **Requirements (anywhere it runs):**
 - `bash` (the 8 helper scripts use POSIX shell). On Windows-native agents, install Git Bash or WSL.
@@ -119,3 +120,8 @@ The skill is authored for Claude Code but installs cleanly into any agent the sk
 ## License
 
 MIT. See `LICENSE`.
+
+---
+
+_Skill source: [github.com/jspicher/agent-readiness](https://github.com/jspicher/agent-readiness)_
+

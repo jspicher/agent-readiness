@@ -12,6 +12,7 @@ stay consistent with it.
   "schema_version": 1,
   "repo_name": "string",
   "generated_at": "ISO-8601 UTC string",
+  "audit_context": { /* required when schema_version >= 2 (see below) */ },
   "repo_profile": { /* from Step 0 -- optional in v1, recommended */ },
   "applications": [{"path": "string", "description": "string"}],
   "summary": { ... },
@@ -20,6 +21,9 @@ stay consistent with it.
   "top_actions": [ /* up to 3 */ ]
 }
 ```
+
+`schema_version` is `1` (legacy, `audit_context` optional) or `2`
+(`audit_context` required and well-formed).
 
 ## repo_profile (recommended; renderer falls back when missing)
 
@@ -42,9 +46,41 @@ When `repo_profile` is absent (e.g., pre-Phase-2.y audits like v4 backfilled JSO
 
 When a dimension is `unknown` (or `accepts_external_contributors=null`), criteria gated on that dimension default to **strict** -- the criterion applies and may still fail.
 
+## audit_context (required when schema_version >= 2)
+
+Captures the state of the target repository's working tree at audit time.
+Populated by `bash scripts/capture_audit_context.sh <repo>` and merged into
+the data file before `validate_audit_data.py` is run (see SKILL.md Step 0).
+This block lets a reader confirm that a report describes a specific commit,
+or warns them when the audit was run against uncommitted changes.
+
+```json
+{
+  "head_sha": "string -- full git SHA (>=7 hex chars)",
+  "branch": "string -- branch name; \"detached@<short_sha>\" when detached",
+  "worktree_dirty": true | false,
+  "dirty_files_count": "int >= 0",
+  "dirty_diff_sha256": "string (64 hex chars) when dirty | null when clean",
+  "captured_at": "ISO-8601 UTC string (prefer Z suffix)"
+}
+```
+
+Required-when rules (enforced by `[V10]`):
+- `dirty_diff_sha256` MUST be a 64-hex string when `worktree_dirty == true`.
+- `dirty_diff_sha256` MUST be `null` when `worktree_dirty == false`.
+- The block is optional under `schema_version: 1` (grandfather clause for
+  pre-Phase-2.z audits).
+- The block is **required** under `schema_version: 2`. A missing or
+  ill-shaped `audit_context` fails `[V10]`.
+
+When `worktree_dirty == true` the rendered Markdown surfaces a "working
+tree audit" italic line under the H1, and the HTML renderer shows an
+amber "working-tree audit" badge in the topbar with a hover title quoting
+`dirty_files_count` and the short SHA.
+
 ## Field rules
 
-- `schema_version` -- always `1` for v1.
+- `schema_version` -- `1` (legacy, `audit_context` optional) | `2` (`audit_context` required).
 - `repo_name` -- the audited repo's name (no path, no trailing slash).
 - `generated_at` -- ISO-8601 UTC timestamp.
 - `applications` -- from Step 1 of SKILL.md. At least one entry; the root
@@ -109,7 +145,7 @@ Both numbers MUST be displayed when present. The renderer never hides `autonomou
   "description": string,
   "status": "pass" | "fail" | "na",
   "rationale": string,
-  "rationale_kind": "profile_gate" | "missing_precondition" | "broadened_evidence" | "other" /* optional; recommended for status=na or status=pass when evidence path is non-obvious */,
+  "rationale_kind": "profile_gate" | "missing_precondition" | "subsystem_absence" | "broadened_evidence" | "other" /* required when status=na; recommended for status=pass when evidence path is non-obvious */,
   "remediation_prompt": string | null
 }
 ```
@@ -127,9 +163,14 @@ Rules:
     `accepts_external_contributors=false` triggered #76's N/A). Renderer
     surfaces a "profile gate" badge on the tile + links the precondition to
     the profile summary.
-  - `missing_precondition` -- N/A driven by a pre-Step-0 conditional (DB-using,
-    monorepo, web-facing, etc.). Renderer shows the standard "—" tile with
-    rationale tooltip.
+  - `missing_precondition` -- N/A driven by a non-evidence, **process-level**
+    constraint that's unsatisfiable on this repo's platform/plan (e.g., #54
+    Branch protection on GitHub Free private). Renderer shows the standard
+    "—" tile with rationale tooltip.
+  - `subsystem_absence` -- N/A because the repo demonstrably has no instance
+    of the gated subsystem (DB-using, monorepo, web-facing, perf-sensitive,
+    etc.). See `references/applicability-glossary.md` for per-dimension
+    detection commands. Renderer shows the standard "—" tile.
   - `broadened_evidence` -- pass via a Phase 2.y broadened evidence path
     (e.g., #73 LICENSE passed via README proprietary statement instead of a
     LICENSE file; #108 passed via `packageManager` field instead of `.npmrc`).
@@ -186,6 +227,7 @@ Both the Markdown and HTML reports derive from this JSON, but they don't render 
 | `summary.strongest_pillar` / `weakest_pillar` | yes | yes |
 | `summary.readiness_tracks` | yes (dual-headline lines) | yes (top of hero summary) |
 | `repo_profile` | yes (REPOSITORY_PROFILE block after applications) | yes (top of hero summary; tooltip on each profile-gated N/A) |
+| `audit_context` | yes (dirty banner under H1 when `worktree_dirty`) | yes (amber "working-tree audit" badge in topbar when `worktree_dirty`) |
 | `tiers` | yes (Pass rate by tier table) | no (synthesized from `pillars` only) |
 | `pillars` | yes (per-pillar sections + rows) | yes (radar + tile grid) |
 | `top_actions` | yes (Top 3 next actions) | yes (actions strip) |

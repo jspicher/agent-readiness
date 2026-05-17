@@ -1,0 +1,26 @@
+name: validate
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate v1 fixture (legacy schema)
+        run: python3 scripts/validate_audit_data.py fixtures/test-data-minimal.json
+      - name: Validate v2 fixture (with audit_context)
+        run: python3 scripts/validate_audit_data.py fixtures/test-data-minimal-v2.json
+      - name: Run negative fixtures
+        run: bash scripts/ci_run_negative_fixtures.sh
+      - name: Bash syntax check on scanners
+        run: for f in scripts/*.sh; do bash -n "$f"; done
+      - name: Render HTML smoke test
+        run: |
+          bash scripts/render_html.sh fixtures/test-data-minimal.json /tmp/out.html
+          test "$(wc -c < /tmp/out.html)" -gt 50000
+      # TODO(PR-2): wire scripts/lint_prompt_placeholders.py after prompt-cleanup PR
