@@ -275,7 +275,7 @@ Structure the output as:
 ✓ #1 Agent instruction file (L2) — AGENTS.md at root
 ✓ #2 AI IDE configuration (L2) — .cursor/rules/ with 3 rule files
 ✗ #3 Multi-model support (L3) — only Cursor configured
-<details><summary>📋 Remediation prompt — copy/paste into a fresh Claude Code session to fix this</summary>
+<details><summary>📋 Remediation prompt — copy/paste into a fresh agent session to fix this</summary>
 
 {full inlined remediation prompt for feature #3 — see Step 7}
 
@@ -297,7 +297,7 @@ For each FAILING feature, do TWO things:
 1. Note what's missing (one-line rationale, evidence-grounded).
 2. Inline the remediation prompt inside a `<details>` block immediately under the row — see Step 7 for the lookup-and-substitution algorithm.
 
-The inlined prompts are the actionable payload of this report: a reader can copy the entire `<details>` content into a new Claude Code session and the agent has everything it needs to fix that one feature.
+The inlined prompts are the actionable payload of this report: a reader can copy the entire `<details>` content into a new agent session (Claude Code, Cursor, Codex, etc.) and the agent has everything it needs to fix that one feature.
 
 #### 5b. Audit data JSON
 
@@ -322,18 +322,24 @@ other.
 
 #### 5c. Render HTML
 
-Run:
+Run the render script from this skill's directory. The script self-locates
+its template relative to its own path, so the working directory doesn't
+matter:
 
 ```bash
-bash ~/.claude/skills/agent-readiness-report/scripts/render_html.sh \
+bash "$SKILL_DIR/scripts/render_html.sh" \
   docs/agent-readiness/<slug>-data.json \
   docs/agent-readiness/<slug>.html
 ```
 
-The script embeds the JSON into the template at
-`~/.claude/skills/agent-readiness-report/assets/report-template.html` and
-writes a self-contained HTML report sibling to the Markdown. Open it in a
-browser to verify it loads without console errors before closing the audit.
+Replace `$SKILL_DIR` with the directory where this skill was installed
+(e.g., `~/.claude/skills/agent-readiness-report/` for global Claude Code
+installs, `.claude/skills/agent-readiness-report/` for project-scoped
+installs, `.cursor/skills/agent-readiness-report/` for Cursor, etc.).
+
+The script embeds the JSON into `assets/report-template.html` and writes a
+self-contained HTML report sibling to the Markdown. Open it in a browser
+to verify it loads without console errors before closing the audit.
 
 ### Step 6: Quality boundary on remediation prompts
 
@@ -357,7 +363,7 @@ remediation template):
 
 ### Step 7: Inline remediation prompts in the report
 
-For every failing feature in Step 5, inline its full remediation prompt inside the `<details>` block. The prompts are pre-authored and live in `docs/factory-ai-readiness/remediate-prompts/` (relative to the `.claudebot` workspace, not the audited repo). The mapping from feature number to prompt file lives in `references/prompt-map.json` next to this SKILL.md.
+For every failing feature in Step 5, inline its full remediation prompt inside the `<details>` block. The prompts are pre-authored and live in `prompts/` inside this skill's directory (sibling to `SKILL.md`, `references/`, `scripts/`, `assets/`). The mapping from feature number to prompt file lives in `references/prompt-map.json`.
 
 The same fully-substituted prompt text from this step is ALSO written verbatim into each failing feature's `remediation_prompt` field in `<slug>-data.json` (Step 5b). Substitute once, write to both surfaces in the same pass -- byte-identical.
 
@@ -370,9 +376,10 @@ For each failing feature (status `✗`):
 2. **Find the feature's row** by `feature_num`.
 
 3. **Resolve the prompt file:**
-   - If `prompt_status == "HAS_PROMPT"`: open `prompt_path` (relative to `C:/wamp64/www/.claudebot/`). This is a pre-authored Factory or Pillar 7 prompt.
-   - If `prompt_status == "NEEDS_PROMPT"` AND a file exists at `docs/factory-ai-readiness/remediate-prompts/<proposed_filename>`: open that file. (Newly authored prompts land here as the project completes Phase 1.)
-   - If `prompt_status == "NEEDS_PROMPT"` AND no file exists yet: emit a stub block (see "Stub format" below) — do NOT fail the audit.
+   - All paths in `prompt_path` are relative to this skill's directory (i.e., the directory containing `SKILL.md`). They resolve to files under `prompts/`.
+   - If `prompt_status == "HAS_PROMPT"`: open `prompt_path`. This is a pre-authored Factory or Pillar 7 prompt.
+   - If `prompt_status == "NEEDS_PROMPT"` AND a file exists at `prompt_path` (or at `prompts/<proposed_filename>`): open that file. (As of the 132/132 authoring milestone, every feature should resolve via HAS_PROMPT; NEEDS_PROMPT is reserved for future criteria additions.)
+   - If neither file exists: emit a stub block (see "Stub format" below) — do NOT fail the audit.
 
 4. **Substitute placeholders** in the loaded prompt:
    - Replace literal string `<REPO_NAME>` with the audited repository's name (e.g., `botw-nextjs`).
@@ -380,7 +387,7 @@ For each failing feature (status `✗`):
 
 5. **Wrap and inline.** Emit:
    ```markdown
-   <details><summary>📋 Remediation prompt — copy/paste into a fresh Claude Code session to fix this</summary>
+   <details><summary>📋 Remediation prompt — copy/paste into a fresh agent session to fix this</summary>
 
    {substituted prompt text, verbatim, including the [Readiness Fix] header line and the trailing </system-reminder> close}
 
@@ -392,11 +399,11 @@ For each failing feature (status `✗`):
 ```markdown
 <details><summary>📋 Remediation prompt — pending authorship</summary>
 
-This feature is mapped in `references/prompt-map.json` (`feature_num: {N}`, `proposed_filename: <name>`) but the prompt file has not yet been authored. To fix this feature manually, refer to:
+This feature is mapped in `references/prompt-map.json` (`feature_num: {N}`, `proposed_filename: <name>`) but the prompt file is missing from `prompts/`. To fix this feature manually, refer to:
 - `references/criteria.md` row #{N} for evidence patterns
 - Step 6 (quality boundary rules) for what counts as a substantive fix
 
-To author this prompt: see `~/.claude/projects/C--wamp64-www--claudebot/memory/project_agent_readiness_remediation.md` for the batch protocol.
+To contribute the missing prompt, open a PR against this skill's repo adding the file at `prompts/<proposed_filename>` and flipping `prompt_status` to `HAS_PROMPT` in `references/prompt-map.json`.
 
 </details>
 ```

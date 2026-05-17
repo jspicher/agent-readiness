@@ -76,6 +76,10 @@ references/
   criteria.md                     <- all 132 signals with evidence patterns
   audit-data-schema.md            <- JSON schema for the data sibling
   prompt-map.json                 <- maps failing signals to remediation prompts
+prompts/                          <- 132 pre-authored remediation prompts (~1.3MB)
+  1-build-ci-pipeline.md
+  1-devenv-environment-template.md
+  ...                             <- one .md per failing-signal fix
 scripts/
   scan_agent_instructions.sh
   scan_feedback_loops.sh
@@ -90,6 +94,17 @@ assets/
 fixtures/
   test-data-minimal.json          <- minimal example for renderer testing
 ```
+
+## Cross-Agent Compatibility
+
+The skill is authored for Claude Code but installs cleanly into any agent the skills.sh CLI supports (Cursor, Codex, OpenCode, Amp, Augment, Cline, etc.). The audit flow is agent-neutral; the inlined remediation prompts work in any tool that accepts pasted briefs.
+
+**Requirements (anywhere it runs):**
+- `bash` (the 8 helper scripts use POSIX shell). On Windows-native agents, install Git Bash or WSL.
+- `gh` CLI (optional; used only for the `visibility` profile dimension -- degrades to `unknown` if absent).
+- `python` 3.8+ (optional; only required if you want to validate `prompt-map.json` programmatically).
+
+**No agent-specific lock-in:** SKILL.md tool references are limited to Read/Write/Edit/Grep/Glob/Bash (the universal set). The render script self-locates its template via `dirname "$0"`, so it works from any install location.
 
 ## Design Principles
 

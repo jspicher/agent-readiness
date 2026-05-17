@@ -2,7 +2,7 @@
   "_meta": {
     "generated": "2026-05-16",
     "source_criteria": "references/criteria.md (132 features across 7 pillars)",
-    "existing_prompts_dir": "docs/factory-ai-readiness/remediate-prompts/",
+    "existing_prompts_dir": "prompts/",
     "existing_prompts_count": 82,
     "schema": {
       "feature_num": "int -- feature number in criteria.md (1-132)",
@@ -10,7 +10,7 @@
       "level": "string -- L1-L5",
       "name": "string -- feature name from criteria.md (without bold)",
       "conditional": "string|null -- condition under which feature applies",
-      "prompt_path": "string -- path to existing prompt file (relative to repo root)",
+      "prompt_path": "string -- path to prompt file (relative to this skill's directory)",
       "prompt_status": "enum -- HAS_PROMPT | NEEDS_PROMPT",
       "proposed_filename": "string|null -- if NEEDS_PROMPT, the filename to create",
       "level_mismatch_note": "string|null -- if Factory's prompt filename level differs from criteria.md's L tag"
@@ -23,7 +23,7 @@
       "level": "L2",
       "name": "Agent instruction file",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-docs-agents-md-file.md",
+      "prompt_path": "prompts/2-docs-agents-md-file.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -34,7 +34,7 @@
       "level": "L2",
       "name": "AI IDE configuration",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-docs-ai-ide-configuration.md",
+      "prompt_path": "prompts/2-docs-ai-ide-configuration.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -45,7 +45,7 @@
       "level": "L3",
       "name": "Multi-model support",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-docs-multi-model-support.md",
+      "prompt_path": "prompts/3-docs-multi-model-support.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -56,7 +56,7 @@
       "level": "L3",
       "name": "Agent skills or capabilities",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-docs-skills-configuration.md",
+      "prompt_path": "prompts/3-docs-skills-configuration.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -67,7 +67,7 @@
       "level": "L3",
       "name": "Tool server configuration",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-docs-tool-server-configuration.md",
+      "prompt_path": "prompts/3-docs-tool-server-configuration.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -78,7 +78,7 @@
       "level": "L4",
       "name": "Agent prompt library",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-docs-agent-prompt-library.md",
+      "prompt_path": "prompts/4-docs-agent-prompt-library.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -89,7 +89,7 @@
       "level": "L4",
       "name": "Component-level agent guidance",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-docs-component-level-agent-guidance.md",
+      "prompt_path": "prompts/4-docs-component-level-agent-guidance.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -100,7 +100,7 @@
       "level": "L1",
       "name": "README with build/run/test",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/1-docs-readme-file.md",
+      "prompt_path": "prompts/1-docs-readme-file.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -111,7 +111,7 @@
       "level": "L2",
       "name": "Contributing guide",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-docs-contributing-guide.md",
+      "prompt_path": "prompts/2-docs-contributing-guide.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -122,7 +122,7 @@
       "level": "L2",
       "name": "Architecture documentation",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-docs-service-architecture-documented.md",
+      "prompt_path": "prompts/3-docs-service-architecture-documented.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": "Factory filename L3 vs criteria L2 -- semantic match"
@@ -133,7 +133,7 @@
       "level": "L3",
       "name": "API documentation",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-docs-api-schema-docs.md",
+      "prompt_path": "prompts/3-docs-api-schema-docs.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -144,7 +144,7 @@
       "level": "L2",
       "name": "Inline code documentation",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-docs-inline-code-documentation.md",
+      "prompt_path": "prompts/2-docs-inline-code-documentation.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -155,7 +155,7 @@
       "level": "L3",
       "name": "Runnable examples",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-docs-runnable-examples.md",
+      "prompt_path": "prompts/3-docs-runnable-examples.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -166,7 +166,7 @@
       "level": "L2",
       "name": "Changelog",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-docs-changelog.md",
+      "prompt_path": "prompts/2-docs-changelog.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -177,7 +177,7 @@
       "level": "L1",
       "name": "Environment variable documentation",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/1-devenv-environment-template.md",
+      "prompt_path": "prompts/1-devenv-environment-template.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -188,7 +188,7 @@
       "level": "L3",
       "name": "Documentation site or directory",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-docs-documentation-site.md",
+      "prompt_path": "prompts/3-docs-documentation-site.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -199,7 +199,7 @@
       "level": "L4",
       "name": "Decision records",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-docs-decision-records.md",
+      "prompt_path": "prompts/4-docs-decision-records.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -210,7 +210,7 @@
       "level": "L3",
       "name": "Module-level READMEs",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-docs-module-level-readmes.md",
+      "prompt_path": "prompts/3-docs-module-level-readmes.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -221,7 +221,7 @@
       "level": "L3",
       "name": "Documentation freshness",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-docs-documentation-freshness.md",
+      "prompt_path": "prompts/3-docs-documentation-freshness.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -232,7 +232,7 @@
       "level": "L5",
       "name": "AGENTS.md freshness validation",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-docs-agents-md-freshness-validation.md",
+      "prompt_path": "prompts/4-docs-agents-md-freshness-validation.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": "Factory filename L4 vs criteria L5"
@@ -243,7 +243,7 @@
       "level": "L4",
       "name": "Automated documentation generation",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-docs-automated-documentation-generation.md",
+      "prompt_path": "prompts/2-docs-automated-documentation-generation.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": "Factory filename L2 vs criteria L4"
@@ -254,7 +254,7 @@
       "level": "L1",
       "name": "Linter",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/1-style-linter-configuration.md",
+      "prompt_path": "prompts/1-style-linter-configuration.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -265,7 +265,7 @@
       "level": "L1",
       "name": "Formatter",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/1-style-code-formatter.md",
+      "prompt_path": "prompts/1-style-code-formatter.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -276,7 +276,7 @@
       "level": "L1",
       "name": "Type checking",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/1-style-type-checker.md",
+      "prompt_path": "prompts/1-style-type-checker.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -287,7 +287,7 @@
       "level": "L2",
       "name": "Pre-commit hooks",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-style-pre-commit-hooks.md",
+      "prompt_path": "prompts/2-style-pre-commit-hooks.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -298,7 +298,7 @@
       "level": "L1",
       "name": "Unit tests",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/1-testing-unit-tests-exist.md",
+      "prompt_path": "prompts/1-testing-unit-tests-exist.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -309,7 +309,7 @@
       "level": "L3",
       "name": "Integration tests",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-testing-integration-tests-exist.md",
+      "prompt_path": "prompts/3-testing-integration-tests-exist.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -320,7 +320,7 @@
       "level": "L4",
       "name": "End-to-end tests",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-testing-end-to-end-tests.md",
+      "prompt_path": "prompts/4-testing-end-to-end-tests.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -331,7 +331,7 @@
       "level": "L2",
       "name": "Test coverage measurement",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-testing-test-coverage-thresholds.md",
+      "prompt_path": "prompts/2-testing-test-coverage-thresholds.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -342,7 +342,7 @@
       "level": "L1",
       "name": "CI pipeline",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/1-build-ci-pipeline.md",
+      "prompt_path": "prompts/1-build-ci-pipeline.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -353,7 +353,7 @@
       "level": "L4",
       "name": "Fast CI feedback",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-build-fast-ci-feedback.md",
+      "prompt_path": "prompts/4-build-fast-ci-feedback.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -364,7 +364,7 @@
       "level": "L1",
       "name": "Test run documentation",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-testing-unit-tests-runnable.md",
+      "prompt_path": "prompts/2-testing-unit-tests-runnable.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": "Factory's 'unit-tests-runnable' covers test-run documentation"
@@ -375,7 +375,7 @@
       "level": "L3",
       "name": "Config/schema validation",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-build-config-schema-validation.md",
+      "prompt_path": "prompts/3-build-config-schema-validation.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -386,7 +386,7 @@
       "level": "L4",
       "name": "Snapshot or golden-file tests",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-testing-snapshot-golden-tests.md",
+      "prompt_path": "prompts/4-testing-snapshot-golden-tests.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -397,7 +397,7 @@
       "level": "L4",
       "name": "Benchmark suite",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-testing-benchmark-suite.md",
+      "prompt_path": "prompts/4-testing-benchmark-suite.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -408,7 +408,7 @@
       "level": "L3",
       "name": "Warnings-as-errors",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-style-warnings-as-errors.md",
+      "prompt_path": "prompts/3-style-warnings-as-errors.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -419,7 +419,7 @@
       "level": "L4",
       "name": "Spell/typo checking",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-style-spell-typo-checking.md",
+      "prompt_path": "prompts/4-style-spell-typo-checking.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -430,7 +430,7 @@
       "level": "L3",
       "name": "Test isolation",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-testing-test-isolation.md",
+      "prompt_path": "prompts/4-testing-test-isolation.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": "Factory L4 vs criteria L3"
@@ -441,7 +441,7 @@
       "level": "L4",
       "name": "Flaky test detection",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-testing-flaky-test-detection.md",
+      "prompt_path": "prompts/4-testing-flaky-test-detection.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -452,7 +452,7 @@
       "level": "L4",
       "name": "Test performance tracking",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-testing-test-performance-tracking.md",
+      "prompt_path": "prompts/4-testing-test-performance-tracking.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -463,7 +463,7 @@
       "level": "L2",
       "name": "Test file naming conventions",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-testing-test-file-naming-conventions.md",
+      "prompt_path": "prompts/3-testing-test-file-naming-conventions.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": "Factory L3 vs criteria L2"
@@ -474,7 +474,7 @@
       "level": "L3",
       "name": "Strict typing enforcement",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-style-strict-typing.md",
+      "prompt_path": "prompts/2-style-strict-typing.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": "Factory L2 vs criteria L3"
@@ -485,7 +485,7 @@
       "level": "L3",
       "name": "Dead code detection",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-style-dead-code-detection.md",
+      "prompt_path": "prompts/3-style-dead-code-detection.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -496,7 +496,7 @@
       "level": "L4",
       "name": "Duplicate code detection",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-style-duplicate-code-detection.md",
+      "prompt_path": "prompts/3-style-duplicate-code-detection.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": "Factory L3 vs criteria L4"
@@ -507,7 +507,7 @@
       "level": "L3",
       "name": "Large file detection",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-style-large-file-detection.md",
+      "prompt_path": "prompts/3-style-large-file-detection.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -518,7 +518,7 @@
       "level": "L4",
       "name": "Code modularization enforcement",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-style-code-modularization-enforcement.md",
+      "prompt_path": "prompts/4-style-code-modularization-enforcement.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -529,7 +529,7 @@
       "level": "L3",
       "name": "Technical debt markers tracking",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-style-technical-debt-tracking.md",
+      "prompt_path": "prompts/3-style-technical-debt-tracking.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -540,7 +540,7 @@
       "level": "L5",
       "name": "Cyclomatic complexity tracking",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/5-style-cyclomatic-complexity.md",
+      "prompt_path": "prompts/5-style-cyclomatic-complexity.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -551,7 +551,7 @@
       "level": "L4",
       "name": "N+1 query detection",
       "conditional": "DB-using app",
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-style-n-1-query-detection.md",
+      "prompt_path": "prompts/4-style-n-1-query-detection.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -562,7 +562,7 @@
       "level": "L2",
       "name": "Issue templates",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-taskdiscovery-issue-templates.md",
+      "prompt_path": "prompts/2-taskdiscovery-issue-templates.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -573,7 +573,7 @@
       "level": "L2",
       "name": "PR template",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-taskdiscovery-pr-templates.md",
+      "prompt_path": "prompts/2-taskdiscovery-pr-templates.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -584,7 +584,7 @@
       "level": "L2",
       "name": "Dependency update automation",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-security-dependency-update-automation.md",
+      "prompt_path": "prompts/2-security-dependency-update-automation.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -595,7 +595,7 @@
       "level": "L3",
       "name": "Release automation",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-build-release-automation.md",
+      "prompt_path": "prompts/3-build-release-automation.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -606,7 +606,7 @@
       "level": "L2",
       "name": "Branch protection",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-security-branch-protection.md",
+      "prompt_path": "prompts/2-security-branch-protection.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -617,7 +617,7 @@
       "level": "L4",
       "name": "Merge automation",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-build-merge-automation.md",
+      "prompt_path": "prompts/4-build-merge-automation.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -628,7 +628,7 @@
       "level": "L1",
       "name": "Task runner",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-build-build-command-documentation.md",
+      "prompt_path": "prompts/2-build-build-command-documentation.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": "Factory L2 vs criteria L1; shares prompt with feature #92 (Single-command build) -- Factory has one prompt covering both task-runner + single-command-build concepts. Intentional collision: both features legitimately point here."
@@ -639,7 +639,7 @@
       "level": "L3",
       "name": "Structured change tracking",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-build-structured-change-tracking.md",
+      "prompt_path": "prompts/3-build-structured-change-tracking.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -650,7 +650,7 @@
       "level": "L4",
       "name": "CI concurrency control",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-build-ci-concurrency-control.md",
+      "prompt_path": "prompts/4-build-ci-concurrency-control.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -661,7 +661,7 @@
       "level": "L3",
       "name": "Automated release notes",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-build-release-notes-automation.md",
+      "prompt_path": "prompts/3-build-release-notes-automation.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -672,7 +672,7 @@
       "level": "L4",
       "name": "Stale issue/PR management",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-taskdiscovery-stale-issue-pr-management.md",
+      "prompt_path": "prompts/4-taskdiscovery-stale-issue-pr-management.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -683,7 +683,7 @@
       "level": "L4",
       "name": "Label automation",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-taskdiscovery-issue-labeling-system.md",
+      "prompt_path": "prompts/2-taskdiscovery-issue-labeling-system.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": "Factory L2 vs criteria L4"
@@ -694,7 +694,7 @@
       "level": "L4",
       "name": "Multi-platform CI",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-build-multi-platform-ci.md",
+      "prompt_path": "prompts/4-build-multi-platform-ci.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -705,7 +705,7 @@
       "level": "L3",
       "name": "Deployment automation",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-build-deployment-automation.md",
+      "prompt_path": "prompts/3-build-deployment-automation.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": "Adversarial review 2026-05-16: was loosely mapped to 4-debugging-deployment-observability.md, but deployment automation (deploy-on-merge workflow) is semantically distinct from deployment observability (can you see what shipped). Reassigned to needs-prompt."
@@ -716,7 +716,7 @@
       "level": "L3",
       "name": "Automated code review checks",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-build-automated-code-review-checks.md",
+      "prompt_path": "prompts/3-build-automated-code-review-checks.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -727,7 +727,7 @@
       "level": "L4",
       "name": "Automated PR review generation",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-build-automated-pr-review-generation.md",
+      "prompt_path": "prompts/2-build-automated-pr-review-generation.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": "Factory L2 vs criteria L4"
@@ -738,7 +738,7 @@
       "level": "L4",
       "name": "Automated security review generation",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-security-automated-security-review-generation.md",
+      "prompt_path": "prompts/2-security-automated-security-review-generation.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": "Factory L2 vs criteria L4"
@@ -749,7 +749,7 @@
       "level": "L4",
       "name": "Feature flag infrastructure",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-build-feature-flag-infrastructure.md",
+      "prompt_path": "prompts/4-build-feature-flag-infrastructure.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -760,7 +760,7 @@
       "level": "L5",
       "name": "Dead feature flag detection",
       "conditional": "flag system present",
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-build-dead-feature-flag-detection.md",
+      "prompt_path": "prompts/3-build-dead-feature-flag-detection.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": "Factory L3 vs criteria L5"
@@ -771,7 +771,7 @@
       "level": "L4",
       "name": "Deployment frequency",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-build-deployment-frequency.md",
+      "prompt_path": "prompts/4-build-deployment-frequency.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -782,7 +782,7 @@
       "level": "L5",
       "name": "Progressive rollout",
       "conditional": "production system",
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-build-progressive-rollout.md",
+      "prompt_path": "prompts/4-build-progressive-rollout.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": "Factory L4 vs criteria L5"
@@ -793,7 +793,7 @@
       "level": "L5",
       "name": "Rollback automation",
       "conditional": "production system",
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-build-rollback-automation.md",
+      "prompt_path": "prompts/4-build-rollback-automation.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": "Factory L4 vs criteria L5"
@@ -804,7 +804,7 @@
       "level": "L1",
       "name": "Comprehensive .gitignore",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/1-security-gitignore-comprehensive.md",
+      "prompt_path": "prompts/1-security-gitignore-comprehensive.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -815,7 +815,7 @@
       "level": "L2",
       "name": "License",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-security-license.md",
+      "prompt_path": "prompts/2-security-license.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -826,7 +826,7 @@
       "level": "L2",
       "name": "Code ownership",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-security-codeowners-file.md",
+      "prompt_path": "prompts/2-security-codeowners-file.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -837,7 +837,7 @@
       "level": "L2",
       "name": "Security policy",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-security-security-policy.md",
+      "prompt_path": "prompts/2-security-security-policy.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -848,7 +848,7 @@
       "level": "L2",
       "name": "Code of conduct",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-security-code-of-conduct.md",
+      "prompt_path": "prompts/2-security-code-of-conduct.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -859,7 +859,7 @@
       "level": "L3",
       "name": "AI usage policy",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-security-ai-usage-policy.md",
+      "prompt_path": "prompts/3-security-ai-usage-policy.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -870,7 +870,7 @@
       "level": "L2",
       "name": "Secrets management",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-security-secrets-management.md",
+      "prompt_path": "prompts/2-security-secrets-management.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -881,7 +881,7 @@
       "level": "L3",
       "name": "Vulnerability scanning",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-security-vulnerability-scanning.md",
+      "prompt_path": "prompts/3-security-vulnerability-scanning.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -892,7 +892,7 @@
       "level": "L3",
       "name": "Secret scanning",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-security-secret-scanning.md",
+      "prompt_path": "prompts/3-security-secret-scanning.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -903,7 +903,7 @@
       "level": "L3",
       "name": "Sensitive data log scrubbing",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-security-sensitive-data-log-scrubbing.md",
+      "prompt_path": "prompts/3-security-sensitive-data-log-scrubbing.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -914,7 +914,7 @@
       "level": "L3",
       "name": "Minimum dependency release age",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-security-minimum-dependency-release-age.md",
+      "prompt_path": "prompts/3-security-minimum-dependency-release-age.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -925,7 +925,7 @@
       "level": "L2",
       "name": "Git attributes",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-security-git-attributes.md",
+      "prompt_path": "prompts/2-security-git-attributes.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -936,7 +936,7 @@
       "level": "L3",
       "name": "Contributor agreement",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-security-contributor-agreement.md",
+      "prompt_path": "prompts/3-security-contributor-agreement.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -947,7 +947,7 @@
       "level": "L4",
       "name": "Governance model",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-security-governance-model.md",
+      "prompt_path": "prompts/4-security-governance-model.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -958,7 +958,7 @@
       "level": "L3",
       "name": "CI workflow validation",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-build-ci-workflow-validation.md",
+      "prompt_path": "prompts/3-build-ci-workflow-validation.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -969,7 +969,7 @@
       "level": "L2",
       "name": "Environment separation",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-devenv-environment-separation.md",
+      "prompt_path": "prompts/2-devenv-environment-separation.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -980,7 +980,7 @@
       "level": "L4",
       "name": "DAST scanning",
       "conditional": "web-facing app",
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-security-dast-scanning.md",
+      "prompt_path": "prompts/4-security-dast-scanning.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -991,7 +991,7 @@
       "level": "L4",
       "name": "PII handling",
       "conditional": "user-data app",
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-security-pii-handling.md",
+      "prompt_path": "prompts/3-security-pii-handling.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": "Factory L3 vs criteria L4"
@@ -1002,7 +1002,7 @@
       "level": "L4",
       "name": "Privacy compliance infrastructure",
       "conditional": "user-data app + jurisdiction",
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-security-privacy-compliance.md",
+      "prompt_path": "prompts/4-security-privacy-compliance.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1013,7 +1013,7 @@
       "level": "L1",
       "name": "Dependency lockfile",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-build-dependencies-pinned.md",
+      "prompt_path": "prompts/2-build-dependencies-pinned.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": "Factory L2 vs criteria L1"
@@ -1024,7 +1024,7 @@
       "level": "L1",
       "name": "Single-command build",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-build-build-command-documentation.md",
+      "prompt_path": "prompts/2-build-build-command-documentation.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": "Factory covers build command docs; criteria L1 covers single-command build -- semantic overlap. Intentional collision with feature #56 (Task runner): Factory ships ONE prompt that covers both concepts; both features point here by design."
@@ -1035,7 +1035,7 @@
       "level": "L1",
       "name": "Single-command dev setup",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-build-single-command-setup.md",
+      "prompt_path": "prompts/3-build-single-command-setup.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": "Factory L3 vs criteria L1"
@@ -1046,7 +1046,7 @@
       "level": "L2",
       "name": "Dev container",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-devenv-dev-container.md",
+      "prompt_path": "prompts/2-devenv-dev-container.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1057,7 +1057,7 @@
       "level": "L3",
       "name": "Devcontainer runnable",
       "conditional": "devcontainer present",
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-devenv-devcontainer-runnable.md",
+      "prompt_path": "prompts/3-devenv-devcontainer-runnable.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1068,7 +1068,7 @@
       "level": "L2",
       "name": "Containerized services",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-devenv-containerized-services.md",
+      "prompt_path": "prompts/2-devenv-containerized-services.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1079,7 +1079,7 @@
       "level": "L3",
       "name": "Local services setup documented",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-devenv-local-services-setup.md",
+      "prompt_path": "prompts/2-devenv-local-services-setup.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": "Factory L2 vs criteria L3"
@@ -1090,7 +1090,7 @@
       "level": "L4",
       "name": "Reproducible environment",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-devenv-reproducible-environment.md",
+      "prompt_path": "prompts/4-devenv-reproducible-environment.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1101,7 +1101,7 @@
       "level": "L2",
       "name": "Tool version pinning",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-devenv-tool-version-pinning.md",
+      "prompt_path": "prompts/2-devenv-tool-version-pinning.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": "Adversarial review 2026-05-16: was loosely mapped to 2-build-vcs-cli-tools.md, but Factory's VCS-CLI-tools is narrower (gh/glab CLI install) than #99 (runtime version pinning via .tool-versions, mise, .node-version). Reassigned to needs-prompt."
@@ -1112,7 +1112,7 @@
       "level": "L3",
       "name": "Monorepo orchestration",
       "conditional": "monorepo",
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-build-monorepo-tooling.md",
+      "prompt_path": "prompts/2-build-monorepo-tooling.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": "Factory L2 vs criteria L3"
@@ -1123,7 +1123,7 @@
       "level": "L4",
       "name": "Version drift detection",
       "conditional": "monorepo",
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-build-version-drift-detection.md",
+      "prompt_path": "prompts/3-build-version-drift-detection.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": "Factory L3 vs criteria L4"
@@ -1134,7 +1134,7 @@
       "level": "L3",
       "name": "Build caching",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-build-build-caching.md",
+      "prompt_path": "prompts/3-build-build-caching.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1145,7 +1145,7 @@
       "level": "L4",
       "name": "Build performance tracking",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-build-build-performance-tracking.md",
+      "prompt_path": "prompts/4-build-build-performance-tracking.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1156,7 +1156,7 @@
       "level": "L3",
       "name": "Heavy dependency / bundle analysis",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-build-heavy-dependency-detection.md",
+      "prompt_path": "prompts/4-build-heavy-dependency-detection.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": "Factory L4 vs criteria L3"
@@ -1167,7 +1167,7 @@
       "level": "L3",
       "name": "Unused dependencies detection",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-build-unused-dependencies-detection.md",
+      "prompt_path": "prompts/3-build-unused-dependencies-detection.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1178,7 +1178,7 @@
       "level": "L4",
       "name": "Cross-platform support",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-build-cross-platform-support.md",
+      "prompt_path": "prompts/4-build-cross-platform-support.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1189,7 +1189,7 @@
       "level": "L4",
       "name": "Cloud dev environment",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-devenv-cloud-dev-environment.md",
+      "prompt_path": "prompts/4-devenv-cloud-dev-environment.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1200,7 +1200,7 @@
       "level": "L3",
       "name": "Package manager configuration",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-build-package-manager-configuration.md",
+      "prompt_path": "prompts/3-build-package-manager-configuration.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1211,7 +1211,7 @@
       "level": "L3",
       "name": "Database schema definition",
       "conditional": "DB-using app",
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-devenv-database-schema.md",
+      "prompt_path": "prompts/2-devenv-database-schema.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": "Factory L2 vs criteria L3"
@@ -1222,7 +1222,7 @@
       "level": "L2",
       "name": "Structured logging",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-debugging-structured-logging.md",
+      "prompt_path": "prompts/2-debugging-structured-logging.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1233,7 +1233,7 @@
       "level": "L2",
       "name": "Error tracking with context",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-debugging-error-tracking-contextualized.md",
+      "prompt_path": "prompts/2-debugging-error-tracking-contextualized.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1244,7 +1244,7 @@
       "level": "L3",
       "name": "Health check endpoints",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-debugging-health-checks.md",
+      "prompt_path": "prompts/3-debugging-health-checks.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1255,7 +1255,7 @@
       "level": "L3",
       "name": "Metrics collection",
       "conditional": "production system",
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-debugging-metrics-collection.md",
+      "prompt_path": "prompts/3-debugging-metrics-collection.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1266,7 +1266,7 @@
       "level": "L4",
       "name": "Distributed tracing",
       "conditional": "multi-service",
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-debugging-distributed-tracing.md",
+      "prompt_path": "prompts/3-debugging-distributed-tracing.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": "Factory L3 vs criteria L4"
@@ -1277,7 +1277,7 @@
       "level": "L3",
       "name": "Alerting configured",
       "conditional": "production system",
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-debugging-alerting-configured.md",
+      "prompt_path": "prompts/3-debugging-alerting-configured.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1288,7 +1288,7 @@
       "level": "L2",
       "name": "Runbooks documented",
       "conditional": "production system",
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-debugging-runbooks-documented.md",
+      "prompt_path": "prompts/2-debugging-runbooks-documented.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1299,7 +1299,7 @@
       "level": "L4",
       "name": "Code quality metrics dashboard",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-debugging-code-quality-metrics-dashboard.md",
+      "prompt_path": "prompts/4-debugging-code-quality-metrics-dashboard.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1310,7 +1310,7 @@
       "level": "L4",
       "name": "Profiling instrumentation",
       "conditional": "perf-sensitive app",
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-debugging-profiling-instrumentation.md",
+      "prompt_path": "prompts/4-debugging-profiling-instrumentation.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1321,7 +1321,7 @@
       "level": "L4",
       "name": "Circuit breakers",
       "conditional": "external-dependency-heavy",
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-debugging-circuit-breakers.md",
+      "prompt_path": "prompts/4-debugging-circuit-breakers.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1332,7 +1332,7 @@
       "level": "L5",
       "name": "Error â†’ insight pipeline",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/5-product-error-to-insight-pipeline.md",
+      "prompt_path": "prompts/5-product-error-to-insight-pipeline.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1343,7 +1343,7 @@
       "level": "L2",
       "name": "Tool allowlist / permission policy",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/2-policy-tool-allowlist.md",
+      "prompt_path": "prompts/2-policy-tool-allowlist.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1354,7 +1354,7 @@
       "level": "L3",
       "name": "Sandboxing / blast-radius bounds",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-policy-sandboxing-blast-radius.md",
+      "prompt_path": "prompts/3-policy-sandboxing-blast-radius.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1365,7 +1365,7 @@
       "level": "L3",
       "name": "Hooks for context preservation",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-policy-context-preservation-hooks.md",
+      "prompt_path": "prompts/3-policy-context-preservation-hooks.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1376,7 +1376,7 @@
       "level": "L3",
       "name": "SBOM presence",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-policy-sbom-presence.md",
+      "prompt_path": "prompts/3-policy-sbom-presence.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1387,7 +1387,7 @@
       "level": "L4",
       "name": "Provenance attestations",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-policy-provenance-attestations.md",
+      "prompt_path": "prompts/4-policy-provenance-attestations.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1398,7 +1398,7 @@
       "level": "L4",
       "name": "Agent audit trail with stable run IDs",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-policy-agent-audit-trail.md",
+      "prompt_path": "prompts/4-policy-agent-audit-trail.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1409,7 +1409,7 @@
       "level": "L4",
       "name": "Replayable evaluation harness",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-policy-replayable-evaluation-harness.md",
+      "prompt_path": "prompts/4-policy-replayable-evaluation-harness.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1420,7 +1420,7 @@
       "level": "L4",
       "name": "Kill-switch infrastructure",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-policy-kill-switch-infrastructure.md",
+      "prompt_path": "prompts/4-policy-kill-switch-infrastructure.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1431,7 +1431,7 @@
       "level": "L3",
       "name": "Human escalation path",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-policy-human-escalation-path.md",
+      "prompt_path": "prompts/3-policy-human-escalation-path.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1442,7 +1442,7 @@
       "level": "L4",
       "name": "Agent registry / ownership metadata",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/4-policy-agent-registry-ownership.md",
+      "prompt_path": "prompts/4-policy-agent-registry-ownership.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1453,7 +1453,7 @@
       "level": "L3",
       "name": "Per-repo policy visibility",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-policy-per-repo-policy-visibility.md",
+      "prompt_path": "prompts/3-policy-per-repo-policy-visibility.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
@@ -1464,7 +1464,7 @@
       "level": "L3",
       "name": "Cost telemetry for agent runs",
       "conditional": null,
-      "prompt_path": "docs/factory-ai-readiness/remediate-prompts/3-policy-cost-telemetry-agent-runs.md",
+      "prompt_path": "prompts/3-policy-cost-telemetry-agent-runs.md",
       "prompt_status": "HAS_PROMPT",
       "proposed_filename": null,
       "level_mismatch_note": null
