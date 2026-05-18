@@ -96,6 +96,7 @@ scripts/
   build_audit_data.py             <- assembles audit-data JSON from per-feature judgments
   substitute_prompts.py           <- resolves prompt-map entry + substitutes <REPO_NAME> / <WHY_IT_FAILED> placeholders
   validate_audit_data.py          <- structural validator: 11 numbered checks (V01-V11)
+  render_md.py                    <- renders the Markdown report from audit-data JSON
   render_html.sh                  <- sed-based template injection into the HTML
   lint_prompt_placeholders.py     <- CI: catches unsubstituted placeholders in prompts/
   ci_run_negative_fixtures.sh     <- CI: ensures the 8 bad-V## fixtures still trip the right validator

@@ -268,6 +268,9 @@ python3 "$SKILL_DIR/scripts/build_audit_data.py" \
     --out docs/agent-readiness/<slug>-data.json
 python3 "$SKILL_DIR/scripts/validate_audit_data.py" \
     docs/agent-readiness/<slug>-data.json
+python3 "$SKILL_DIR/scripts/render_md.py" \
+    docs/agent-readiness/<slug>-data.json \
+    --out docs/agent-readiness/<slug>.md
 bash    "$SKILL_DIR/scripts/render_html.sh" \
     docs/agent-readiness/<slug>-data.json \
     docs/agent-readiness/<slug>.html
@@ -312,7 +315,9 @@ The only case in which hand-authored JSON is acceptable is for fixtures that int
 
 #### 5a. Markdown report
 
-Structure the output as:
+**The renderer (`scripts/render_md.py`) emits the Markdown for you from the same data JSON the HTML renderer consumes.** Hand-authoring the Markdown is prohibited for the same reason hand-authoring the JSON is prohibited: the failure-list scales to 60+ inlined `<details>` blocks, each requiring byte-identity with the JSON's `remediation_prompt` field. Promoting a target-repo `docs/agent-readiness/_gen_md.py` (or any other one-shot generator inside the audited codebase) is also prohibited -- it pollutes the target repo and reintroduces the drift between JSON and MD that the renderer eliminates.
+
+The renderer produces this structure (don't recreate it by hand):
 
 ```markdown
 # Agent Readiness Report: {repo name}
