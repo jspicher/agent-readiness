@@ -1,0 +1,1338 @@
+{
+  "schema_version": 1,
+  "_meta": {
+    "generated_from": "references/criteria.md",
+    "feature_count": 132,
+    "pillar_counts": {
+      "1": 21,
+      "2": 28,
+      "3": 22,
+      "4": 19,
+      "5": 19,
+      "6": 11,
+      "7": 12
+    }
+  },
+  "features": [
+    {
+      "num": 1,
+      "pillar": 1,
+      "pillar_name": "Agent Instructions",
+      "level": 2,
+      "name": "Agent instruction file",
+      "description": "A dedicated file telling agents how to work in this repo",
+      "evidence": "`AGENTS.md`, `CLAUDE.md`, `COPILOT.md`, `CONVENTIONS.md` at root",
+      "conditional_note": null
+    },
+    {
+      "num": 2,
+      "pillar": 1,
+      "pillar_name": "Agent Instructions",
+      "level": 2,
+      "name": "AI IDE configuration",
+      "description": "Settings or rules for AI-powered editors/IDEs",
+      "evidence": "`.cursor/rules/`, `.cursorrules`, `.github/copilot-instructions.md`, `.github/instructions/`, `.claude/settings.json`",
+      "conditional_note": null
+    },
+    {
+      "num": 3,
+      "pillar": 1,
+      "pillar_name": "Agent Instructions",
+      "level": 3,
+      "name": "Multi-model support",
+      "description": "Instructions across different AI models/tools, not locked to one vendor",
+      "evidence": "2+ distinct agent config types from features 1–2 present in same repo",
+      "conditional_note": null
+    },
+    {
+      "num": 4,
+      "pillar": 1,
+      "pillar_name": "Agent Instructions",
+      "level": 3,
+      "name": "Agent skills or capabilities",
+      "description": "Packaged, reusable abilities the agent can invoke",
+      "evidence": "`.claude/skills/`, `.factory/skills/`, `skill.md` files, tool definition files",
+      "conditional_note": null
+    },
+    {
+      "num": 5,
+      "pillar": 1,
+      "pillar_name": "Agent Instructions",
+      "level": 3,
+      "name": "Agent tool integration manifest",
+      "description": "Machine-readable declaration of the agent's tool surface (which CLIs/APIs/MCP servers the agent is allowed to use). PASS via any of: (a) MCP manifest with at least one server entry; (b) `.claude/settings.json` with non-empty `permissions.allow` or `permissions.deny`; (c) `.factory/settings.json` with `commandAllowlist`/`commandDenylist`; (d) Codex agent-runner config; (e) repo-local agent-tool-policy doc cross-referenced from AGENTS.md; (f) **explicit opt-out**: a manifest file (`.claude/settings.json`, `.mcp.json`, etc.) that contains a `\"policy\": \"intentionally-unscoped\"` field OR a `\"_comment\"` explaining the choice (e.g., `\"_comment\": \"Solo private repo, agent has unrestricted local access by design\"`). Mark `—` (N/A) when `team_scale=solo AND visibility=private AND no manifest file exists at all` (the criterion is structurally premature for a single-developer prototype). FAIL only when: a manifest file exists with truly empty/default scoping AND there is no explicit opt-out AND the repo is not solo-private. Stub configs without rationale on multi-contributor or public repos still fail -- that's where the agent's tool surface ambiguity actually causes problems.",
+      "evidence": "MCP manifest, `.claude/settings.json` with non-empty `permissions`, `.factory/settings.json` with `commandAllowlist`, agent-tool-policy doc, OR explicit `\"policy\": \"intentionally-unscoped\"` / `\"_comment\"` rationale in the manifest",
+      "conditional_note": "profile-aware"
+    },
+    {
+      "num": 6,
+      "pillar": 1,
+      "pillar_name": "Agent Instructions",
+      "level": 4,
+      "name": "Agent prompt library",
+      "description": "Pre-built prompts for common tasks in this repo",
+      "evidence": "`.github/prompts/`, `prompts/` directory, prompt template files",
+      "conditional_note": null
+    },
+    {
+      "num": 7,
+      "pillar": 1,
+      "pillar_name": "Agent Instructions",
+      "level": 4,
+      "name": "Component-level agent guidance",
+      "description": "Different parts of the codebase have their own agent instructions",
+      "evidence": "`AGENTS.md` or instruction files in subdirectories",
+      "conditional_note": null
+    },
+    {
+      "num": 8,
+      "pillar": 1,
+      "pillar_name": "Agent Instructions",
+      "level": 1,
+      "name": "README with build/run/test",
+      "description": "README includes the commands to build, run, and test",
+      "evidence": "`README.md` containing code blocks with build/install/test commands",
+      "conditional_note": null
+    },
+    {
+      "num": 9,
+      "pillar": 1,
+      "pillar_name": "Agent Instructions",
+      "level": 2,
+      "name": "Contributing guide",
+      "description": "How to contribute — code style, PR process, commit conventions",
+      "evidence": "`CONTRIBUTING.md`, `docs/contributing.md`, contributing section in README",
+      "conditional_note": null
+    },
+    {
+      "num": 10,
+      "pillar": 1,
+      "pillar_name": "Agent Instructions",
+      "level": 2,
+      "name": "Architecture documentation",
+      "description": "High-level overview of how the system is structured and why",
+      "evidence": "`ARCHITECTURE.md`, `docs/architecture/`, Mermaid/PlantUML diagrams",
+      "conditional_note": null
+    },
+    {
+      "num": 11,
+      "pillar": 1,
+      "pillar_name": "Agent Instructions",
+      "level": 3,
+      "name": "API documentation",
+      "description": "Reference docs for the project's interfaces",
+      "evidence": "`openapi.yaml`, generated HTML docs, `doc.go` files, Swagger UI",
+      "conditional_note": null
+    },
+    {
+      "num": 12,
+      "pillar": 1,
+      "pillar_name": "Agent Instructions",
+      "level": 2,
+      "name": "Inline code documentation",
+      "description": "Doc comments, docstrings — agents read these to understand intent",
+      "evidence": "JSDoc `/** */` blocks, Python docstrings, GoDoc, Rust `///`",
+      "conditional_note": null
+    },
+    {
+      "num": 13,
+      "pillar": 1,
+      "pillar_name": "Agent Instructions",
+      "level": 3,
+      "name": "Runnable examples",
+      "description": "Working example code the agent can study and imitate. **Libraries / SDKs / CLIs / frameworks**: strict -- require `examples/`, `_examples/`, or example apps with READMEs that exercise the public API. **Apps**: broaden -- accept tested recipes (`docs/recipes/`), pattern docs (`docs/patterns/`), playbooks (`docs/playbooks/`), or curated route/component reference implementations that are explicitly referenced from AGENTS.md/README as imitation targets. Tests alone do NOT pass; empty/unreferenced directories do NOT pass. **Monorepos**: apply per-package (strict for published packages, app rule for contained apps).",
+      "evidence": "Libraries: `examples/`, `_examples/`, example apps with READMEs. Apps: `docs/recipes/`, `docs/patterns/`, `docs/playbooks/` cross-linked from AGENTS.md/README",
+      "conditional_note": "evidence varies by `repo_kind`"
+    },
+    {
+      "num": 14,
+      "pillar": 1,
+      "pillar_name": "Agent Instructions",
+      "level": 2,
+      "name": "Changelog",
+      "description": "History of what changed and how entries should be written",
+      "evidence": "`CHANGELOG.md`, `CHANGES.md`, GitHub Releases",
+      "conditional_note": null
+    },
+    {
+      "num": 15,
+      "pillar": 1,
+      "pillar_name": "Agent Instructions",
+      "level": 1,
+      "name": "Environment variable documentation",
+      "description": "Template or docs for required env vars",
+      "evidence": "`.env.example`, `.env.template`, env var table in README",
+      "conditional_note": null
+    },
+    {
+      "num": 16,
+      "pillar": 1,
+      "pillar_name": "Agent Instructions",
+      "level": 3,
+      "name": "Documentation site or directory",
+      "description": "Organized docs beyond the README",
+      "evidence": "`docs/`, Docusaurus/Sphinx/MkDocs/VitePress config",
+      "conditional_note": null
+    },
+    {
+      "num": 17,
+      "pillar": 1,
+      "pillar_name": "Agent Instructions",
+      "level": 4,
+      "name": "Decision records",
+      "description": "Documented reasoning behind past architectural choices",
+      "evidence": "`doc/adr/`, `decisions/`, `rfcs/`, numbered ADR files",
+      "conditional_note": null
+    },
+    {
+      "num": 18,
+      "pillar": 1,
+      "pillar_name": "Agent Instructions",
+      "level": 3,
+      "name": "Module-level READMEs",
+      "description": "Individual packages/modules have their own READMEs",
+      "evidence": "`packages/*/README.md`, per-crate/per-module READMEs",
+      "conditional_note": null
+    },
+    {
+      "num": 19,
+      "pillar": 1,
+      "pillar_name": "Agent Instructions",
+      "level": 3,
+      "name": "Documentation freshness",
+      "description": "Docs updated within ~180 days of latest code change",
+      "evidence": "`git log` recency on AGENTS.md / README / docs/ vs main",
+      "conditional_note": null
+    },
+    {
+      "num": 20,
+      "pillar": 1,
+      "pillar_name": "Agent Instructions",
+      "level": 5,
+      "name": "AGENTS.md freshness validation",
+      "description": "CI check that AGENTS.md stays consistent with code",
+      "evidence": "CI workflow runs a script that validates AGENTS.md (e.g. `validate-agents-md.mjs`)",
+      "conditional_note": null
+    },
+    {
+      "num": 21,
+      "pillar": 1,
+      "pillar_name": "Agent Instructions",
+      "level": 4,
+      "name": "Automated documentation generation",
+      "description": "Build step that regenerates docs from code",
+      "evidence": "JSDoc/TypeDoc/Sphinx/Swagger autogen pipeline; docs auto-update workflow",
+      "conditional_note": null
+    },
+    {
+      "num": 22,
+      "pillar": 2,
+      "pillar_name": "Feedback Loops",
+      "level": 1,
+      "name": "Linter",
+      "description": "Static analysis catching bugs and style issues",
+      "evidence": "`.eslintrc.*`, `ruff.toml`, `.golangci.yml`, `clippy.toml`, `pylintrc`",
+      "conditional_note": null
+    },
+    {
+      "num": 23,
+      "pillar": 2,
+      "pillar_name": "Feedback Loops",
+      "level": 1,
+      "name": "Formatter",
+      "description": "Auto-formatter enforcing consistent style",
+      "evidence": "`.prettierrc`, `rustfmt.toml`, `[tool.black]`, `gofmt`/`goimports` in CI",
+      "conditional_note": null
+    },
+    {
+      "num": 24,
+      "pillar": 2,
+      "pillar_name": "Feedback Loops",
+      "level": 1,
+      "name": "Type checking",
+      "description": "Static type system or type checker",
+      "evidence": "`tsconfig.json strict`, `mypy.ini`, `[tool.mypy]`, `py.typed`",
+      "conditional_note": null
+    },
+    {
+      "num": 25,
+      "pillar": 2,
+      "pillar_name": "Feedback Loops",
+      "level": 2,
+      "name": "Pre-commit hooks",
+      "description": "Checks that run before commit",
+      "evidence": "`.pre-commit-config.yaml`, `.husky/`, `lefthook.yml`, `lint-staged`",
+      "conditional_note": null
+    },
+    {
+      "num": 26,
+      "pillar": 2,
+      "pillar_name": "Feedback Loops",
+      "level": 1,
+      "name": "Unit tests",
+      "description": "Tests for individual components",
+      "evidence": "`*_test.go`, `*_test.py`, `*.spec.ts`, `test/`, `__tests__/`",
+      "conditional_note": null
+    },
+    {
+      "num": 27,
+      "pillar": 2,
+      "pillar_name": "Feedback Loops",
+      "level": 3,
+      "name": "Integration tests",
+      "description": "Tests verifying components work together",
+      "evidence": "`test/integration/`, `tests/e2e/`, API test suites",
+      "conditional_note": null
+    },
+    {
+      "num": 28,
+      "pillar": 2,
+      "pillar_name": "Feedback Loops",
+      "level": 4,
+      "name": "End-to-end tests",
+      "description": "Full system/browser tests",
+      "evidence": "Playwright config, Cypress config, Selenium tests, `e2e/`",
+      "conditional_note": null
+    },
+    {
+      "num": 29,
+      "pillar": 2,
+      "pillar_name": "Feedback Loops",
+      "level": 2,
+      "name": "Test coverage measurement",
+      "description": "Coverage tracking with thresholds enforced in CI",
+      "evidence": "`.codecov.yml`, `coverageThreshold` in jest, `--cov` in pytest, Go cover profile",
+      "conditional_note": null
+    },
+    {
+      "num": 30,
+      "pillar": 2,
+      "pillar_name": "Feedback Loops",
+      "level": 1,
+      "name": "CI pipeline",
+      "description": "Automated checks on every push or PR",
+      "evidence": "`.github/workflows/ci.yml`, `.circleci/config.yml`, `.gitlab-ci.yml`, `Jenkinsfile`",
+      "conditional_note": null
+    },
+    {
+      "num": 31,
+      "pillar": 2,
+      "pillar_name": "Feedback Loops",
+      "level": 4,
+      "name": "Fast CI feedback",
+      "description": "CI completes quickly enough for agent iteration",
+      "evidence": "CI under 10 min documented or measurable; parallel jobs; test splitting",
+      "conditional_note": null
+    },
+    {
+      "num": 32,
+      "pillar": 2,
+      "pillar_name": "Feedback Loops",
+      "level": 1,
+      "name": "Test run documentation",
+      "description": "Agent knows exactly how to run which tests",
+      "evidence": "Test commands in README, AGENTS.md, CONTRIBUTING.md, or Makefile help",
+      "conditional_note": null
+    },
+    {
+      "num": 33,
+      "pillar": 2,
+      "pillar_name": "Feedback Loops",
+      "level": 3,
+      "name": "Config/schema validation",
+      "description": "YAML, JSON, config files validated automatically",
+      "evidence": "`yamllint`, JSON `$schema` refs, `actionlint` in CI, `taplo` for TOML",
+      "conditional_note": null
+    },
+    {
+      "num": 34,
+      "pillar": 2,
+      "pillar_name": "Feedback Loops",
+      "level": 4,
+      "name": "Snapshot or golden-file tests",
+      "description": "Tests that detect unexpected output changes",
+      "evidence": "`__snapshots__/`, `.snap` files, `testdata/` golden files, VCR cassettes",
+      "conditional_note": null
+    },
+    {
+      "num": 35,
+      "pillar": 2,
+      "pillar_name": "Feedback Loops",
+      "level": 4,
+      "name": "Benchmark suite",
+      "description": "Performance tests the agent can run for regression checks",
+      "evidence": "`bench/`, `*_bench_test.go`, pytest-benchmark, Criterion.rs",
+      "conditional_note": null
+    },
+    {
+      "num": 36,
+      "pillar": 2,
+      "pillar_name": "Feedback Loops",
+      "level": 3,
+      "name": "Warnings-as-errors",
+      "description": "Compiler/runtime warnings treated as failures",
+      "evidence": "`-Werror`, `warningsAsErrors` in build config, `filterwarnings = error`",
+      "conditional_note": null
+    },
+    {
+      "num": 37,
+      "pillar": 2,
+      "pillar_name": "Feedback Loops",
+      "level": 4,
+      "name": "Spell/typo checking",
+      "description": "Automated spelling checks in CI or hooks",
+      "evidence": "`.cspell.json`, `codespell` in pre-commit, `typos.toml`",
+      "conditional_note": null
+    },
+    {
+      "num": 38,
+      "pillar": 2,
+      "pillar_name": "Feedback Loops",
+      "level": 3,
+      "name": "Test isolation",
+      "description": "Tests are configured for parallel-safe execution",
+      "evidence": "Test runner config (vitest, jest) with parallel workers; isolated DB/env per test",
+      "conditional_note": null
+    },
+    {
+      "num": 39,
+      "pillar": 2,
+      "pillar_name": "Feedback Loops",
+      "level": 4,
+      "name": "Flaky test detection",
+      "description": "System identifies and tracks unstable tests",
+      "evidence": "jest-retry, pytest-rerunfailures, BuildPulse, CI quarantine mechanism",
+      "conditional_note": null
+    },
+    {
+      "num": 40,
+      "pillar": 2,
+      "pillar_name": "Feedback Loops",
+      "level": 4,
+      "name": "Test performance tracking",
+      "description": "Test suite duration measured and monitored",
+      "evidence": "`--reporter=verbose` with timing, test analytics platform, slow-test alerts",
+      "conditional_note": null
+    },
+    {
+      "num": 41,
+      "pillar": 2,
+      "pillar_name": "Feedback Loops",
+      "level": 2,
+      "name": "Test file naming conventions",
+      "description": "Consistent naming enforced by test runner config",
+      "evidence": "vitest `include` pattern, jest `testMatch`, pytest `python_files`",
+      "conditional_note": null
+    },
+    {
+      "num": 42,
+      "pillar": 2,
+      "pillar_name": "Feedback Loops",
+      "level": 3,
+      "name": "Strict typing enforcement",
+      "description": "Strict mode is non-optional, enforced in CI",
+      "evidence": "`tsconfig.json strict: true`, `[tool.mypy] strict = true`, CI fails on missing types",
+      "conditional_note": null
+    },
+    {
+      "num": 43,
+      "pillar": 2,
+      "pillar_name": "Feedback Loops",
+      "level": 3,
+      "name": "Dead code detection",
+      "description": "Static analysis flags unused exports/functions",
+      "evidence": "`knip`, `ts-prune`, `vulture`, `unimport`, `deadcode` (Go), Sonar",
+      "conditional_note": null
+    },
+    {
+      "num": 44,
+      "pillar": 2,
+      "pillar_name": "Feedback Loops",
+      "level": 4,
+      "name": "Duplicate code detection",
+      "description": "DRY scanning configured",
+      "evidence": "jscpd, simian, Sonar duplications, `--check-duplication` in CI",
+      "conditional_note": null
+    },
+    {
+      "num": 45,
+      "pillar": 2,
+      "pillar_name": "Feedback Loops",
+      "level": 3,
+      "name": "Large file detection",
+      "description": "Tooling detects/prevents overly large files",
+      "evidence": "LFS attributes, eslint `max-lines`, file-size pre-commit hook, CI size check",
+      "conditional_note": null
+    },
+    {
+      "num": 46,
+      "pillar": 2,
+      "pillar_name": "Feedback Loops",
+      "level": 4,
+      "name": "Code modularization enforcement",
+      "description": "Architectural boundaries enforced",
+      "evidence": "`eslint-plugin-boundaries`, `dependency-cruiser`, `import-linter`, ts-arch",
+      "conditional_note": null
+    },
+    {
+      "num": 47,
+      "pillar": 2,
+      "pillar_name": "Feedback Loops",
+      "level": 3,
+      "name": "Technical debt markers tracking",
+      "description": "TODO/FIXME/HACK comments inventoried",
+      "evidence": "TODO-tracker bot, ESLint `no-warning-comments`, Sonar SQALE, `todocheck` in CI",
+      "conditional_note": null
+    },
+    {
+      "num": 48,
+      "pillar": 2,
+      "pillar_name": "Feedback Loops",
+      "level": 5,
+      "name": "Cyclomatic complexity tracking",
+      "description": "Complexity thresholds enforced",
+      "evidence": "Sonar quality gate, ESLint `complexity`, radon (Py), gocyclo",
+      "conditional_note": null
+    },
+    {
+      "num": 49,
+      "pillar": 2,
+      "pillar_name": "Feedback Loops",
+      "level": 4,
+      "name": "N+1 query detection",
+      "description": "DB-aware lint or runtime detection",
+      "evidence": "Bullet (Rails), `query-counter` middleware, `pyproject` plugins, ORM warnings",
+      "conditional_note": "conditional: DB-using app"
+    },
+    {
+      "num": 50,
+      "pillar": 3,
+      "pillar_name": "Workflows & Automation",
+      "level": 2,
+      "name": "Issue templates",
+      "description": "Structured templates for bug reports, feature requests",
+      "evidence": "`.github/ISSUE_TEMPLATE/` with `bug_report.md`, `feature_request.md`",
+      "conditional_note": null
+    },
+    {
+      "num": 51,
+      "pillar": 3,
+      "pillar_name": "Workflows & Automation",
+      "level": 2,
+      "name": "PR template",
+      "description": "Template that guides PR descriptions toward reviewable AND recoverable changes. File existence is necessary but NOT sufficient. PASS requires the template to include at minimum: (a) a **Summary** or **Description** section; (b) a **Testing** section -- either a checklist with concrete commands the reviewer can verify, OR a free-form section that names what was tested; (c) a **Risk / Rollback** section (or equivalent: \"How to revert\", \"Blast radius\", \"Recovery plan\") -- this is the recoverability signal Pillar 7 cares about, and the criterion now enforces it even for L2. Optional but encouraged: Breaking Changes section, Related Issues / Closes, Checklist (secrets, conventional commits, scope). FAIL when the file exists but is missing any of the three required sections, OR when it contains only a `## Summary` heading with no other guidance. See the recommended template in `docs/factory-ai-readiness/remediate-prompts/2-taskdiscovery-pr-templates.md`.",
+      "evidence": "`.github/pull_request_template.md` (or `.github/PULL_REQUEST_TEMPLATE.md`, or GitLab `.gitlab/merge_request_templates/`) containing Summary + Testing + Risk/Rollback sections",
+      "conditional_note": null
+    },
+    {
+      "num": 52,
+      "pillar": 3,
+      "pillar_name": "Workflows & Automation",
+      "level": 2,
+      "name": "Dependency update automation",
+      "description": "Automated PRs for dependency updates",
+      "evidence": "`.github/dependabot.yml`, `renovate.json`, `.renovaterc`",
+      "conditional_note": null
+    },
+    {
+      "num": 53,
+      "pillar": 3,
+      "pillar_name": "Workflows & Automation",
+      "level": 3,
+      "name": "Release automation",
+      "description": "Automated release pipeline (build, tag, publish)",
+      "evidence": "Release workflow in CI, `semantic-release`, GoReleaser, `release-please`",
+      "conditional_note": null
+    },
+    {
+      "num": 54,
+      "pillar": 3,
+      "pillar_name": "Workflows & Automation",
+      "level": 2,
+      "name": "Branch protection",
+      "description": "Protected main with required checks",
+      "evidence": "Branch protection rules, merge queue config, required status checks. Mark `—` (N/A) if `gh api repos/{owner}/{repo}/rules/branches/main` returns HTTP 403 \"Upgrade to GitHub Pro\" -- private repos on GitHub Free cannot enable rulesets and the criterion is structurally unsatisfiable on that plan.",
+      "conditional_note": "conditional: GitHub plan supports protection rules / rulesets"
+    },
+    {
+      "num": 55,
+      "pillar": 3,
+      "pillar_name": "Workflows & Automation",
+      "level": 4,
+      "name": "Merge automation",
+      "description": "Merge queue, auto-merge, or merge bot",
+      "evidence": "`merge_group` trigger, Mergify, auto-merge labels, `gh pr merge --auto`",
+      "conditional_note": null
+    },
+    {
+      "num": 56,
+      "pillar": 3,
+      "pillar_name": "Workflows & Automation",
+      "level": 1,
+      "name": "Task runner",
+      "description": "Single entry point for common commands",
+      "evidence": "`Makefile`, `Justfile`, `Taskfile.yml`, `package.json` scripts, `Rakefile`",
+      "conditional_note": null
+    },
+    {
+      "num": 57,
+      "pillar": 3,
+      "pillar_name": "Workflows & Automation",
+      "level": 3,
+      "name": "Structured change tracking",
+      "description": "Changesets, conventional commits, or similar discipline",
+      "evidence": "`.changeset/`, `commitlint`, conventional commit enforcement",
+      "conditional_note": null
+    },
+    {
+      "num": 58,
+      "pillar": 3,
+      "pillar_name": "Workflows & Automation",
+      "level": 4,
+      "name": "CI concurrency control",
+      "description": "Cancel-in-progress, concurrency groups",
+      "evidence": "`concurrency:` blocks in GitHub Actions, `cancel-in-progress: true`",
+      "conditional_note": null
+    },
+    {
+      "num": 59,
+      "pillar": 3,
+      "pillar_name": "Workflows & Automation",
+      "level": 3,
+      "name": "Automated release notes",
+      "description": "Changelog/release notes from commits or PRs",
+      "evidence": "`release-please`, `auto-changelog`, `git-cliff`, `conventional-changelog`",
+      "conditional_note": null
+    },
+    {
+      "num": 60,
+      "pillar": 3,
+      "pillar_name": "Workflows & Automation",
+      "level": 4,
+      "name": "Stale issue/PR management",
+      "description": "Automation to close or label stale items. Mark `—` (N/A) when `team_scale=solo AND visibility=private` -- a single maintainer on a closed repo has no stale-bot use case and flagging this becomes checklist theater. Still applies (and should fail) when the repo has multiple contributors OR accepts outside contributions.",
+      "evidence": "`.github/workflows/stale.yml`, stale bot config, lifecycle labels",
+      "conditional_note": "conditional: not solo+private"
+    },
+    {
+      "num": 61,
+      "pillar": 3,
+      "pillar_name": "Workflows & Automation",
+      "level": 4,
+      "name": "Label automation",
+      "description": "Automatic PR/issue labeling based on paths or content",
+      "evidence": "`.github/labeler.yml`, label-sync, auto-label workflows",
+      "conditional_note": null
+    },
+    {
+      "num": 62,
+      "pillar": 3,
+      "pillar_name": "Workflows & Automation",
+      "level": 4,
+      "name": "Multi-platform CI",
+      "description": "CI matrix covering multiple OS, arch, or runtime versions",
+      "evidence": "`matrix:` with multiple OS or language versions",
+      "conditional_note": null
+    },
+    {
+      "num": 63,
+      "pillar": 3,
+      "pillar_name": "Workflows & Automation",
+      "level": 3,
+      "name": "Deployment automation",
+      "description": "Automated deployment pipeline",
+      "evidence": "Deploy workflow on merge/tag, staging + production environments",
+      "conditional_note": null
+    },
+    {
+      "num": 64,
+      "pillar": 3,
+      "pillar_name": "Workflows & Automation",
+      "level": 3,
+      "name": "Automated code review checks",
+      "description": "Bot-driven review checks beyond CI",
+      "evidence": "Danger.js, review bot, CODEOWNERS-required reviews, SonarCloud bot",
+      "conditional_note": null
+    },
+    {
+      "num": 65,
+      "pillar": 3,
+      "pillar_name": "Workflows & Automation",
+      "level": 4,
+      "name": "Automated PR review generation",
+      "description": "LLM/static-tool comments on PRs",
+      "evidence": "SonarCloud quality-gate comments, CodeRabbit, Greptile, Codiumate",
+      "conditional_note": null
+    },
+    {
+      "num": 66,
+      "pillar": 3,
+      "pillar_name": "Workflows & Automation",
+      "level": 4,
+      "name": "Automated security review generation",
+      "description": "Security findings posted automatically on PRs",
+      "evidence": "gitleaks workflow, CodeQL bot, Snyk PR comments, Trivy reports in CI",
+      "conditional_note": null
+    },
+    {
+      "num": 67,
+      "pillar": 3,
+      "pillar_name": "Workflows & Automation",
+      "level": 4,
+      "name": "Feature flag infrastructure",
+      "description": "Flag system configured for safe rollouts",
+      "evidence": "LaunchDarkly/Statsig/Unleash/GrowthBook SDK, custom flag system",
+      "conditional_note": null
+    },
+    {
+      "num": 68,
+      "pillar": 3,
+      "pillar_name": "Workflows & Automation",
+      "level": 5,
+      "name": "Dead feature flag detection",
+      "description": "Tooling OR documented retirement process detects stale/dead flags",
+      "evidence": "LaunchDarkly Insights, Unleash dashboard, custom flag-age script in CI. Also passes when a documented flag-retirement lifecycle (e.g. `docs/operations/feature-flags.md` describing how to ripgrep references, inline the truthful branch, and remove the env entry) is committed -- a documented manual process beats no process.",
+      "conditional_note": "conditional: flag system present"
+    },
+    {
+      "num": 69,
+      "pillar": 3,
+      "pillar_name": "Workflows & Automation",
+      "level": 4,
+      "name": "Deployment frequency",
+      "description": "Multiple deploys per week with automation",
+      "evidence": "Vercel/Render/Fly auto-deploy on push, frequent successful CI on main",
+      "conditional_note": null
+    },
+    {
+      "num": 70,
+      "pillar": 3,
+      "pillar_name": "Workflows & Automation",
+      "level": 5,
+      "name": "Progressive rollout",
+      "description": "Canary or percentage-based deployments",
+      "evidence": "Argo Rollouts, Flagger, Vercel rolling deploys, Cloudflare gradual deploy",
+      "conditional_note": "conditional: production system"
+    },
+    {
+      "num": 71,
+      "pillar": 3,
+      "pillar_name": "Workflows & Automation",
+      "level": 5,
+      "name": "Rollback automation",
+      "description": "One-click or automated rollback capability",
+      "evidence": "Vercel rollback, Argo Rollouts revert, GitHub Actions rollback workflow",
+      "conditional_note": "conditional: production system"
+    },
+    {
+      "num": 72,
+      "pillar": 4,
+      "pillar_name": "Policy & Governance",
+      "level": 1,
+      "name": "Comprehensive .gitignore",
+      "description": "Covers secrets, build artifacts, IDE files, agent artifacts",
+      "evidence": "`.gitignore` with `.env`, `node_modules/`, build dirs, `.cursor/`, `.claude/`",
+      "conditional_note": null
+    },
+    {
+      "num": 73,
+      "pillar": 4,
+      "pillar_name": "Policy & Governance",
+      "level": 2,
+      "name": "License",
+      "description": "The agent unambiguously knows the licensing posture. Accepts any of: (a) a LICENSE/MIT-LICENSE/COPYING/LICENSE.md file; (b) a clear proprietary-copyright statement at the top of README (\"All Rights Reserved\", \"Proprietary - © {Company}\") combined with a `package.json` signal (`\"license\": \"UNLICENSED\"` or `\"private\": true`); (c) a dedicated COPYRIGHT file with a proprietary notice. Vague statements (\"This is a private project\") do NOT pass. **For published OSS packages** (`package.json` has `publishConfig` or `\"private\": false`), require an SPDX-compliant LICENSE file -- README mention alone is insufficient.",
+      "evidence": "`LICENSE`, `MIT-LICENSE`, `COPYING`, `LICENSE.md`, `COPYRIGHT`, OR README \"All Rights Reserved\" + package.json proprietary signal",
+      "conditional_note": null
+    },
+    {
+      "num": 74,
+      "pillar": 4,
+      "pillar_name": "Policy & Governance",
+      "level": 2,
+      "name": "Code ownership",
+      "description": "File/directory ownership mapping",
+      "evidence": "`CODEOWNERS`, `.github/CODEOWNERS`, area-owners docs",
+      "conditional_note": null
+    },
+    {
+      "num": 75,
+      "pillar": 4,
+      "pillar_name": "Policy & Governance",
+      "level": 2,
+      "name": "Security policy",
+      "description": "How to report vulnerabilities",
+      "evidence": "`SECURITY.md`, `.github/security.md`, security reporting instructions",
+      "conditional_note": null
+    },
+    {
+      "num": 76,
+      "pillar": 4,
+      "pillar_name": "Policy & Governance",
+      "level": 2,
+      "name": "Code of conduct",
+      "description": "Community standards. Mark `—` (N/A) when `accepts_external_contributors=false` -- CoC governs outside-contributor interactions; for private repos with no external contribution model, the criterion is structurally inapplicable. Required when the repo is public + OSS-licensed + has CONTRIBUTING.md targeting outsiders.",
+      "evidence": "`CODE_OF_CONDUCT.md`, conduct link in contributing guide",
+      "conditional_note": "conditional: accepts_external_contributors"
+    },
+    {
+      "num": 77,
+      "pillar": 4,
+      "pillar_name": "Policy & Governance",
+      "level": 3,
+      "name": "AI usage policy",
+      "description": "Documented guidelines for AI/agent contributions",
+      "evidence": "AI policy in AGENTS.md, CONTRIBUTING.md, or standalone doc",
+      "conditional_note": null
+    },
+    {
+      "num": 78,
+      "pillar": 4,
+      "pillar_name": "Policy & Governance",
+      "level": 2,
+      "name": "Secrets management",
+      "description": "Secrets via environment/vault, not hardcoded",
+      "evidence": "`${{ secrets.* }}` in CI, vault config, `.env.example` without values",
+      "conditional_note": null
+    },
+    {
+      "num": 79,
+      "pillar": 4,
+      "pillar_name": "Policy & Governance",
+      "level": 3,
+      "name": "Vulnerability scanning",
+      "description": "Automated CVE scanning in CI",
+      "evidence": "`.github/workflows/codeql.yml`, Snyk, `gosec`, Trivy, Dependabot security alerts",
+      "conditional_note": null
+    },
+    {
+      "num": 80,
+      "pillar": 4,
+      "pillar_name": "Policy & Governance",
+      "level": 3,
+      "name": "Secret scanning",
+      "description": "Continuous scanning for accidentally committed secrets",
+      "evidence": "gitleaks workflow on push/PR, GitHub secret scanning enabled, trufflehog in CI",
+      "conditional_note": null
+    },
+    {
+      "num": 81,
+      "pillar": 4,
+      "pillar_name": "Policy & Governance",
+      "level": 3,
+      "name": "Sensitive data log scrubbing",
+      "description": "Logger redacts/masks PII, tokens, credentials",
+      "evidence": "Logger config with redact lists; structured logger middleware; explicit scrub patterns",
+      "conditional_note": null
+    },
+    {
+      "num": 82,
+      "pillar": 4,
+      "pillar_name": "Policy & Governance",
+      "level": 3,
+      "name": "Minimum dependency release age",
+      "description": "Policy delays adopting brand-new releases (supply-chain mitigation)",
+      "evidence": "Renovate `minimumReleaseAge` / `stabilityDays`; documented policy; CI gate",
+      "conditional_note": null
+    },
+    {
+      "num": 83,
+      "pillar": 4,
+      "pillar_name": "Policy & Governance",
+      "level": 2,
+      "name": "Git attributes",
+      "description": "Line endings, diff drivers, LFS, linguist overrides",
+      "evidence": "`.gitattributes` with `text=auto`, `linguist-generated`, LFS tracking",
+      "conditional_note": null
+    },
+    {
+      "num": 84,
+      "pillar": 4,
+      "pillar_name": "Policy & Governance",
+      "level": 3,
+      "name": "Contributor agreement",
+      "description": "DCO sign-off or CLA process. Mark `—` (N/A) when `accepts_external_contributors=false` -- DCO/CLA exists to handle IP from outside contributors; it has no function on repos with a closed contribution model. Required when the repo is public + OSS-licensed + has CONTRIBUTING.md targeting outsiders.",
+      "evidence": "DCO bot config, `Signed-off-by` requirement, CLA-assistant config",
+      "conditional_note": "conditional: accepts_external_contributors"
+    },
+    {
+      "num": 85,
+      "pillar": 4,
+      "pillar_name": "Policy & Governance",
+      "level": 4,
+      "name": "Governance model",
+      "description": "Documented ownership, decision-making, and escalation paths. Evidence varies by repo profile: **public OSS / external-contributor repos** require formal `GOVERNANCE.md` / `MAINTAINERS.md` with maintainer roles + decision process. **Internal multi-team repos** can satisfy via `CODEOWNERS` + escalation docs (e.g., `docs/operations/escalation.md`, team-ownership table in AGENTS.md, on-call rotation doc). Mark `—` (N/A) only when `team_scale=solo AND visibility=private`.",
+      "evidence": "`GOVERNANCE.md`, `MAINTAINERS.md`, OR `CODEOWNERS` + escalation docs for internal multi-team",
+      "conditional_note": "conditional: not solo+private"
+    },
+    {
+      "num": 86,
+      "pillar": 4,
+      "pillar_name": "Policy & Governance",
+      "level": 3,
+      "name": "CI workflow validation",
+      "description": "CI config itself is linted/validated",
+      "evidence": "`actionlint` step, `circleci config validate`, CI schema validation",
+      "conditional_note": null
+    },
+    {
+      "num": 87,
+      "pillar": 4,
+      "pillar_name": "Policy & Governance",
+      "level": 2,
+      "name": "Environment separation",
+      "description": "Distinct configs for dev/test/prod",
+      "evidence": "`.env.test`, `.env.production`, environment-specific config dirs",
+      "conditional_note": null
+    },
+    {
+      "num": 88,
+      "pillar": 4,
+      "pillar_name": "Policy & Governance",
+      "level": 4,
+      "name": "DAST scanning",
+      "description": "Dynamic security testing in CI",
+      "evidence": "OWASP ZAP, Burp, Nuclei, Probely workflow on staging. Mark `—` (N/A) for small static/SSG sites, marketing pages, or directory listings with no user input beyond contact forms -- the cost of standing up a DAST pipeline outweighs the threat. Apps with auth, multi-tenant data, payment flows, or APIs accepting untrusted input should still fail this if no DAST is configured.",
+      "conditional_note": "conditional: web-facing app with meaningful attack surface"
+    },
+    {
+      "num": 89,
+      "pillar": 4,
+      "pillar_name": "Policy & Governance",
+      "level": 4,
+      "name": "PII handling",
+      "description": "PII detection and handling tooling",
+      "evidence": "Presidio, ScrubadubScrubber, regex-based redaction in CI; documented PII policy",
+      "conditional_note": "conditional: user-data app"
+    },
+    {
+      "num": 90,
+      "pillar": 4,
+      "pillar_name": "Policy & Governance",
+      "level": 4,
+      "name": "Privacy compliance infrastructure",
+      "description": "GDPR/CCPA infrastructure",
+      "evidence": "Cookie banner component, data-retention policy doc, DPIA records, consent management",
+      "conditional_note": "conditional: user-data app + jurisdiction"
+    },
+    {
+      "num": 91,
+      "pillar": 5,
+      "pillar_name": "Build & Dev Environment",
+      "level": 1,
+      "name": "Dependency lockfile",
+      "description": "Pinned dependency versions for reproducible installs",
+      "evidence": "`package-lock.json`, `pnpm-lock.yaml`, `uv.lock`, `Cargo.lock`, `go.sum`",
+      "conditional_note": null
+    },
+    {
+      "num": 92,
+      "pillar": 5,
+      "pillar_name": "Build & Dev Environment",
+      "level": 1,
+      "name": "Single-command build",
+      "description": "One documented command to build the entire project",
+      "evidence": "`make build`, `npm run build`, `cargo build` documented in README",
+      "conditional_note": null
+    },
+    {
+      "num": 93,
+      "pillar": 5,
+      "pillar_name": "Build & Dev Environment",
+      "level": 1,
+      "name": "Single-command dev setup",
+      "description": "One command to bootstrap a working dev environment",
+      "evidence": "`bin/setup`, `make dev`, `scripts/bootstrap.sh`, `just setup`",
+      "conditional_note": null
+    },
+    {
+      "num": 94,
+      "pillar": 5,
+      "pillar_name": "Build & Dev Environment",
+      "level": 2,
+      "name": "Dev container",
+      "description": "Containerized dev environment definition",
+      "evidence": "`.devcontainer/devcontainer.json`",
+      "conditional_note": null
+    },
+    {
+      "num": 95,
+      "pillar": 5,
+      "pillar_name": "Build & Dev Environment",
+      "level": 3,
+      "name": "Devcontainer runnable",
+      "description": "Devcontainer actually builds and starts",
+      "evidence": "CI workflow that exercises devcontainer; documentation of last-known-good build",
+      "conditional_note": "conditional: devcontainer present"
+    },
+    {
+      "num": 96,
+      "pillar": 5,
+      "pillar_name": "Build & Dev Environment",
+      "level": 2,
+      "name": "Containerized services",
+      "description": "Docker-based local development stack",
+      "evidence": "`Dockerfile`, `docker-compose.yml`, `compose.yaml` with dev services",
+      "conditional_note": null
+    },
+    {
+      "num": 97,
+      "pillar": 5,
+      "pillar_name": "Build & Dev Environment",
+      "level": 3,
+      "name": "Local services setup documented",
+      "description": "docker-compose OR docs describing how to run dependencies",
+      "evidence": "docker-compose.yml; local-setup section in README/AGENTS.md",
+      "conditional_note": null
+    },
+    {
+      "num": 98,
+      "pillar": 5,
+      "pillar_name": "Build & Dev Environment",
+      "level": 4,
+      "name": "Reproducible environment",
+      "description": "Declarative, hermetic dev environment",
+      "evidence": "`flake.nix`, `shell.nix`, `devbox.json`",
+      "conditional_note": null
+    },
+    {
+      "num": 99,
+      "pillar": 5,
+      "pillar_name": "Build & Dev Environment",
+      "level": 2,
+      "name": "Tool version pinning",
+      "description": "Runtime/tool versions pinned to a file",
+      "evidence": "`.tool-versions`, `mise.toml`, `.node-version`, `.python-version`",
+      "conditional_note": null
+    },
+    {
+      "num": 100,
+      "pillar": 5,
+      "pillar_name": "Build & Dev Environment",
+      "level": 3,
+      "name": "Monorepo orchestration",
+      "description": "Tooling for multi-package repositories",
+      "evidence": "Workspace config, Turborepo, Nx, Bazel, Cargo workspace",
+      "conditional_note": "conditional: monorepo"
+    },
+    {
+      "num": 101,
+      "pillar": 5,
+      "pillar_name": "Build & Dev Environment",
+      "level": 4,
+      "name": "Version drift detection",
+      "description": "Tooling detects cross-package version drift",
+      "evidence": "syncpack, depsync, Nx version generator, custom drift script in CI",
+      "conditional_note": "conditional: monorepo"
+    },
+    {
+      "num": 102,
+      "pillar": 5,
+      "pillar_name": "Build & Dev Environment",
+      "level": 3,
+      "name": "Build caching",
+      "description": "Caching for faster rebuilds",
+      "evidence": "CI cache steps (`actions/cache`), Turborepo remote cache, ccache/sccache",
+      "conditional_note": null
+    },
+    {
+      "num": 103,
+      "pillar": 5,
+      "pillar_name": "Build & Dev Environment",
+      "level": 4,
+      "name": "Build performance tracking",
+      "description": "Build duration measured and trended",
+      "evidence": "Build-time metrics export, build-cache hit rate dashboard, CI duration trend",
+      "conditional_note": null
+    },
+    {
+      "num": 104,
+      "pillar": 5,
+      "pillar_name": "Build & Dev Environment",
+      "level": 3,
+      "name": "Heavy dependency / bundle analysis",
+      "description": "Bundle size or dependency-weight analysis",
+      "evidence": "`@next/bundle-analyzer`, webpack-bundle-analyzer, source-map-explorer, depscloud",
+      "conditional_note": null
+    },
+    {
+      "num": 105,
+      "pillar": 5,
+      "pillar_name": "Build & Dev Environment",
+      "level": 3,
+      "name": "Unused dependencies detection",
+      "description": "Tooling detects unused deps",
+      "evidence": "depcheck, knip, npm-check, deptry (Py), cargo-machete",
+      "conditional_note": null
+    },
+    {
+      "num": 106,
+      "pillar": 5,
+      "pillar_name": "Build & Dev Environment",
+      "level": 4,
+      "name": "Cross-platform support",
+      "description": "**Libraries / SDKs / CLIs / frameworks**: strict -- require multi-OS CI matrix, cross-compilation, or multi-arch Docker. A library failing to test on macOS/Windows ships brittle artifacts. **Apps (hosted)**: evaluate dev-loop portability instead of artifact portability. PASS when local task runners (npm scripts, Makefile, Justfile) normalize paths/configs across darwin/linux/win -- e.g., `cross-env` usage, no hard-coded `/bin/sh`-only or `cmd.exe`-only invocations, no unnormalized path separators, or a documented \"Windows users: use WSL\" policy with WSL setup steps. FAIL when scripts demonstrably break on a major dev platform with no documented workaround. The deploy target (Vercel Linux, Fly, Render, etc.) being single-OS is NOT itself a failure for apps. **Monorepos**: apply per-package.",
+      "evidence": "Libraries: CI matrix with multiple OS, cross-compilation, multi-arch Docker. Apps: cross-env usage, portable scripts, OR documented single-OS-dev policy with WSL/devcontainer escape hatch",
+      "conditional_note": "evidence varies by `repo_kind`"
+    },
+    {
+      "num": 107,
+      "pillar": 5,
+      "pillar_name": "Build & Dev Environment",
+      "level": 4,
+      "name": "Cloud dev environment",
+      "description": "Cloud-based workspace configuration",
+      "evidence": "`.devcontainer/` with Codespaces features, `.gitpod.yml`, GitHub Codespaces ready",
+      "conditional_note": null
+    },
+    {
+      "num": 108,
+      "pillar": 5,
+      "pillar_name": "Build & Dev Environment",
+      "level": 3,
+      "name": "Package manager determinism",
+      "description": "The agent can reproduce the same dependency tree across machines. Accepts any of: `.npmrc`/`.yarnrc.yml`/`.pnpmfile.cjs` with `engine-strict` / frozen-lockfile / registry pinning; `\"packageManager\"` field in `package.json` (Corepack pin); `\"engines\"` enforced in CI (e.g., `npm ci --engine-strict`); `.tool-versions` / `mise.toml` / `.node-version` runtime pin; CI workflow uses `npm ci` / `pnpm install --frozen-lockfile` / `yarn install --immutable`; equivalents for `pip.conf`, `.cargo/config.toml`. Lockfile alone is NOT sufficient (already covered by #91). Fails only when installation is genuinely ambiguous: no lockfile pin + no runtime pin + no CI-frozen-install discipline.",
+      "evidence": "`.npmrc`, `.yarnrc.yml`, `\"packageManager\"` field, Corepack, `engines` enforced in CI, `.tool-versions`, `mise.toml`, `pip.conf`, `.cargo/config.toml`",
+      "conditional_note": null
+    },
+    {
+      "num": 109,
+      "pillar": 5,
+      "pillar_name": "Build & Dev Environment",
+      "level": 3,
+      "name": "Database schema definition",
+      "description": "Schema files for the application database",
+      "evidence": "`migrations/` directory, `schema.sql`, Prisma `schema.prisma`, Alembic versions",
+      "conditional_note": "conditional: DB-using app"
+    },
+    {
+      "num": 110,
+      "pillar": 6,
+      "pillar_name": "Observability",
+      "level": 2,
+      "name": "Structured logging",
+      "description": "Logs use structured format the agent can parse",
+      "evidence": "JSON logs, structured logger lib (pino, structlog, zap, slog), log middleware",
+      "conditional_note": null
+    },
+    {
+      "num": 111,
+      "pillar": 6,
+      "pillar_name": "Observability",
+      "level": 2,
+      "name": "Error tracking with context",
+      "description": "Sentry/Bugsnag with source maps + breadcrumbs",
+      "evidence": "`@sentry/*` SDK, source-map upload step, instrumentation files, contextualized capture",
+      "conditional_note": null
+    },
+    {
+      "num": 112,
+      "pillar": 6,
+      "pillar_name": "Observability",
+      "level": 3,
+      "name": "Health check endpoints",
+      "description": "Liveness/readiness probes the agent can hit",
+      "evidence": "`/health`, `/healthz`, `/ready` route in app code",
+      "conditional_note": null
+    },
+    {
+      "num": 113,
+      "pillar": 6,
+      "pillar_name": "Observability",
+      "level": 3,
+      "name": "Metrics collection",
+      "description": "Engineering telemetry for performance",
+      "evidence": "OTel SDK, Prometheus scraping, Datadog/New Relic agent, custom metrics",
+      "conditional_note": "conditional: production system"
+    },
+    {
+      "num": 114,
+      "pillar": 6,
+      "pillar_name": "Observability",
+      "level": 4,
+      "name": "Distributed tracing",
+      "description": "Request tracing within or across services",
+      "evidence": "OTel tracing SDK, Jaeger/Tempo backend, trace propagation middleware. Single-service apps PASS when an APM/tracing SDK is wired (e.g. `@sentry/nextjs` with `instrumentation.ts` / `instrumentation-client.ts`, or `@opentelemetry/*` deps with an exporter configured) -- per-request trace IDs and breadcrumb context still produce the diagnostic value the criterion measures.",
+      "conditional_note": "conditional: any production system that emits requests, single-service included"
+    },
+    {
+      "num": 115,
+      "pillar": 6,
+      "pillar_name": "Observability",
+      "level": 3,
+      "name": "Alerting configured",
+      "description": "Paging integration, alert rules, OR an error->issue pipeline that routes signals to humans",
+      "evidence": "Alert rules in CI/CD, PagerDuty/OpsGenie/Slack integration, on-call rotation. Also passes when an automated pipeline turns errors into actionable work items -- e.g. a `.github/workflows/sentry-issue.yml` + `src/app/api/sentry-webhook/route.ts` that creates a labeled GitHub issue per Sentry alert. The bar is \"someone notices and can act\", not \"PagerDuty specifically\".",
+      "conditional_note": "conditional: production system"
+    },
+    {
+      "num": 116,
+      "pillar": 6,
+      "pillar_name": "Observability",
+      "level": 2,
+      "name": "Runbooks documented",
+      "description": "Incident response playbooks",
+      "evidence": "`docs/runbooks/`, `docs/operations/`, runbook section in repo",
+      "conditional_note": "conditional: production system"
+    },
+    {
+      "num": 117,
+      "pillar": 6,
+      "pillar_name": "Observability",
+      "level": 4,
+      "name": "Code quality metrics dashboard",
+      "description": "Coverage/complexity/maintainability monitored",
+      "evidence": "SonarCloud, Codacy, Code Climate, custom dashboards",
+      "conditional_note": null
+    },
+    {
+      "num": 118,
+      "pillar": 6,
+      "pillar_name": "Observability",
+      "level": 4,
+      "name": "Profiling instrumentation",
+      "description": "Continuous or on-demand profiling",
+      "evidence": "py-spy, pprof, Node `--prof`, async-profiler, Datadog continuous profiler",
+      "conditional_note": "conditional: perf-sensitive app"
+    },
+    {
+      "num": 119,
+      "pillar": 6,
+      "pillar_name": "Observability",
+      "level": 4,
+      "name": "Circuit breakers",
+      "description": "Resilience pattern around remote calls",
+      "evidence": "Hystrix, Resilience4j, opossum, polly, custom retry/timeout middleware",
+      "conditional_note": "conditional: external-dependency-heavy"
+    },
+    {
+      "num": 120,
+      "pillar": 6,
+      "pillar_name": "Observability",
+      "level": 5,
+      "name": "Error → insight pipeline",
+      "description": "Errors flow from tracking to actionable issues",
+      "evidence": "Sentry-GitHub integration, webhook → issue/ticket, error-grouping → PR draft",
+      "conditional_note": null
+    },
+    {
+      "num": 121,
+      "pillar": 7,
+      "pillar_name": "Agent-OS Readiness",
+      "level": 2,
+      "name": "Tool allowlist / permission policy",
+      "description": "Documented or enforced list of CLIs/APIs/destinations the agent may use",
+      "evidence": "`.claude/settings.json` `permissions` block, `.factory/settings.json` `commandAllowlist`/`commandDenylist`, agent-tool allowlist file (note: `.factory/policy.json` does NOT exist — Factory's real path is `settings.json`)",
+      "conditional_note": null
+    },
+    {
+      "num": 122,
+      "pillar": 7,
+      "pillar_name": "Agent-OS Readiness",
+      "level": 3,
+      "name": "Sandboxing / blast-radius bounds",
+      "description": "Agent runs in a constrained environment with limited filesystem/network access",
+      "evidence": "Devcontainer with restricted mounts, agent-runner sandbox script, network egress allowlist",
+      "conditional_note": null
+    },
+    {
+      "num": 123,
+      "pillar": 7,
+      "pillar_name": "Agent-OS Readiness",
+      "level": 3,
+      "name": "Hooks for context preservation",
+      "description": "Pre/post-action hooks that capture or persist agent state",
+      "evidence": "`.claude/hooks/`, `.factory/hooks/`, PreCompact / SessionEnd / PreCommit agent hooks",
+      "conditional_note": null
+    },
+    {
+      "num": 124,
+      "pillar": 7,
+      "pillar_name": "Agent-OS Readiness",
+      "level": 3,
+      "name": "SBOM presence",
+      "description": "Software Bill of Materials generated or committed",
+      "evidence": "`sbom.json`, `cyclonedx.json`, syft/grype output, SBOM upload in release workflow",
+      "conditional_note": null
+    },
+    {
+      "num": 125,
+      "pillar": 7,
+      "pillar_name": "Agent-OS Readiness",
+      "level": 4,
+      "name": "Provenance attestations",
+      "description": "Cryptographic attestations on builds/commits",
+      "evidence": "`sigstore` / `cosign` signing, in-toto attestations, GitHub `actions/attest-build-provenance`",
+      "conditional_note": null
+    },
+    {
+      "num": 126,
+      "pillar": 7,
+      "pillar_name": "Agent-OS Readiness",
+      "level": 4,
+      "name": "Agent audit trail with stable run IDs",
+      "description": "Every agent action is logged with a run ID linkable to commit/PR/deploy",
+      "evidence": "Run-ID convention in commit messages or PR labels, agent-run log dir, telemetry hooks",
+      "conditional_note": null
+    },
+    {
+      "num": 127,
+      "pillar": 7,
+      "pillar_name": "Agent-OS Readiness",
+      "level": 4,
+      "name": "Replayable evaluation harness",
+      "description": "Agent behavior tested against fixed scenarios",
+      "evidence": "`evals/` directory, golden-prompt fixtures, agent regression-test workflow in CI",
+      "conditional_note": null
+    },
+    {
+      "num": 128,
+      "pillar": 7,
+      "pillar_name": "Agent-OS Readiness",
+      "level": 4,
+      "name": "Kill-switch infrastructure",
+      "description": "Mechanism to halt agent activity quickly",
+      "evidence": "Feature flag scoped to \"agent runs,\" disable-agent script, repo-level circuit breaker",
+      "conditional_note": null
+    },
+    {
+      "num": 129,
+      "pillar": 7,
+      "pillar_name": "Agent-OS Readiness",
+      "level": 3,
+      "name": "Human escalation path",
+      "description": "Documented handoff with sufficient context for a human to take over",
+      "evidence": "Agent leaves a status note, `escalate-to-human.md` template, PR description includes context",
+      "conditional_note": null
+    },
+    {
+      "num": 130,
+      "pillar": 7,
+      "pillar_name": "Agent-OS Readiness",
+      "level": 4,
+      "name": "Agent registry / ownership metadata",
+      "description": "Documented map of which agent owns which scope",
+      "evidence": "`.agents/registry.yaml`, agent-ownership table in AGENTS.md, agent identity in CODEOWNERS",
+      "conditional_note": null
+    },
+    {
+      "num": 131,
+      "pillar": 7,
+      "pillar_name": "Agent-OS Readiness",
+      "level": 3,
+      "name": "Per-repo policy visibility",
+      "description": "Agent can read its constraints (off-limits paths, approval-required actions)",
+      "evidence": "Machine-readable policy file (`agent-policy.json`, `.agent/restricted-paths.md`), referenced from AGENTS.md",
+      "conditional_note": null
+    },
+    {
+      "num": 132,
+      "pillar": 7,
+      "pillar_name": "Agent-OS Readiness",
+      "level": 3,
+      "name": "Cost telemetry for agent runs",
+      "description": "Token usage / run cost is tracked and attributable",
+      "evidence": "OTel attributes for agent ops, agent-cost log line per run, cost-per-PR dashboard",
+      "conditional_note": null
+    }
+  ]
+}

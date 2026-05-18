@@ -1,0 +1,43 @@
+{
+  "schema_version": 2,
+  "repo_name": "test-builder",
+  "generated_at": "2026-05-18T00:00:00Z",
+  "audit_context": {
+    "head_sha": "0000000000000000000000000000000000000000",
+    "branch": "main",
+    "worktree_dirty": false,
+    "dirty_files_count": 0,
+    "dirty_diff_sha256": null,
+    "captured_at": "2026-05-18T00:00:00Z"
+  },
+  "repo_profile": {
+    "repo_kind": "app",
+    "repo_kind_evidence": "synthetic test",
+    "visibility": "private",
+    "visibility_evidence": "synthetic test",
+    "accepts_external_contributors": false,
+    "accepts_external_contributors_evidence": "synthetic test",
+    "team_scale": "solo",
+    "team_scale_evidence": "synthetic test"
+  },
+  "applications": [
+    {"path": ".", "description": "Synthetic builder fixture."}
+  ],
+  "judgments": {
+    "1": {"status": "pass", "rationale": "AGENTS.md present at root."},
+    "2": {"status": "fail", "rationale": "No AI IDE config files found."},
+    "5": {"status": "na", "rationale_kind": "profile_gate",
+          "rationale": "team_scale=solo AND visibility=private."},
+    "76": {"status": "na", "rationale_kind": "profile_gate",
+           "rationale": "accepts_external_contributors=false."},
+    "84": {"status": "na", "rationale_kind": "profile_gate",
+           "rationale": "accepts_external_contributors=false."}
+  },
+  "top_actions": [
+    {
+      "title": "Add AI IDE configuration",
+      "body": "Wire .cursor/rules or .github/copilot-instructions.md so multi-vendor support holds.",
+      "feature_refs": [2]
+    }
+  ]
+}

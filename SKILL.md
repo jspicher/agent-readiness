@@ -241,12 +241,74 @@ before proceeding** — do not paper over an inconsistency.
 
 Each audit produces **three sibling artifacts** in `docs/agent-readiness/`:
 
-- `<slug>.md` -- human-readable Markdown (5a, existing behavior)
-- `<slug>-data.json` -- canonical structured data (5b, NEW)
-- `<slug>.html` -- self-contained Factory-style dashboard (5c, NEW)
+- `<slug>.md` -- human-readable Markdown (5a)
+- `<slug>-data.json` -- canonical structured data (5b)
+- `<slug>.html` -- self-contained Factory-style dashboard (5c)
 
 The JSON is the source of truth: Markdown and HTML must both be derivable
-from it. Write the JSON during the same pass, never as a post-hoc derivation.
+from it. Generate the JSON with the builder script, never hand-author it.
+
+#### 5.0. Generate the data JSON with the builder
+
+Hand-authoring `<slug>-data.json` is **prohibited**. The validator's V03/V04/V05/V06 invariants compound across 132 features, 7 pillars, 5 tiers, and a hierarchical max-tier walk -- the probability of authoring all of that correctly by hand on a first attempt is essentially zero. Promoting a target-repo helper script (e.g., `scripts/_gen_readiness.py`) to do this work is also prohibited: it pollutes the audited codebase and bypasses the skill's invariants.
+
+Instead, encode your per-feature judgments into a small judgments file and let the builder assemble the audit-data JSON for you:
+
+```bash
+# 1. (one-time, only if criteria.md changed since last commit)
+python3 scripts/extract_criteria.py
+
+# 2. Per audit, write your judgments to a file in the target repo.
+#    See "Judgments file shape" below for the schema.
+$EDITOR docs/agent-readiness/<slug>-judgments.json
+
+# 3. Build, validate, render.
+python3 "$SKILL_DIR/scripts/build_audit_data.py" \
+    docs/agent-readiness/<slug>-judgments.json \
+    --out docs/agent-readiness/<slug>-data.json
+python3 "$SKILL_DIR/scripts/validate_audit_data.py" \
+    docs/agent-readiness/<slug>-data.json
+bash    "$SKILL_DIR/scripts/render_html.sh" \
+    docs/agent-readiness/<slug>-data.json \
+    docs/agent-readiness/<slug>.html
+```
+
+`$SKILL_DIR` resolves to the directory containing this `SKILL.md` (e.g.,
+`~/.claude/skills/agent-readiness/` for global Claude Code installs). The
+builder reads `references/criteria.json` and `references/prompt-map.json`
+from that directory.
+
+##### Judgments file shape
+
+```json
+{
+  "schema_version": 2,
+  "repo_name": "<repo>",
+  "audit_context": { /* paste the output of capture_audit_context.sh */ },
+  "repo_profile":  { /* the four Step 0 dimensions + evidence strings */ },
+  "applications":  [ { "path": ".", "description": "..." } ],
+  "judgments": {
+    "1":  { "status": "pass", "rationale": "AGENTS.md present at root." },
+    "5":  { "status": "na", "rationale_kind": "profile_gate",
+            "rationale": "team_scale=solo AND visibility=private." },
+    "20": { "status": "fail", "rationale": "No CI freshness check for AGENTS.md." }
+  },
+  "top_actions": [
+    { "title": "...", "body": "...", "feature_refs": [20] }
+  ]
+}
+```
+
+Rules:
+
+- **Every feature in `criteria.json` must have a judgment.** The builder refuses to emit JSON if any are missing (exits with code 5). `--allow-missing-judgments` exists only for testing fixtures -- do NOT use it for a real audit.
+- **Every `na` judgment must carry a `rationale_kind`** from `references/applicability-glossary.md` (`profile_gate`, `missing_precondition`, or `subsystem_absence`). The builder rejects N/A without a kind (exits 6).
+- **The builder does the math.** Pillar/tier/summary aggregates, the hierarchical max-tier walk, the flat-bucket level, strongest/weakest pillar, and the readiness_tracks dual headline are all computed from the per-feature judgments. You do not write any of those numbers by hand.
+- **The builder substitutes remediation prompts.** For every `fail` whose feature is `HAS_PROMPT` in `prompt-map.json`, the builder reads the prompt file, replaces `<REPO_NAME>` with the audited repo's name, and replaces `<WHY_IT_FAILED -- populated from rationale in your readiness report>` with the judgment's `rationale`. The resulting prompt body lands verbatim in `feature.remediation_prompt`. You do not run prompt-map lookups by hand.
+
+##### When the builder is not appropriate
+
+The only case in which hand-authored JSON is acceptable is for fixtures that intentionally violate validator invariants (the negative-test corpus under `fixtures/negative/`). Real audits MUST go through the builder. If you find yourself reaching for a target-repo script to assemble JSON, stop -- it means the skill is missing a feature you should request upstream, not work around locally.
 
 #### 5a. Markdown report
 
@@ -330,30 +392,25 @@ The inlined prompts are the actionable payload of this report: a reader can copy
 
 #### 5b. Audit data JSON
 
-Emit `<slug>-data.json` alongside the Markdown. Schema is documented in
-`references/audit-data-schema.md`. Key invariants:
+The builder (Step 5.0) emits `<slug>-data.json` for you. Schema is documented
+in `references/audit-data-schema.md`. Auditors do not hand-author this file;
+the rules below describe what the builder guarantees so you can sanity-check
+its output:
 
-- Every feature must have `description` (copied from the "What to look for"
-  column in `references/criteria.md`).
-- `rationale` is required for `pass` and `fail`. For `na`, state the
-  precondition.
-- `remediation_prompt` is the **fully substituted** prompt text (with
-  `<REPO_NAME>` and `<WHY_IT_FAILED -- ...>` already resolved). Null when the
-  feature passes, is N/A, or no prompt exists in `prompt-map.json`.
+- Every feature carries `description` (copied verbatim from `references/criteria.json`, which itself is generated from `references/criteria.md`).
+- `rationale` is present for every status. For `na`, the rationale states the precondition.
+- `remediation_prompt` is the fully substituted prompt text (`<REPO_NAME>` and `<WHY_IT_FAILED -- ...>` resolved). Null when the feature passes, is N/A, or has no entry in `prompt-map.json`.
 - `pillars` contains exactly 7 entries in id order (1..7).
 - `tiers` contains exactly 5 entries in L1..L5 order.
+- Pillar/tier/summary aggregates are recomputed from the feature array (V04).
+- `max_tier_hierarchical` and `flat_bucket_level` are derived from the algorithms documented earlier in this file (V05, V06).
 
-Substitute placeholders ONCE during Step 7. The same fully-substituted
-prompt text appears verbatim in both surfaces: the Markdown `<details>`
-block AND the JSON's `remediation_prompt` field. They must be byte-identical.
-Do not re-derive the substitution per surface; do not edit one without the
-other.
+The Markdown report (5a) and the JSON's `remediation_prompt` field must be byte-identical for each failing feature. The builder writes the same substituted string into both surfaces, so as long as you copy the JSON's `remediation_prompt` into the Markdown `<details>` block verbatim, byte identity holds.
 
 #### 5c. Render HTML
 
-Run the render script from this skill's directory. The script self-locates
-its template relative to its own path, so the working directory doesn't
-matter:
+The builder writes the data JSON; the renderer writes the HTML. Both run
+from this skill's directory:
 
 ```bash
 bash "$SKILL_DIR/scripts/render_html.sh" \
@@ -393,7 +450,16 @@ generated remediation prompt or PR:
 
 For every failing feature in Step 5, inline its full remediation prompt inside the `<details>` block. The prompts are pre-authored and live in `prompts/` inside this skill's directory (sibling to `SKILL.md`, `references/`, `scripts/`, `assets/`). The mapping from feature number to prompt file lives in `references/prompt-map.json`.
 
-The same fully-substituted prompt text from this step is ALSO written verbatim into each failing feature's `remediation_prompt` field in `<slug>-data.json` (Step 5b). Substitute once, write to both surfaces in the same pass -- byte-identical.
+**The builder (Step 5.0) already did this substitution for the JSON surface.** Each fail-status feature's `remediation_prompt` field in `<slug>-data.json` contains the fully substituted prompt body. To preserve byte-identity between JSON and Markdown, your job in this step is simple: for every failing feature, copy that feature's `remediation_prompt` field verbatim into the Markdown `<details>` block. Do not re-substitute, do not re-open the prompt file -- copy the string the builder already produced.
+
+If you need to substitute a prompt manually (e.g., to debug a mismatch), the builder uses `scripts/substitute_prompts.py` under the hood. You can invoke it directly:
+
+```bash
+python3 "$SKILL_DIR/scripts/substitute_prompts.py" \
+    --feature-num 3 --repo-name <repo> --rationale "<why it failed>"
+```
+
+The algorithm below is the same one both the builder and that CLI use; it is retained here for reference.
 
 #### Lookup algorithm
 
