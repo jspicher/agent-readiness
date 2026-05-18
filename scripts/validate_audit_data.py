@@ -430,13 +430,28 @@ def check_v11_prompt_drift(prompt_map: dict, prompts_dir: Path) -> None:
 
 
 def main(argv: list[str] | None = None) -> int:
+    # Default the three skill-internal artifacts to script-relative paths so
+    # the validator works from any CWD (e.g., the audited repo root). When
+    # CWD happens to be the skill dir, absolute and relative resolve
+    # identically, so this is backward-compatible with CI.
+    skill_dir = Path(__file__).resolve().parent.parent
+
     parser = argparse.ArgumentParser(
         description="Validate an audit-data JSON file against eleven structural checks.",
     )
     parser.add_argument("audit_data", help="Path to <slug>-data.json")
-    parser.add_argument("--prompt-map", default="references/prompt-map.json")
-    parser.add_argument("--criteria", default="references/criteria.md")
-    parser.add_argument("--prompts-dir", default="prompts")
+    parser.add_argument(
+        "--prompt-map",
+        default=str(skill_dir / "references" / "prompt-map.json"),
+    )
+    parser.add_argument(
+        "--criteria",
+        default=str(skill_dir / "references" / "criteria.md"),
+    )
+    parser.add_argument(
+        "--prompts-dir",
+        default=str(skill_dir / "prompts"),
+    )
     args = parser.parse_args(argv)
 
     audit_path = Path(args.audit_data)
