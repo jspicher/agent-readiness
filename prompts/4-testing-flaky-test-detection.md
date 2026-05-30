@@ -16,7 +16,7 @@ You are fixing an Agent Readiness signal. Agent Readiness evaluates how well a r
 
 The agent readiness report evaluated this signal using these instructions:
 
-Flaky test detection – Check for proactive flaky test management. If `gh` or `glab` CLI is available and authenticated, run `gh pr list --state all --limit 10 --json statusCheckRollup` to detect duplicate check names (indicates retries/flakiness). Also check for: 1) Test retry configuration (jest-retry, pytest-rerunfailures). 2) Flaky test tracking tools (BuildPulse). 3) CI quarantine/skip mechanisms. 4) Test stability metrics. Skip if `gh`/`glab` CLI is not available or not authenticated and no other flaky test detection evidence exists.
+Flaky test detection – Check for proactive flaky test management. If `gh` or `glab` CLI is available and authenticated, run `gh pr list --state all --limit 10 --json statusCheckRollup` to detect duplicate check names (indicates retries/flakiness). Also check for: 1) Test retry configuration (jest-retry, vitest `retry`, pytest-rerunfailures). 2) Flaky test tracking tools (BuildPulse). 3) CI quarantine/skip mechanisms. 4) Test stability metrics. Skip if `gh`/`glab` CLI is not available or not authenticated and no other flaky test detection evidence exists.
 
 ## Your Task
 

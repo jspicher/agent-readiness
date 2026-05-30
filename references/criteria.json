@@ -301,7 +301,7 @@
       "level": 2,
       "name": "Test coverage measurement",
       "description": "Coverage tracking with thresholds enforced in CI",
-      "evidence": "`.codecov.yml`, `coverageThreshold` in jest, `--cov` in pytest, Go cover profile",
+      "evidence": "`.codecov.yml`, `coverageThreshold` in jest / `coverage.thresholds` in vitest, `--cov` in pytest, Go cover profile",
       "conditional_note": null
     },
     {
@@ -401,7 +401,7 @@
       "level": 4,
       "name": "Flaky test detection",
       "description": "System identifies and tracks unstable tests",
-      "evidence": "jest-retry, pytest-rerunfailures, BuildPulse, CI quarantine mechanism",
+      "evidence": "jest-retry / vitest `retry`, pytest-rerunfailures, BuildPulse, CI quarantine mechanism",
       "conditional_note": null
     },
     {

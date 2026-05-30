@@ -16,7 +16,7 @@ You are fixing an Agent Readiness signal. Agent Readiness evaluates how well a r
 
 The agent readiness report evaluated this signal using these instructions:
 
-Test coverage thresholds – Minimum coverage percentages are enforced. Common approaches: jest.config.js coverageThreshold, pytest --cov-fail-under, Codecov/Coveralls with PR status checks blocking on coverage, SonarQube/SonarCloud quality gate with coverage threshold (sonar.coverage.* settings or sonar.qualitygate.wait=true in CI). Other CI gates or tools that enforce minimum coverage also satisfy this criterion. Agents must know they have to maintain coverage, not just that it is tracked.
+Test coverage thresholds – Minimum coverage percentages are enforced. Common approaches: jest.config.js coverageThreshold or vitest.config.ts coverage.thresholds, pytest --cov-fail-under, Codecov/Coveralls with PR status checks blocking on coverage, SonarQube/SonarCloud quality gate with coverage threshold (sonar.coverage.* settings or sonar.qualitygate.wait=true in CI). Other CI gates or tools that enforce minimum coverage also satisfy this criterion. Agents must know they have to maintain coverage, not just that it is tracked.
 
 ## Your Task
 

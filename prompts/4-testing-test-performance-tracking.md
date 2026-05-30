@@ -16,7 +16,7 @@ You are fixing an Agent Readiness signal. Agent Readiness evaluates how well a r
 
 The agent readiness report evaluated this signal using these instructions:
 
-Test performance tracking – Test suite duration is measured and tracked. Check: 1) CI outputs that show test timing (e.g., jest --verbose, pytest --durations). 2) Test reports uploaded as artifacts. 3) Integration with test analytics platforms (BuildPulse, Datadog CI, GitHub Actions test reporting). 4) Config flags for test timing output in package.json scripts or CI workflows. Evidence that org monitors test performance, not just pass/fail.
+Test performance tracking – Test suite duration is measured and tracked. Check: 1) CI outputs that show test timing (e.g., jest --verbose, vitest --reporter=verbose, pytest --durations). 2) Test reports uploaded as artifacts. 3) Integration with test analytics platforms (BuildPulse, Datadog CI, GitHub Actions test reporting). 4) Config flags for test timing output in package.json scripts or CI workflows. Evidence that org monitors test performance, not just pass/fail.
 
 ## Your Task
 

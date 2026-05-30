@@ -81,14 +81,16 @@ echo "-- Test coverage --"
 find . -maxdepth 2 \( \
   -name '.codecov.yml' -o -name 'codecov.yml' \
   -o -name '.coveragerc' -o -name 'coverage.config.*' \
-  -o -name 'jest.config.*' \
+  -o -name 'jest.config.*' -o -name 'vitest.config.*' -o -name 'vite.config.*' \
   \) 2>/dev/null | sort
 if [ -f pyproject.toml ]; then
   grep -q '\[tool\.coverage\]\|\[tool\.pytest\.ini_options\]' pyproject.toml 2>/dev/null \
     && echo "  (coverage/pytest config in pyproject.toml)"
 fi
-if [ -f jest.config.js ] || [ -f jest.config.ts ]; then
-  grep -l 'coverageThreshold' jest.config.* 2>/dev/null
+covcfg=$(ls jest.config.* vitest.config.* vite.config.* 2>/dev/null)
+if [ -n "$covcfg" ]; then
+  # jest uses `coverageThreshold`; vitest uses `coverage.thresholds`
+  grep -l 'coverageThreshold\|thresholds' $covcfg 2>/dev/null
 fi
 
 echo ""
@@ -140,8 +142,8 @@ grep -RIl "${EXCLUDE_GREP_ARGS[@]}" --include='vitest.config.*' --include='jest.
 
 echo ""
 echo "-- Flaky test detection --"
-grep -RIl "${EXCLUDE_GREP_ARGS[@]}" --include='package.json' --include='requirements*.txt' --include='pyproject.toml' \
-  -E 'jest-retry|pytest-rerunfailures|buildpulse|jest.retry' . 2>/dev/null | head -5
+grep -RIl "${EXCLUDE_GREP_ARGS[@]}" --include='package.json' --include='requirements*.txt' --include='pyproject.toml' --include='vitest.config.*' --include='vite.config.*' \
+  -E 'jest-retry|jest\.retry|vitest-retry|retry:\s*[1-9]|pytest-rerunfailures|buildpulse' . 2>/dev/null | head -5
 grep -RIn "${EXCLUDE_GREP_ARGS[@]}" --include='*.yml' --include='*.yaml' 'continue-on-error\|retries' .github/workflows/ 2>/dev/null | head -5
 
 echo ""

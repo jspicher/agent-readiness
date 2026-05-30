@@ -69,7 +69,7 @@ that spirals.
 | 26 | L1 | **Unit tests** | Tests for individual components | `*_test.go`, `*_test.py`, `*.spec.ts`, `test/`, `__tests__/` |
 | 27 | L3 | **Integration tests** | Tests verifying components work together | `test/integration/`, `tests/e2e/`, API test suites |
 | 28 | L4 | **End-to-end tests** | Full system/browser tests | Playwright config, Cypress config, Selenium tests, `e2e/` |
-| 29 | L2 | **Test coverage measurement** | Coverage tracking with thresholds enforced in CI | `.codecov.yml`, `coverageThreshold` in jest, `--cov` in pytest, Go cover profile |
+| 29 | L2 | **Test coverage measurement** | Coverage tracking with thresholds enforced in CI | `.codecov.yml`, `coverageThreshold` in jest / `coverage.thresholds` in vitest, `--cov` in pytest, Go cover profile |
 | 30 | L1 | **CI pipeline** | Automated checks on every push or PR | `.github/workflows/ci.yml`, `.circleci/config.yml`, `.gitlab-ci.yml`, `Jenkinsfile` |
 | 31 | L4 | **Fast CI feedback** | CI completes quickly enough for agent iteration | CI under 10 min documented or measurable; parallel jobs; test splitting |
 | 32 | L1 | **Test run documentation** | Agent knows exactly how to run which tests | Test commands in README, AGENTS.md, CONTRIBUTING.md, or Makefile help |
@@ -79,7 +79,7 @@ that spirals.
 | 36 | L3 | **Warnings-as-errors** | Compiler/runtime warnings treated as failures | `-Werror`, `warningsAsErrors` in build config, `filterwarnings = error` |
 | 37 | L4 | **Spell/typo checking** | Automated spelling checks in CI or hooks | `.cspell.json`, `codespell` in pre-commit, `typos.toml` |
 | 38 | L3 | **Test isolation** | Tests are configured for parallel-safe execution | Test runner config (vitest, jest) with parallel workers; isolated DB/env per test |
-| 39 | L4 | **Flaky test detection** | System identifies and tracks unstable tests | jest-retry, pytest-rerunfailures, BuildPulse, CI quarantine mechanism |
+| 39 | L4 | **Flaky test detection** | System identifies and tracks unstable tests | jest-retry / vitest `retry`, pytest-rerunfailures, BuildPulse, CI quarantine mechanism |
 | 40 | L4 | **Test performance tracking** | Test suite duration measured and monitored | `--reporter=verbose` with timing, test analytics platform, slow-test alerts |
 | 41 | L2 | **Test file naming conventions** | Consistent naming enforced by test runner config | vitest `include` pattern, jest `testMatch`, pytest `python_files` |
 | 42 | L3 | **Strict typing enforcement** | Strict mode is non-optional, enforced in CI | `tsconfig.json strict: true`, `[tool.mypy] strict = true`, CI fails on missing types |
